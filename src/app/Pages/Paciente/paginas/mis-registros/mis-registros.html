@@ -1,0 +1,121 @@
+<div class="general">
+  <div class="mis-registros-container">
+    <h1>Mis registros</h1>
+
+    <!-- Sección de filtros y resumen -->
+    <div class="filtros-resumen-section">
+      <!-- Filtros -->
+      <div class="filtros-section">
+        <div class="filtros-title">Filtros</div>
+        <div class="filtros-options">
+          <label class="filtro-option">
+            <input type="radio" name="filtro" value="dia" [(ngModel)]="filtroSeleccionado" (change)="cambiarFiltro()" checked>
+            <span>Del día</span>
+          </label>
+          
+          <label class="filtro-option">
+            <input type="radio" name="filtro" value="fecha" [(ngModel)]="filtroSeleccionado" (change)="cambiarFiltro()">
+            <span>Por fecha</span>
+          </label>
+          
+          <label class="filtro-option">
+            <input type="radio" name="filtro" value="mes" [(ngModel)]="filtroSeleccionado" (change)="cambiarFiltro()">
+            <span>Por mes</span>
+          </label>
+        </div>
+
+        <!-- Campos adicionales según filtro -->
+        <div class="filtro-adicional" *ngIf="filtroSeleccionado === 'fecha'">
+          <label>Seleccione fecha:</label>
+          <input type="date" [(ngModel)]="fechaSeleccionada" (change)="filtrarRegistros()" [max]="fechaHoy">
+        </div>
+
+        <div class="filtro-adicional" *ngIf="filtroSeleccionado === 'mes'">
+          <label>Seleccione mes:</label>
+          <select [(ngModel)]="mesSeleccionado" (change)="filtrarRegistros()">
+            <option value="">Seleccione mes</option>
+            <option *ngFor="let mes of meses" [value]="mes.value">{{ mes.nombre }}</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Resumen de registros -->
+      <div class="resumen-section">
+        <app-card-promedio [promedio]="promedioGlucosa"></app-card-promedio>
+      </div>
+    </div>
+
+    <!-- Lista de registros -->
+    <div class="registros-section" *ngIf="mostrarRegistros">
+      <h2>Registros de glucosa</h2>
+      <div class="registros-grid">
+        <app-card-glucosa 
+          *ngFor="let registro of registrosFiltrados" 
+          [registro]="registro"
+          (verDetalle)="mostrarModalDetalle($event)">
+        </app-card-glucosa>
+      </div>
+    </div>
+
+    <!-- Mensaje cuando no hay registros -->
+    <div class="sin-registros" *ngIf="mostrarRegistros && registrosFiltrados.length === 0">
+      <p>No se encontraron registros para los filtros seleccionados</p>
+    </div>
+  </div>
+
+  <!-- Modal de detalle -->
+  <div class="modal-overlay" *ngIf="mostrarModal" (click)="cerrarModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Detalle del Registro</h3>
+        <button class="btn-cerrar" (click)="cerrarModal()">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="detalle-item">
+          <span class="detalle-label">Fecha:</span>
+          <span class="detalle-valor">{{ formatearFecha(registroSeleccionado.fecha) }}</span>
+        </div>
+        <div class="detalle-item">
+          <span class="detalle-label">Hora:</span>
+          <span class="detalle-valor">{{ registroSeleccionado.hora }}</span>
+        </div>
+        <div class="detalle-item">
+          <span class="detalle-label">Nivel de glucosa:</span>
+          <span class="detalle-valor glucosa-valor">{{ registroSeleccionado.nivelGlucosa }} mg/dL</span>
+        </div>
+        <div class="detalle-item">
+          <span class="detalle-label">Momento del día:</span>
+          <span class="detalle-valor">{{ getMomentoDiaTexto(registroSeleccionado.momentoDia) }}</span>
+        </div>
+        <div class="detalle-item">
+          <span class="detalle-label">Quien tomó la muestra:</span>
+          <span class="detalle-valor">{{ getQuienTomoMuestraTexto(registroSeleccionado.quienTomoMuestra) }}</span>
+        </div>
+        <div class="detalle-item full-width">
+          <span class="detalle-label">Observacion durante la toma:</span>
+          <span class="detalle-valor">{{ registroSeleccionado.observaciones || 'Sin observaciones' }}</span>
+        </div>
+        <div *ngIf="registroSeleccionado.idalerta" class="detalle-item full-width">
+          <span class="detalle-label">
+              Alerta: 
+          </span>
+          <span class="detalle-valor">
+            {{registroSeleccionado.tipo_alerta}}
+          </span>
+          <span class="detalle-label">
+            Respuesta del médico:
+          </span>
+          <span class="detalle-valor" *ngIf="registroSeleccionado.respuesta!=null">
+            {{registroSeleccionado.respuesta}}
+          </span>
+          <span class="detalle-valor" *ngIf="registroSeleccionado.respuesta==null">
+            Todavía no se registro una respuesta
+          </span>
+        </div>
+      </div>
+      <!-- <div class="modal-footer">
+        <button class="btn-cerrar-modal" (click)="cerrarModal()">Cerrar</button>
+      </div> -->
+    </div>
+  </div>
+</div>

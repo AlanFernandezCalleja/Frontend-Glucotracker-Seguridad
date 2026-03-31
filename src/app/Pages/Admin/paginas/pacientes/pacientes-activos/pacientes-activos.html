@@ -1,0 +1,21 @@
+
+
+<div class="wrap">
+  <h1>Pacientes activos</h1>
+  <input 
+        class="search" 
+        type="search" 
+        placeholder="Buscar paciente por nombre, email o teléfono..." 
+        [value]="q()" 
+        (input)="q.set($any($event.target).value)" />
+
+  <div class="grid">
+    <app-card-paciente-a
+      *ngFor="let p of pacientesFiltrados()"
+      [paciente]="p"
+      (ver)="verPaciente(p)">
+    </app-card-paciente-a>
+  </div>
+</div>
+
+

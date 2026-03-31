@@ -1,0 +1,205 @@
+<div class="general">
+  <div class="form-container">
+    <h2>Registro de Pacientes</h2>
+
+    <form [formGroup]="pacienteForm" (ngSubmit)="enviarSolicitud()">
+      
+      <!-- Sección: Datos personales -->
+      <div class="section">
+        <h3 class="section-title">Datos personales</h3>
+        
+        <!-- Nombre Completo -->
+        <div class="input-box full-width">
+          <label>Nombre Completo</label>
+          <input type="text" formControlName="nombre_completo" placeholder="Ingrese nombre completo" />
+        </div>
+
+        <!-- Fecha Nacimiento y Teléfono -->
+        <div class="row">
+          <div class="input-box">
+            <label>Fecha de Nacimiento</label>
+            <input type="date" formControlName="fecha_nac" />
+          </div>
+          <div class="input-box">
+            <label>Teléfono</label>
+            <input type="tel" formControlName="teléfono" placeholder="Ingrese teléfono" />
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <h3 class="section-title">Foto de perfil</h3>
+
+        <div class="input-box full-width">
+          <label for="foto_perfil">Subir imagen de perfil</label>
+
+          <input
+            type="file"
+            id="foto_perfil"
+            accept="image/*"
+            (change)="onFileSelected($event)"
+          >
+
+          <!-- Vista previa -->
+          <div *ngIf="imagenVistaPrevia" class="preview">
+            <img [src]="imagenVistaPrevia" alt="Vista previa">
+          </div>
+        </div>
+      </div>
+
+
+      <div class="section">
+        <h3 class="section-title">Contacto de Emergencia</h3>
+        
+        <!-- Nombre Completo -->
+        <div class="input-box full-width">
+          <label>Nombre </label>
+          <input type="text" formControlName="nombre_emergencia" placeholder="Ingrese nombre completo" />
+        </div>
+
+        <!-- Fecha Nacimiento y Teléfono -->
+       
+          <div class="input-box full-width">
+            <label>Teléfono</label>
+            <input type="tel" formControlName="numero_emergencia" placeholder="Ingrese teléfono" />
+          </div>
+      </div>
+      <!-- Sección: Datos Médicos -->
+      <div class="section">
+        <h3 class="section-title">Datos Médicos</h3>
+        
+        <div class="row">
+          <!-- Género -->
+          <div class="input-box">
+            <label>Género</label>
+            <select formControlName="genero" (change)="onGeneroChange()">
+              <option value="">Seleccione género</option>
+              <option value="Masculino">Masculino</option>
+              <option value="Femenino">Femenino</option>
+            </select>
+          </div>
+
+          <!-- ¿Está embarazada? (Solo visible si género es mujer) -->
+          <div class="input-box" *ngIf="pacienteForm.get('genero')?.value === 'Femenino'">
+
+  <label>¿Está embarazada?</label>
+  <select formControlName="embarazada">
+    <option [ngValue]="null">Seleccione</option>
+    <option [ngValue]="true">Sí</option>
+    <option [ngValue]="false">No</option>
+  </select>
+
+  <div class="input-box" *ngIf="pacienteForm.get('embarazada')?.value === true">
+    <label>Ingrese sus semanas de embarazo</label>
+    <input type="number" formControlName="semanas" min="1" max="42">
+  </div>
+
+</div>
+
+          <!-- Peso y Altura -->
+          <div class="input-box">
+            <label>Peso (kg)</label>
+            <input type="number" formControlName="peso" placeholder="Ingrese peso" min="0" step="0.1" />
+          </div>
+          <div class="input-box">
+            <label>Altura (m)</label>
+            <input type="number" formControlName="altura" placeholder="Ingrese altura" min="0" step="0.1" />
+          </div>
+        </div>
+      </div>
+      <div class="section">
+        <h3 class="section-title">Medico</h3>
+        
+        <div class="row">
+          <div class="input-box">
+            <label>Medico</label>
+            <select formControlName="id_medico">
+              <option value="">Seleccione  su medico</option>
+              <option *ngFor="let medico of medicos" [value]="medico.id_medico">
+                {{ medico.nombre_completo }}
+              </option>
+            </select>
+          </div>
+          
+        </div>
+      </div>
+      <div class="section">
+        <h3 class="section-title">Actividad física</h3>
+        
+        <div class="row">
+          <div class="input-box">
+            <select formControlName="id_actividad">
+              <option value="">Seleccione  su nivel de actividad fisica</option>
+              <option *ngFor="let a of actividades" [value]="a.id_actividad">
+                {{ a.nivel }}
+              </option>
+            </select>
+          </div>
+          
+        </div>
+      </div>
+      <!-- Sección: Enfermedad de Base -->
+      <div class="section">
+        <h3 class="section-title">Enfermedad de Base</h3>
+        
+        <!-- Primera enfermedad -->
+        <div class="row">
+          <div class="input-box">
+            <label>Afeccion</label>
+            <select formControlName="enfermedad_id">
+              <option value="">Seleccione su afeccion</option>
+               <option *ngFor="let a of enfermedades" [value]="a.id_enfermedad">
+                {{ a.nombre_enfermedad }}
+              </option>
+            </select>
+          </div>
+          <div class="input-box">
+            <label>Tratamiento</label>
+            <select formControlName="tratamiento_id" (change)="onTratamientoChange($event)">
+              <option value="">Seleccione su tratamiento</option>
+               <option *ngFor="let a of tratamientos" [value]="a.id_tratamiento">
+                {{ a.nombre_tratamiento }}
+              </option>
+            </select>
+          </div>
+          <div class="input-box">
+            <label>Dosis</label>
+            <input type="text" formControlName="dosis_" placeholder="Dosis del tratamiento"  />
+          </div>
+        </div>
+
+        <!-- Descripción primera enfermedad -->
+        <div class="input-box full-width">
+          <label>Descripción</label>
+          <textarea [value]="descripcionTratamiento" placeholder="Descripción del tratamiento" rows="3" readonly></textarea>
+        </div>
+
+        <!-- Segunda enfermedad -->
+       
+      </div>
+
+      <!-- Sección: Credenciales -->
+      <div class="section">
+        <h3 class="section-title">Credenciales de Acceso</h3>
+        
+        <div class="row">
+          <div class="input-box">
+            <label>Correo</label>
+            <input type="email" formControlName="correo" placeholder="Ingrese correo electrónico" />
+          </div>
+          <div class="input-box">
+            <label>Contraseña</label>
+            <input type="password" formControlName="contrasena" placeholder="Ingrese contraseña" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Botones uno al lado del otro -->
+      <div class="button-container">
+        <button type="submit" class="btn" [disabled]="!pacienteForm.valid">Registrar</button>
+        <button type="button" class="btn btn-secondary" (click)="volverAlLogin()">Volver al Login</button>
+      </div>
+    </form>
+  </div>
+  
+</div>

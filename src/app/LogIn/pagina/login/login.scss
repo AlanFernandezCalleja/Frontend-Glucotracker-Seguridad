@@ -1,0 +1,461 @@
+.login-layout {
+  display: flex;
+  height: 100vh;
+  background: #e1f2f2;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
+}
+
+// Panel izquierdo
+.panel--left {
+  flex: 1;
+  background: linear-gradient(135deg, #0a3d62, #308dad);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  border-right: solid 3px #0a3d62;
+
+  @media (max-width: 768px) {
+    border-right: none;
+    border-bottom: solid 3px #0a3d62;
+    padding: 1.5rem;
+  }
+
+  .left-content {
+    text-align: center;
+    max-width: 400px;
+    width: 100%;
+  }
+
+  .brand {
+    color: #f1f1f1;
+    font-size: 3rem;
+    font-weight: bold;
+    margin-bottom: 3rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+
+    @media (max-width: 768px) {
+      font-size: 2.5rem;
+      margin-bottom: 2rem;
+    }
+  }
+
+  .registration-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .btn-register {
+    padding: 1.2rem 2rem;
+    border: solid 3px #0a3d62;
+    border-radius: 50px;
+    font-size: 1.3rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+
+    &:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(10, 61, 98, 0.3);
+    }
+
+    &--paciente {
+      background: #7fffd4;
+      color: #0a3d62;
+
+      &:hover {
+        background: #0a3d62;
+        color: #7fffd4;
+        border-color: #7fffd4;
+      }
+    }
+
+    &--medico {
+      background: #0a3d62;
+      color: #7fffd4;
+
+      &:hover {
+        background: #7fffd4;
+        color: #0a3d62;
+        border-color: #0a3d62;
+      }
+    }
+  }
+}
+
+// Panel derecho
+.panel--right {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background: #e1f2f2;
+
+  .card {
+    background: #a8e6cf;
+    padding: 3rem;
+    border-radius: 30px;
+    border: solid 3px #0a3d62;
+    box-shadow: 0 10px 30px rgba(10, 61, 98, 0.2);
+    max-width: 400px;
+    width: 100%;
+
+    @media (max-width: 768px) {
+      padding: 2rem;
+    }
+  }
+
+  .login-title {
+    text-align: center;
+    color: #0a3d62;
+    font-size: 2.2rem;
+    font-weight: bold;
+    margin-bottom: 2.5rem;
+    border-bottom: solid 2px #0a3d62;
+    padding-bottom: 1rem;
+  }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1.5rem;
+
+    .label-text {
+      font-weight: bold;
+      color: #0a3d62;
+      margin-bottom: 0.5rem;
+      font-size: 1.1rem;
+    }
+
+    input {
+      padding: 1rem;
+      border: solid 2px #0a3d62;
+      border-radius: 25px;
+      font-size: 1rem;
+      background: white;
+      transition: all 0.3s ease;
+
+      &:focus {
+        outline: none;
+        border-color: #7fffd4;
+        box-shadow: 0 0 0 3px rgba(127, 255, 212, 0.3);
+        background: #f8fffd;
+      }
+
+      &::placeholder {
+        color: #999;
+      }
+
+      &.invalid {
+        border-color: #dc3545;
+        background: #fff5f5;
+      }
+    }
+
+    small {
+      color: #dc3545;
+      font-size: 0.9rem;
+      margin-top: 0.3rem;
+      font-weight: bold;
+    }
+  }
+
+  .btn-login {
+    width: 100%;
+    padding: 1.2rem;
+    background: #0a3d62;
+    color: #7fffd4;
+    border: solid 3px #0a3d62;
+    border-radius: 50px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 1rem;
+
+    &:hover:not(:disabled) {
+      background: #7fffd4;
+      color: #0a3d62;
+      border-color: #0a3d62;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(10, 61, 98, 0.3);
+    }
+
+    &:disabled {
+      background: #6c757d;
+      color: #ccc;
+      border-color: #6c757d;
+      cursor: not-allowed;
+      transform: none;
+    }
+  }
+}
+
+// Animaciones
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.card {
+  animation: fadeIn 0.6s ease-out;
+}
+
+.left-content {
+  animation: fadeIn 0.6s ease-out 0.2s both;
+}
+
+// Estilos para modales
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.modal {
+  background: #a8e6cf;
+  border-radius: 25px;
+  border: solid 3px #0a3d62;
+  box-shadow: 0 15px 40px rgba(10, 61, 98, 0.3);
+  max-width: 500px;
+  width: 100%;
+  animation: slideUp 0.4s ease-out;
+  
+  &--success {
+    background: #d4edda;
+    border-color: #155724;
+    color: #155724;
+  }
+  
+  &--error {
+    background: #f8d7da;
+    border-color: #721c24;
+    color: #721c24;
+  }
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 1.5rem 0.5rem;
+  border-bottom: solid 2px #0a3d62;
+  
+  .modal--success & {
+    border-color: #155724;
+  }
+  
+  .modal--error & {
+    border-color: #721c24;
+  }
+}
+
+.modal-title {
+  font-size: 2rem;
+  font-weight: bold;
+  margin: 0;
+  color: #0a3d62;
+  text-align: center;
+  
+  .modal--success & {
+    color: #155724;
+  }
+  
+  .modal--error & {
+    color: #721c24;
+  }
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: #0a3d62;
+  cursor: pointer;
+  padding: 0;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    background: #0a3d62;
+    color: #7fffd4;
+  }
+  
+  .modal--success &:hover {
+    background: #155724;
+    color: #d4edda;
+  }
+  
+  .modal--error &:hover {
+    background: #721c24;
+    color: #f8d7da;
+  }
+}
+
+.modal-body {
+  padding: 1.5rem;
+  
+  .modal--success &,
+  .modal--error & {
+    text-align: center;
+  }
+}
+
+.modal-description {
+  font-size: 1.1rem;
+  line-height: 1.5;
+  margin-bottom: 1.5rem;
+  color: #0a3d62;
+  text-align: center;
+  
+  .modal--success & {
+    color: #155724;
+  }
+  
+  .modal--error & {
+    color: #721c24;
+  }
+}
+
+.success-icon,
+.error-icon {
+  font-size: 4rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.success-icon {
+  color: #28a745;
+}
+
+.error-icon {
+  color: #dc3545;
+}
+
+.verification-input {
+  width: 92%;
+  padding: 1rem;
+  border: solid 2px #0a3d62;
+  border-radius: 25px;
+  font-size: 1.5rem;
+  text-align: center;
+  letter-spacing: 10px;
+  background: white;
+  margin: 1rem 0;
+  
+  &:focus {
+    outline: none;
+    border-color: #7fffd4;
+    box-shadow: 0 0 0 3px rgba(127, 255, 212, 0.3);
+  }
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  
+  .modal--success &,
+  .modal--error & {
+    justify-content: center;
+  }
+}
+
+.btn-modal {
+  padding: 0.8rem 2rem;
+  border-radius: 25px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: solid 2px;
+  
+  &--primary {
+    background: #0a3d62;
+    color: #7fffd4;
+    border-color: #0a3d62;
+    
+    &:hover:not(:disabled) {
+      background: #7fffd4;
+      color: #0a3d62;
+    }
+    
+    &:disabled {
+      background: #6c757d;
+      color: #ccc;
+      border-color: #6c757d;
+      cursor: not-allowed;
+    }
+  }
+  
+  &--secondary {
+    background: transparent;
+    color: #0a3d62;
+    border-color: #0a3d62;
+    
+    &:hover:not(:disabled) {
+      background: #0a3d62;
+      color: #7fffd4;
+    }
+  }
+  
+  &--error {
+    background: #dc3545;
+    color: white;
+    border-color: #dc3545;
+    
+    &:hover {
+      background: #c82333;
+      border-color: #bd2130;
+    }
+  }
+}
+
+// Animaciones para modal
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

@@ -1,0 +1,83 @@
+<div class="general">
+  <div class="form-container">
+    <h2>Registro de Médicos</h2>
+
+    <form [formGroup]="medicoForm" (ngSubmit)="enviarSolicitud()">
+      
+      <!-- Sección: Datos personales -->
+      <div class="section">
+        <h3 class="section-title">Datos personales</h3>
+        
+        <!-- Nombre Completo -->
+        <div class="input-box full-width">
+          <label>Nombre Completo</label>
+          <input type="text" formControlName="nombre_completo" placeholder="Ingrese nombre completo" />
+        </div>
+
+        <!-- Fecha Nacimiento, Teléfono y Departamento -->
+        <div class="row">
+          <div class="input-box">
+            <label>Fecha de Nacimiento</label>
+            <input type="date" formControlName="fecha_nac" />
+          </div>
+          <div class="input-box">
+            <label>Teléfono</label>
+            <input type="tel" formControlName="telefono" placeholder="Ingrese teléfono" />
+          </div>
+          <div class="input-box">
+            <label>Departamento</label>
+            <input type="text" formControlName="departamento" placeholder="Ingrese departamento" />
+          </div>
+        </div>
+         <div class="input-box full-width">
+          <label>Correo</label>
+          <input type="text"formControlName="correo" placeholder="Ingrese correo electronico" />
+        </div>
+         <div class="input-box full-width">
+          <label>Contraseña</label>
+            <input type="password" formControlName="contrasena" placeholder="Ingrese contraseña" />
+        </div>
+        
+      </div>
+
+      <!-- Sección: Datos Profesionales -->
+      <div class="section">
+        <h3 class="section-title">Datos Profesionales</h3>
+        
+        <div class="row">
+          <!-- Matrícula Profesional (PDF) -->
+          <div class="input-box">
+            <label>Matrícula Profesional (PDF)</label>
+            <input type="file"  (change)="onFileSelected($event, 'matricula')" accept=".pdf" />
+            <small *ngIf="medicoForm.get('matriculaProfesional')?.value">Archivo seleccionado: {{ getFileName(medicoForm.get('matriculaProfesional')?.value) }}</small>
+          </div>
+
+          <!-- Carnet Profesional (Imagen) -->
+          <div class="input-box">
+            <label>Carnet Profesional (Imagen)</label>
+            <input type="file" (change)="onFileSelected($event, 'carnet')" accept=".jpg,.jpeg,.png" />
+            <small *ngIf="medicoForm.get('carnetProfesional')?.value">Archivo seleccionado: {{ getFileName(medicoForm.get('carnetProfesional')?.value) }}</small>
+          </div>
+        </div>
+
+        <!-- Especialidad -->
+        <div class="input-box full-width">
+          <label>Especialidad</label>
+          <select formControlName="id_especialidad">
+            <option value="">Seleccione su especialidad</option>
+             <option *ngFor="let a of especialidades" [value]="a.id_especialidad">
+                {{ a.nombre }}
+              </option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Botón Enviar -->
+      <div class="button-container">
+        <button type="submit" class="btn" [disabled]="!medicoForm.valid">Enviar Solicitud</button>
+        <button type="button" class="btn btn-secondary" (click)="volverAlLogin()">Volver al Login</button>
+      </div>
+
+    </form>
+  </div>
+</div>

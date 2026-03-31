@@ -1,0 +1,129 @@
+<div class="perfil-simple" *ngIf="data">
+  <!-- Header del Perfil -->
+  <div class="perfil-header">
+    <div class="foto-perfil">
+      <img 
+        [src]="data.foto_perfil || 'assets/img/default-user.png'" 
+        alt="Foto de perfil" 
+        class="foto-img"
+      />
+    </div>
+    <div class="info-basica">
+      <h1 class="nombre">{{ data.nombre }}</h1>
+      <div class="detalles-header">
+        <span class="dato-header">{{ data.genero }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Grid Principal -->
+  <div class="grid-principal">
+    <!-- Datos Personales -->
+    <div class="seccion datos-personales">
+      <h2 class="titulo-seccion">Datos Personales</h2>
+      <div class="lista-datos">
+        <div class="fila-dato">
+          <span class="etiqueta">Fecha de nacimiento:</span>
+          <span class="valor">{{ data.fechaNac }}</span>
+        </div>
+        <div class="fila-dato">
+          <span class="etiqueta">Peso:</span>
+          <span class="valor">{{ data.peso }}</span>
+        </div>
+        <div class="fila-dato">
+          <span class="etiqueta">Altura:</span>
+          <span class="valor">{{ data.altura }}</span>
+        </div>
+        <div class="fila-dato">
+          <span class="etiqueta">Correo:</span>
+          <span class="valor">{{ data.correo }}</span>
+        </div>
+        <div class="fila-dato">
+          <span class="etiqueta">Teléfono:</span>
+          <span class="valor">{{ data.telefono }}</span>
+        </div>
+        <div class="fila-dato" *ngIf="data.genero == 'Femenino'">
+          <span class="etiqueta">Embarazo:</span>
+          <span class="valor">{{ data.embarazo ? 'Sí' : 'No' }}</span>
+        </div>
+        <div class="fila-dato" *ngIf="data.embarazo">
+          <span class="etiqueta">Semanas de embarazo:</span>
+          <span class="valor">{{ semanasEmbarazoN}}</span>
+        </div>
+        <div class="fila-dato" >
+          <span class="etiqueta">Médico responsable:</span>
+          <span class="valor">{{ data.nombre_medico }}</span>
+        </div>
+        <div class="fila-dato" >
+          <span class="etiqueta">Registrado en:</span>
+          <span class="valor">{{ data.fecha_registro }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Contacto de Emergencia -->
+    <div class="seccion contacto-emergencia">
+      <h2 class="titulo-seccion">Contacto de Emergencia</h2>
+      <div class="info-emergencia">
+        <div class="emergencia-item">
+          <strong>Nombre:</strong> {{ data.nombre_emergencia }}
+        </div>
+        <div class="emergencia-item">
+          <strong>Número:</strong> {{ data.numero_emergencia }}
+        </div>
+      </div>
+    </div>
+
+    <!-- Actividad Física -->
+    <div class="seccion actividad-fisica">
+      <h2 class="titulo-seccion">Actividad Física</h2>
+      <div class="info-actividad">
+        <div class="nivel-actividad">{{ data.actividadFisica.nivel }}</div>
+        <p class="descripcion-actividad">{{ data.actividadFisica.descripcion }}</p>
+      </div>
+    </div>
+
+    <!-- Afecciones -->
+    <div class="seccion afecciones">
+      <h2 class="titulo-seccion">Afecciones</h2>
+      <div class="lista-afecciones">
+        <span class="afeccion-item" *ngFor="let a of data.afecciones">
+          {{ a }}
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tratamientos -->
+  <div class="seccion tratamientos">
+    <div class="header-tratamientos">
+      <h2 class="titulo-seccion">Tratamientos</h2>
+    </div>
+    <div class="lista-tratamientos">
+      <div class="tratamiento-item" *ngFor="let t of data.tratamientos">
+        <h3 class="titulo-tratamiento">{{ t.titulo }}</h3>
+        <div class="info-tratamiento">
+          <div class="detalle-tratamiento">
+            <span class="etiqueta-tratamiento">Descripción:</span>
+            <p>{{ t.descripcion }}</p>
+          </div>
+          <div class="detalle-tratamiento">
+            <span class="etiqueta-tratamiento">Dosis:</span>
+            <p>{{ t.dosis }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Admitido por -->
+  <div class="seccion admitido-por">
+    <h2 class="titulo-seccion">Admitido por</h2>
+    <p class="nombre-admitido">{{ data.admitidoPor }}</p>
+  </div>
+
+  <!-- Botón de acción -->
+  <div class="acciones">
+    <button class="btn-editar" (click)="editarPerfil()">Editar Perfil</button>
+  </div>
+</div>

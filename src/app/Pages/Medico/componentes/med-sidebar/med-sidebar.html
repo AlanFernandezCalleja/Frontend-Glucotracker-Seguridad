@@ -1,0 +1,43 @@
+
+  <!-- ad-sidebar.component.html -->
+<div class="sidebar">
+  <div class="top">
+    <div class="avatar">
+      <img src="glucoTracker.png" alt="">
+    </div>
+
+    <button
+        class="btn pill"
+        [routerLink]="['./perfil']"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }">
+        Mi perfil Médico
+        </button>
+  </div>
+  <nav class="menu">
+      <a class="item" routerLink="./pacientes" routerLinkActive="active">
+
+        <span>Pacientes</span>
+      </a>
+
+      <!-- ALERTAS con submenu -->
+      <button type="button"
+              class="item item-btn"
+              (click)="toggleAlertas()"
+              [attr.aria-expanded]="openAlertas()"
+              aria-controls="submenu-alertas">
+
+        <span class="grow">Alertas</span>
+        <span class="chev" [class.open]="openAlertas()">▾</span>
+      </button>
+
+      <div id="submenu-alertas" class="submenu" *ngIf="openAlertas()">
+        <a class="subitem" routerLink="./activas" routerLinkActive="active">Activas</a>
+        <a class="subitem" routerLink="./resueltas" routerLinkActive="active">Resueltas</a>
+      </div>
+    </nav>
+
+  <button class="logout" type="button" (click)="logout.emit()">
+    Cerrar Sesión
+  </button>
+</div>

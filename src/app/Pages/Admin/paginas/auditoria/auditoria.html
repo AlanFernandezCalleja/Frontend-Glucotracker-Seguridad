@@ -1,0 +1,75 @@
+<div class="auditoria-container">
+  <header class="auditoria-header">
+    <h1 class="auditoria-title">
+      Auditoría de GlucoTracker
+    </h1>
+    <p class="auditoria-subtitle">Aquí esta el registro de actividades y eventos del sistema</p>
+  </header>
+  
+  <div class="auditoria-content">
+    <div class="auditoria-card">
+      <h2>Registros de Actividad</h2>
+      <p>Aqui podría ir la tabla de la ejecución de los endpoints</p>
+    </div>
+    
+    <div class="auditoria-card">
+      <h2>Reportes y Estadísticas</h2>
+      <p>Podemos poner gráficas de quien ingresa mas o esas cosas si hay tiempo</p>
+    </div>
+    
+  </div>
+  <br>
+  <div class="auditoria-card">
+      <h2>Tabla de accesos</h2>
+
+    <table class="auditoria-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Usuario</th>
+          <th>Rol</th>
+          <th>Endpoint</th>
+          <th>Operación</th>
+          <th>Éxito</th>
+          <th>Código</th>
+          <th>IP</th>
+          <th>Fecha</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let a of registrosPaginados">
+          <td data-label="ID">{{ a.id }}</td>
+          <td data-label="Usuario">{{ a.usuario?.nombre_completo }}</td>
+          <td data-label="Rol">{{ a.rol }}</td>
+          <td data-label="Endpoint">{{ a.endpoint }}</td>
+          <td data-label="Operación">{{ a.operacion }}</td>
+          <td data-label="Éxito">
+            <span [class.ok]="a.exito" [class.fail]="!a.exito">
+              {{ a.exito ? '✔' : '✖' }}
+            </span>
+          </td>
+          <td data-label="Código">{{ a.codigo_http }}</td>
+          <td data-label="IP">{{ a.ip_origen }}</td>
+          <td data-label="Fecha">{{ a.fecha | date:'short' }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- PAGINACIÓN -->
+    <div class="paginacion">
+      <button (click)="anterior()" [disabled]="paginaActual === 1">
+        Anterior
+      </button>
+
+      <span>
+        Página {{ paginaActual }} de {{ totalPaginas }}
+      </span>
+
+      <button (click)="siguiente()" [disabled]="paginaActual === totalPaginas">
+        Siguiente
+      </button>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,21 @@
+<section class="wrap">
+  <h1>Solicitudes de medicos</h1>
+
+ <input 
+    class="search" 
+    type="search" 
+    placeholder="Buscar medico" 
+    [value]="q()" 
+    (input)="q.set($any($event.target).value)" />
+
+  <div class="grid">
+    <app-card-medico-a
+      *ngFor="let m of  medicosFiltrados()"
+      [medico]="m"
+      (ver)="verMedico(m)">
+    </app-card-medico-a>
+  </div>
+
+</section>
+
+

@@ -1,0 +1,126 @@
+<div class="general">
+  <div class="form-container">
+    <h2>Registra tu glucosa del momento</h2>
+
+    <form [formGroup]="glucosaForm" (ngSubmit)="confirmar()">
+      
+      <!-- Quien toma la muestra -->
+      
+
+      <div class="row">
+        <!-- Nivel de glucosa -->
+        <div class="input-box">
+          <label>Nivel de glucosa (mg/dL)</label>
+          <input
+            type="number"
+            formControlName="nivel_glucosa"
+            placeholder="Ingrese nivel de glucosa"
+            min="0"
+            step="0.1"
+          />
+        </div>
+
+        <!-- Momento del día -->
+        <div class="input-box">
+          <label>Momento del día</label>
+          <select formControlName="id_momento">
+            <option value="">Seleccione momento</option>
+            <option *ngFor="let m of momentos" [ngValue]="m.id_momento">
+              {{ m.momento }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Observaciones -->
+      <div class="input-box full-width">
+        <label>Observaciones</label>
+        <textarea
+          formControlName="observaciones"
+          placeholder="Ingrese observaciones adicionales"
+          rows="4"
+        ></textarea>
+      </div>
+
+      <!-- Botones -->
+      <div class="button-container">
+        <button type="submit" class="btn" [disabled]="!glucosaForm.valid">
+          Registrar
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- =============== MODAL DE CONFIRMACION 1 ================= -->
+<div class="modal-overlay conf" *ngIf="modalConfirmacion1">
+  <div class="modal">
+    <p>¿Esta seguro de registrar el valor?:</p>
+    <h2 style="font-size: 24px;">{{glucosaForm.value.nivel_glucosa}}</h2>
+    
+
+    <div class="actions">
+      <button class="btn-cancel" (click)="cancelar1()">Cancelar</button>
+      <button class="btn-confirm" (click)="confirmacion1()">Confirmar</button>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal-overlay conf" *ngIf="mostrarEmbarazo">
+  <div class="modal">
+    <p>Te encuentras en la semana <strong>{{ semanasEmbarazo }}</strong> de tu embarazo.</p>
+    <p>Estás muy cerca de completar las <strong>40 semanas</strong>.</p>
+    <p>Después de dar a luz, recuerda actualizar tus datos para continuar con tu seguimiento.</p>
+
+    <div class="actions">
+      <button class="btn-confirm" (click)="cerrarSemanas()">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- =============== MODAL DE CONFIRMACION 2 ================= -->
+<div class="modal-overlay conf" *ngIf="modalConfirmacion2">
+  <div class="modal">
+    <p>No se podra cambiar el registro una vez registrado</p>
+    <p>¿Esta seguro de registrar el valor?:</p>
+    <h2 style="font-size: 24px;">{{glucosaForm.value.nivel_glucosa}}</h2>
+    
+
+    <div class="actions">
+      <button class="btn-cancel" (click)="cancelar2()">Cancelar</button>
+      <button class="btn-confirm" (click)="confirmacion2()">Confirmar</button>
+    </div>
+  </div>
+</div>
+<!-- =============== MODAL DE ÉXITO ================= -->
+<div class="modal-overlay" *ngIf="modalExito">
+  <div class="modal">
+    <h3>Parametros normales</h3>
+    <p>Tu nivel de glucosa está dentro del rango adecuado. Continúa con tus hábitos actuales.</p>
+
+    <button class="btn" (click)="modalExito = false">Aceptar</button>
+  </div>
+</div>
+
+<div class="modal-overlay" *ngIf="modalError">
+  <div class="modal">
+    <h3>Error al registrar toma</h3>
+
+    <button class="btn-confirm" (click)="modalError= false">Aceptar</button>
+  </div>
+</div>
+
+
+<!-- =============== MODAL DE ALERTA ================= -->
+<div class="modal-overlay" *ngIf="modalAlerta">
+  <div class="modal modal-alerta">
+    <h3>{{respuesta}}</h3>
+    <p>{{ mensajeAlerta }}</p>
+
+    <button class="btn-confirm" (click)="modalAlerta = false">
+      Entendido
+    </button>
+  </div>
+</div>

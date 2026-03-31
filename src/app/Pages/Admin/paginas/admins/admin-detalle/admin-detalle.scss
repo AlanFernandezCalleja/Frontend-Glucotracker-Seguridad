@@ -1,0 +1,142 @@
+h1,h2,span{
+  font-family: Arial, Helvetica, sans-serif;
+}
+.perfil {
+  background: #eefafa;
+  min-height: 100dvh;
+  box-sizing: border-box;
+}
+
+.nombre {
+  margin: 0 0 12px 0;
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #172b3a;
+}
+
+.grid {
+    font-family: Arial, Helvetica, sans-serif;
+
+  display: grid;
+  gap: 14px;
+  /* 3 filas principales:
+     1) datos
+     2) matrícula
+     3) fila mixta (depto + carnet) y la de admitido por abarca ancho completo */
+  grid-template-columns: 1fr;
+}
+
+/* Cards base */
+.card {
+  background: #fff;
+  border: 3px solid #2d7fb0;
+  border-radius: 12px;
+  padding: 14px;
+  display: grid;
+  gap: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+
+  h3 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 800;
+    color: #1b2f40;
+  }
+}
+.page {
+  padding: 24px;
+  box-sizing: border-box;
+  min-height: 100dvh;
+  background: #eefafa;
+  animation: fadeIn 0.8s ease-out;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+
+/* Datos personales */
+.datos .cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 6px;
+  }
+}
+
+/* Matrícula y Carnet: imagen responsiva centrada */
+.img-wrap {
+  width: 100%;
+  background: #f9fcff;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  padding: 10px;
+}
+
+.img-wrap img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 6px;
+}
+
+/* Departamento / Admitido por */
+.center-big {
+  display: grid;
+  place-items: center;
+  min-height: 110px;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #1a2a3a;
+  text-align: center;
+}
+
+/* Layout responsivo: en >= 900px
+   - Fila 1: datos (2 columnas)
+   - Fila 2: matrícula (entera)
+   - Fila 3: depto (1) + carnet (1)
+   - Fila 4: admitido (entera)
+*/
+@media (min-width: 900px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+    grid-auto-rows: auto;
+  }
+
+  .datos {
+    grid-column: 1 / -1; /* ocupar todo el ancho */
+  }
+
+  .matricula {
+    grid-column: 1 / -1; /* ocupar todo el ancho */
+  }
+
+  .depto {
+    grid-column: 1 / 2;
+  }
+
+  .carnet {
+    grid-column: 2 / 3;
+  }
+
+  .admitido {
+    grid-column: 1 / -1; /* ocupar todo el ancho */
+  }
+}
+
+/* Pequeños retoques tipográficos */
+b {
+  color: #0a80fb;
+}

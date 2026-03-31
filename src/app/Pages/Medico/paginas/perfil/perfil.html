@@ -1,0 +1,129 @@
+<div class="perfil-simple" *ngIf="medico">
+  <!-- Header del Perfil -->
+  <div class="perfil-header">
+    <div class="foto-perfil">
+    </div>
+    <div class="info-basica">
+      <h1 class="nombre">{{ medico.nombre }}</h1>
+      <div class="detalles-header">
+        <span class="dato-header">Médico</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Grid Principal -->
+  <div class="grid-principal">
+    <!-- Datos Personales -->
+    <div class="seccion datos-personales">
+      <h2 class="titulo-seccion">Datos Personales</h2>
+      <div class="lista-datos">
+        <div class="fila-dato">
+          <span class="etiqueta">Fecha de nacimiento:</span>
+          <span class="valor">{{ medico.fechaNac }}</span>
+        </div>
+        <div class="fila-dato">
+          <span class="etiqueta">Teléfono:</span>
+          <span class="valor">{{ medico.telefono }}</span>
+        </div>
+        <div class="fila-dato">
+          <span class="etiqueta">Correo:</span>
+          <span class="valor">{{ medico.correo }}</span>
+        </div>
+        <div class="fila-dato">
+          <span class="etiqueta">Departamento:</span>
+          <span class="valor">{{ medico.departamento }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Admitido por -->
+    <div class="seccion admitido-por">
+      <h2 class="titulo-seccion">Admitido por</h2>
+      <div class="info-admitido">
+        <div class="admin-item">
+          <strong>Administrador:</strong> {{ medico.admin }}
+        </div>
+      </div>
+    </div>
+
+    <!-- Matrícula Profesional -->
+    <div class="seccion matricula-profesional">
+      <h2 class="titulo-seccion">Matrícula Profesional</h2>
+      <div class="matricula-content" *ngIf="pdf">
+        <div class="matricula-preview">
+          <iframe
+            [src]="pdf"
+            width="100%"
+            height="200"
+            style="border: none; border-radius: 6px;"
+            title="Matrícula profesional"
+          ></iframe>
+          <button class="btn-ver" (click)="abrirMatricula()">Ver documento completo</button>
+        </div>
+      </div>
+      <div class="sin-documento" *ngIf="!pdf">
+        <p>No hay matrícula registrada</p>
+      </div>
+    </div>
+
+    <!-- Carnet Profesional -->
+    <div class="seccion carnet-profesional">
+      <h2 class="titulo-seccion">Carnet Profesional</h2>
+      <div class="carnet-content" *ngIf="medico.carnet">
+        <div class="carnet-preview">
+          <img 
+            [src]="medico.carnet" 
+            alt="Carnet profesional" 
+            class="carnet-img"
+            (error)="medico.carnet = 'assets/img/default-id.png'"
+          />
+          <button class="btn-ver" (click)="verCarnet()">Ver carnet completo</button>
+        </div>
+      </div>
+      <div class="sin-documento" *ngIf="!medico.carnet">
+        <p>No hay carnet registrado</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Botón de acción -->
+  <div class="acciones">
+    <button class="btn-editar" (click)="editarPerfil()">Editar Perfil</button>
+  </div>
+</div>
+
+<!-- Modal para ver carnet completo -->
+<div class="modal-overlay" *ngIf="showCarnetModal">
+  <div class="modal modal-imagen">
+    <div class="modal-header">
+      <h3 class="modal-title">Carnet Profesional</h3>
+      <button class="modal-close" (click)="cerrarCarnetModal()">×</button>
+    </div>
+    <div class="modal-content">
+      <img 
+        [src]="medico?.carnet" 
+        alt="Carnet profesional ampliado" 
+        class="imagen-ampliada"
+      />
+    </div>
+  </div>
+</div>
+
+<!-- Modal para ver matrícula completa -->
+<div class="modal-overlay" *ngIf="showMatriculaModal">
+  <div class="modal modal-documento">
+    <div class="modal-header">
+      <h3 class="modal-title">Matrícula Profesional</h3>
+      <button class="modal-close" (click)="cerrarMatriculaModal()">×</button>
+    </div>
+    <div class="modal-content">
+      <iframe
+        [src]="pdf"
+        width="100%"
+        height="600"
+        style="border: none;"
+        title="Matrícula profesional completa"
+      ></iframe>
+    </div>
+  </div>
+</div>

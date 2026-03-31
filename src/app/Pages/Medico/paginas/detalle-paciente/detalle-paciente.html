@@ -1,0 +1,204 @@
+<section class="detalle-paciente" *ngIf="paciente as p">
+  <!-- Título + botón -->
+  <header class="header">
+     <div class="perfil-header">
+  <div class="foto-wrapper">
+    <img 
+      [src]="p.foto_perfil || 'assets/img/default-user.png'" 
+      alt="Foto de perfil" 
+      class="foto-perfil"
+    />
+  </div>
+
+  <h1 class="nombre">{{ p.nombre }}</h1>
+</div>
+    <button class="btn-reporte" (click)="downloadPdf(paciente)">Generar Reporte</button>
+    <button class="btn-toma" (click)="registrarToma()">Registrar Toma</button>
+  </header>
+
+  <!-- Grid 2 columnas -->
+  <div class="grid-detalle">
+    <!-- ===== Columna Izquierda ===== -->
+    <div class="col1">
+        <div class="card">
+        <h3>Datos Personales</h3>
+        <div class="cols">
+            <ul>
+            <li><b>ID:</b> {{ p.ci }}</li>
+            <li><b>Género:</b> {{ p.genero }}</li>
+            <li><b>Altura:</b> {{ p.altura }} centímetros</li>
+            <li><b>Teléfono:</b> +591 {{ p.telefono }}</li>
+            </ul>
+            <ul>
+            <li><b>Fecha de nacimiento:</b> {{ p.fechaNac }}</li>
+            <li><b>Peso:</b> {{ p.peso }} kilogramos</li>
+            <li><b>Correo:</b> {{ p.Correo }}</li>
+            </ul>
+        </div>
+        </div>
+        <br>
+        <div class="card">
+            <h3>Contacto de emergencia</h3>
+            <div class="cols">
+                <ul>
+                    <li><b>Nombre:</b> {{p.nombre_emergencia}}</li>
+                    <li><b>Número:</b> {{p.numero_emergencia}}</li>
+                </ul>
+            </div>
+
+        </div>
+        <br>
+        <div class="card">
+        <h3>Actividad Física</h3>
+        <p><b>Moderado:</b> Practica ejercicio o actividad física regular 3–5 veces por semana.</p>
+        </div>
+        <br>
+        <div class="card">
+        <h3>Afecciones</h3>
+        <div class="tags">
+            <span class="tag" *ngFor="let a of p.afecciones">{{ a.afeccion }}</span>
+        </div>
+        </div>
+        <br>
+        <div class="card">
+        <h3>Tratamientos</h3>
+        <div class="tratamiento" *ngFor="let t of p.tratamientos">
+            <p><strong>{{ t.titulo }}</strong></p>
+            <p><b>Descripción:</b> {{ t.desc }}</p>
+            <p><b>Dosis:</b> {{ t.dosis }}</p>
+        </div>
+        </div>
+    </div>
+
+    <!-- ===== Columna Derecha ===== -->
+    <div>
+        <div class="card">
+            <h3>Resumen de registros</h3>
+            <div class="resumen">
+                <div class="kpi">
+                    <div class="big">{{ promedioGlucosa() }}</div>
+                    <span>Promedio diario de glucosa</span>
+                </div>
+                <div class="kpi alerta">
+                    <div class="big">{{ alertasGeneradas() }}</div>
+                    <span>Alertas Generadas</span>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="card grafica">
+            <h3>Evolución Semanal</h3>
+
+            <svg [attr.viewBox]="'0 0 ' + CHART.w + ' ' + CHART.h" class="chart">
+                <!-- fondo -->
+                <rect x="0" y="0" [attr.width]="CHART.w" [attr.height]="CHART.h" fill="#fff"></rect>
+
+                <!-- grid Y + labels -->
+                <ng-container *ngFor="let yv of chartData().yTicks">
+                <line
+                    [attr.x1]="CHART.m.left" [attr.x2]="CHART.w - CHART.m.right"
+                    [attr.y1]="mapY(yv)"     [attr.y2]="mapY(yv)"
+                    stroke="#e3ecf3" stroke-width="1"></line>
+                <text
+                    [attr.x]="CHART.m.left - 6" [attr.y]="mapY(yv) + 4"
+                    text-anchor="end" font-size="10" fill="#607d8b">{{ yv }}</text>
+                </ng-container>
+
+                <!-- ejes -->
+                <line [attr.x1]="CHART.m.left" [attr.y1]="CHART.m.top"
+                    [attr.x2]="CHART.m.left" [attr.y2]="CHART.h - CHART.m.bottom"
+                    stroke="#9bbad0"></line>
+                <line [attr.x1]="CHART.m.left" [attr.y1]="CHART.h - CHART.m.bottom"
+                    [attr.x2]="CHART.w - CHART.m.right" [attr.y2]="CHART.h - CHART.m.bottom"
+                    stroke="#9bbad0"></line>
+
+                <!-- series -->
+                <polyline [attr.points]="chartData().mananaPts" fill="none" stroke="#1e6aa7" stroke-width="2.5"/>
+                <polyline [attr.points]="chartData().tardePts"  fill="none" stroke="#f27f3d" stroke-width="2.5"/>
+                <polyline [attr.points]="chartData().nochePts"  fill="none" stroke="#2b8e4d" stroke-width="2.5"/>
+
+                <!-- título -->
+                <text [attr.x]="CHART.w / 2" [attr.y]="CHART.m.top - 6"
+                    text-anchor="middle" font-size="14" font-weight="700" fill="#505a5f">
+                Evolución Semanal
+                </text>
+
+                <!-- leyenda -->
+                <g class="legend" [attr.transform]="'translate(' + (CHART.m.left) + ',' + (CHART.h - 4) + ')'">
+                <g>
+                    <line x1="0" y1="-8" x2="20" y2="-8" stroke="#1e6aa7" stroke-width="3"></line>
+                    <text x="24" y="-5" font-size="11">Mañana</text>
+                </g>
+                <g [attr.transform]="'translate(100,0)'">
+                    <line x1="0" y1="-8" x2="20" y2="-8" stroke="#f27f3d" stroke-width="3"></line>
+                    <text x="24" y="-5" font-size="11">Tarde</text>
+                </g>
+                <g [attr.transform]="'translate(180,0)'">
+                    <line x1="0" y1="-8" x2="20" y2="-8" stroke="#2b8e4d" stroke-width="3"></line>
+                    <text x="24" y="-5" font-size="11">Noche</text>
+                </g>
+                </g>
+            </svg>
+        </div>
+
+                <br>
+        <div class="card historial">
+            <h3>Historial</h3>
+            <input class="search" type="text" placeholder="Buscar registro" />
+            <div class="dias" *ngFor="let h of p.historial">
+                <div class="dia-head">
+                    <div class="fecha">{{ h.fecha }}</div>
+                    <div class="prom">Promedio del día: {{ promedioDia(h) }} mg/dL</div>
+                </div>
+                <div class="reg"
+                    *ngFor="let r of h.registros"
+                    [class.alerta]="coincideAlerta(r)"
+                    >
+                <div class="hora">Hora {{ r.hora }}</div>
+                <div class="momento">{{ r.momento }}</div>
+                <div class="glu">{{ r.glucosa }}</div>
+                </div>
+
+                <button class="btn verde" (click)="openModal(h)">Ver detalle</button>
+            </div>
+        </div>
+        </div>
+
+  </div>
+<div class="modal-backdrop" *ngIf="isModalOpen" (click)="closeModal()"></div>
+
+<div class="modal" *ngIf="isModalOpen" role="dialog" aria-modal="true" aria-labelledby="mdl-title">
+  <header class="modal-header">
+    <h2 id="mdl-title">Registro: {{ modalDia?.fecha }}</h2>
+    <button class="close" (click)="closeModal()" aria-label="Cerrar">✖</button>
+  </header>
+
+  <section class="modal-body">
+    <div class="reg-card" *ngFor="let r of modalDia?.registros; let i = index">
+      <div class="reg-title">{{ ordinalEs(i+1) }} Registro</div>
+      <div><b>Hora:</b> {{ r.hora }}</div>
+      <div><b>Nivel de Glucosa:</b> {{ r.glucosa }}</div>
+      <div><b>Momento:</b> {{ r.momento }}</div>
+    </div>
+
+    <h3 class="sub">Alertas</h3>
+    <ng-container *ngIf="modalAlertas.length; else noAlerts">
+      <div class="alert-card" *ngFor="let a of modalAlertas">
+        <div><b>Nivel:</b> {{ a.nivel | titlecase }}</div>
+        <div><b>Hora:</b> {{ a.hora }}</div>
+        <div><b>Respuesta:</b></div>
+        <p>{{ a.observacion }}</p>
+      </div>
+    </ng-container>
+    <ng-template #noAlerts>
+      <p class="muted">Sin alertas registradas para este día.</p>
+    </ng-template>
+  </section>
+
+  <footer class="modal-footer">
+    <button class="btn verde" (click)="closeModal()">Cerrar</button>
+  </footer>
+</div>
+
+</section>
+<!-- MODAL de detalle por día -->

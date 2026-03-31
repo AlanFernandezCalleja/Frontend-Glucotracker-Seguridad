@@ -1,0 +1,126 @@
+<div class="detalle-paciente">
+  <header class="header">
+    <h1>{{ medico.nombre }}</h1>
+    <div class="acciones">
+      <button class="btn aceptar" (click)="activarMedico()">Aceptar</button>
+      <button class="btn rechazar" (click)="mostrarModalRechazo()">Rechazar</button>
+    </div>
+  </header>
+
+  <div class="seccion">
+    <h3>Datos Personales</h3>
+    <div class="info">
+      <div><strong>ID:</strong> {{ medico.id }}</div>
+      <div><strong>Fecha de nacimiento:</strong> {{ medico.fechaNac }}</div>
+      <div><strong>Teléfono:</strong> {{ medico.telefono }}</div>
+      <div><strong>Correo:</strong> {{ medico.correo }}</div>
+    </div>
+  </div>
+
+  <div class="seccion">
+    <h3>Matrícula</h3>
+    <div class="imagen">
+      <iframe
+        [src]="pdf"
+        width="100%"
+        height="600px"
+        style="border:none;"
+      ></iframe>
+    </div>
+  </div>
+
+  <div class="doble">
+    <div class="seccion">
+      <h3>Departamento</h3>
+      <p>{{ medico.departamento }}</p>
+    </div>
+    <div class="seccion">
+      <h3>Carnet Profesional</h3>
+      <img [src]="medico.carnet" alt="Carnet profesional" />
+    </div>
+  </div>
+
+  <div class="seccion">
+    <h3>Admitido por</h3>
+    <p>{{ medico.admitidoPor }}</p>
+  </div>
+</div>
+
+<!-- Modal de confirmación para aceptar -->
+<div class="modal-overlay" *ngIf="mostrarModalAceptar" (click)="cerrarModalAceptar()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>Confirmar Activación</h3>
+      <button class="btn-cerrar" (click)="cerrarModalAceptar()">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-icon" style="color: #28a745; font-size: 4rem;
+  font-weight: bold;
+  margin-bottom: 1rem;">✓</div>
+      <p>¿Activar al médico <strong>{{medico?.nombre}}</strong>?</p>
+      <p>Recibirá acceso al sistema.</p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-cancelar" (click)="cerrarModalAceptar()">Cancelar</button>
+      <button class="btn btn-aceptar" (click)="confirmarActivacion()">Activar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de confirmación para rechazar -->
+<div class="modal-overlay" *ngIf="mostrarModalRechazar" (click)="cerrarModalRechazar()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>Confirmar Rechazo</h3>
+      <button class="btn-cerrar" (click)="cerrarModalRechazar()">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-icon">⚠️</div>
+      <p>¿Rechazar la solicitud de <strong>{{medico?.nombre}}</strong>?</p>
+      <p>Esta acción no se puede deshacer.</p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-cancelar" (click)="cerrarModalRechazar()">Cancelar</button>
+      <button class="btn btn-rechazar" (click)="rechazarMedico()">Rechazar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de éxito -->
+<div class="modal-overlay" *ngIf="mostrarModalExito" (click)="cerrarModalExito()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-body">
+      <h3>¡Éxito!</h3>
+      <p *ngIf="operacionActual === 'aceptar'">
+        ✓ Médico <strong>{{medico?.nombre}}</strong> activado
+      </p>
+      <p *ngIf="operacionActual === 'rechazar'">
+        ❌ Solicitud de <strong>{{medico?.nombre}}</strong> rechazada
+      </p>
+      <div class="modal-footer">
+        <button class="btn btn-aceptar" (click)="redirigirDespuesExito()">Continuar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de error -->
+<div class="modal-overlay" *ngIf="mostrarModalError" (click)="cerrarModalError()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>Error</h3>
+      <button class="btn-cerrar" (click)="cerrarModalError()">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-icon">❌</div>
+      <p><strong>Algo salió mal</strong></p>
+      <p>{{mensajeError}}</p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-cancelar" (click)="cerrarModalError()">Cerrar</button>
+      <button class="btn btn-aceptar" (click)="reintentarOperacion()" *ngIf="operacionActual === 'aceptar'">
+        Reintentar
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,218 @@
+<div class="editar-container">
+  <!-- Header -->
+  <div class="editar-header">
+    <h1 class="titulo-editar">Editar Perfil Médico</h1>
+  </div>
+
+  <!-- Mensaje de carga -->
+  <div class="carga-container" *ngIf="loading">
+    <div class="carga-mensaje">
+      <div class="spinner"></div>
+      <p>Cargando datos del médico...</p>
+    </div>
+  </div>
+
+  <!-- Formulario -->
+  <form [formGroup]="formMedico" (ngSubmit)="guardarCambios()" *ngIf="!loading && medicoData">
+    <!-- Información Personal -->
+    <div class="seccion-editar">
+      <h2 class="titulo-seccion">Información de Contacto</h2>
+      
+      <div class="campos-grid">
+        <div class="campo">
+          <label for="telefono">Teléfono *</label>
+          <input 
+            type="tel" 
+            id="telefono" 
+            formControlName="telefono"
+            placeholder="Ej: 77777777"
+            [class.error]="f['telefono'].touched && f['telefono'].invalid"
+          />
+          <div class="mensaje-error" *ngIf="f['telefono'].touched && f['telefono'].invalid">
+            <span *ngIf="f['telefono'].hasError('required')">El teléfono es requerido</span>
+            <span *ngIf="f['telefono'].hasError('pattern')">Formato de teléfono inválido (mínimo 8 dígitos)</span>
+          </div>
+          <p class="ayuda-campo">Ej: 77777777 o +591 77777777</p>
+        </div>
+
+        <div class="campo">
+          <label for="correo">Correo electrónico *</label>
+          <input 
+            type="email" 
+            id="correo" 
+            formControlName="correo"
+            placeholder="ejemplo@hospital.com"
+            [class.error]="f['correo'].touched && f['correo'].invalid"
+          />
+          <div class="mensaje-error" *ngIf="f['correo'].touched && f['correo'].invalid">
+            <span *ngIf="f['correo'].hasError('required')">El correo es requerido</span>
+            <span *ngIf="f['correo'].hasError('email')">Correo electrónico inválido</span>
+          </div>
+        </div>
+
+        <div class="campo">
+          <label for="departamento">Departamento *</label>
+          <select 
+            id="departamento" 
+            formControlName="departamento"
+            [class.error]="f['departamento'].touched && f['departamento'].invalid"
+          >
+            <option value="La Paz">La Paz</option>
+            <option value="Cochabamba">Cochabamba</option>
+            <option value="Santa Cruz">Santa Cruz</option>
+          </select>
+          <div class="mensaje-error" *ngIf="f['departamento'].touched && f['departamento'].invalid">
+            <span *ngIf="f['departamento'].hasError('required')">El departamento es requerido</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Carnet Profesional -->
+    <div class="seccion-editar">
+      <h2 class="titulo-seccion">Carnet Profesional</h2>
+      <p class="descripcion-seccion">Actualiza tu foto del carnet profesional (opcional)</p>
+      
+      <div class="carnet-upload">
+        <div class="upload-area">
+          <!-- Vista previa del carnet actual -->
+          <div class="carnet-actual" *ngIf="medicoData?.carnet && !carnetPreview">
+            <h3 class="carnet-titulo">Carnet actual:</h3>
+            <div class="carnet-preview">
+              <img 
+                [src]="medicoData.carnet" 
+                alt="Carnet profesional actual" 
+                class="carnet-img"
+                (error)="medicoData.carnet = 'assets/img/default-id.png'"
+              />
+              <p class="carnet-nota">Esta es tu foto actual del carnet</p>
+            </div>
+          </div>
+          
+          <!-- Vista previa del nuevo carnet -->
+          <div class="carnet-nuevo" *ngIf="carnetPreview">
+            <h3 class="carnet-titulo">Nueva foto:</h3>
+            <div class="carnet-preview">
+              <img [src]="carnetPreview" alt="Nueva foto del carnet" class="carnet-img" />
+              <button type="button" class="btn-eliminar" (click)="eliminarCarnet()">
+                × Eliminar
+              </button>
+            </div>
+          </div>
+          
+          <!-- Área para subir archivo -->
+          <div class="file-upload-area">
+            <label for="carnet" class="file-label">
+              <div class="upload-icon">📷</div>
+              <div class="upload-text">
+                <h3>Subir nueva foto del carnet</h3>
+                <p>Haz clic para seleccionar una imagen</p>
+                <p class="upload-format">Formatos: JPG, PNG | Máx: 2MB</p>
+              </div>
+              <input 
+                type="file" 
+                id="carnet" 
+                accept="image/*"
+                (change)="onCarnetSeleccionado($event)"
+                class="file-input"
+              />
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Información NO editable -->
+    <div class="seccion-editar info-no-editable">
+      <h2 class="titulo-seccion">Información NO editable</h2>
+      
+      <div class="info-grid">
+        <div class="info-item">
+          <span class="info-label">Nombre completo:</span>
+          <span class="info-valor">{{ medicoData?.nombre }}</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">Fecha de nacimiento:</span>
+          <span class="info-valor">{{ medicoData?.fechanac }}</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">Admitido por:</span>
+          <span class="info-valor">{{ medicoData?.admin }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Acciones CENTRADAS -->
+    <div class="acciones-editar">
+      <div class="acciones-container">
+        <button 
+          type="button" 
+          class="btn btn-cancelar"
+          (click)="confirmarCancelar()"
+          [disabled]="guardando"
+        >
+          Cancelar
+        </button>
+        
+        <button 
+          type="submit" 
+          class="btn btn-guardar"
+          [disabled]="(!formMedico.dirty && !carnetCambiado)|| guardando"
+        >
+        <span *ngIf="!guardando">
+          {{ formMedico.dirty || carnetCambiado ? "Guardar cambios" : "No hay cambios detectados" }}
+        </span>          
+        <span *ngIf="guardando">Guardando...</span>
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+
+<!-- Modal de éxito -->
+<div class="modal-overlay" *ngIf="showSuccessModal()">
+  <div class="modal modal-success">
+    <div class="modal-content">
+      <div class="modal-icon">✓</div>
+      <h3 class="modal-title">¡Cambios guardados!</h3>
+      <p class="modal-message">Los cambios se han guardado correctamente.</p>
+      <p class="modal-message">Redirigiendo al perfil...</p>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de error -->
+<div class="modal-overlay" *ngIf="showErrorModal()">
+  <div class="modal modal-error">
+    <div class="modal-header">
+      <h3 class="modal-title">Error</h3>
+      <button class="modal-close" (click)="closeErrorModal()">×</button>
+    </div>
+    <div class="modal-content">
+      <div class="modal-icon">!</div>
+      <p class="modal-message">{{ errorMessage() }}</p>
+      <div class="modal-actions">
+        <button class="btn-modal" (click)="closeErrorModal()">Aceptar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de confirmación para cancelar -->
+<div class="modal-overlay" *ngIf="showConfirmModal()">
+  <div class="modal modal-confirm">
+    <div class="modal-content">
+      <div class="modal-icon">?</div>
+      <h3 class="modal-title">¿Cancelar cambios?</h3>
+      <p class="modal-message">¿Estás seguro de que quieres cancelar? Los cambios no guardados se perderán.</p>
+      <div class="modal-actions">
+        <button class="btn-modal btn-modal-secondary" (click)="closeConfirmModal()">
+          Continuar editando
+        </button>
+        <button class="btn-modal btn-modal-primary" (click)="cancelar()">
+          Sí, cancelar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

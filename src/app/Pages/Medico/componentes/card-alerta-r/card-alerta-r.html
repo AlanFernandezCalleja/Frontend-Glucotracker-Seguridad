@@ -1,0 +1,16 @@
+<article class="alerta" >
+  <header class="head">
+    <h4>{{alerta.nivel}}</h4>
+    <span class="icon">✅</span>
+  </header>
+
+  <div class="body">
+    <div class="pac">{{ alerta.paciente }}</div>
+    <div class="meta">
+      <div>Fecha: {{ alerta.fecha }}</div>
+      <div>Hora: {{ alerta.hora }}</div>
+    </div>
+  </div>
+
+  <button class="btn btn-verde" type="button" (click)="ver.emit(alerta)">Ver Detalle</button>
+</article>

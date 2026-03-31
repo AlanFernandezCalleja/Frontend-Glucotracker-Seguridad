@@ -1,0 +1,279 @@
+.general{
+  background: #e1f2f2;
+  padding: 15px;
+  min-height: 100vh;
+  animation: fadeIn 0.8s ease-out;
+      font-family: Arial, Helvetica, sans-serif;
+
+}
+
+.form-container {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: #a8e6cf;
+  border-radius: 50px;
+  border:  solid 1px #0a3d62;
+  box-shadow: 0 2px 10px #0a3d62;
+  animation: fadeInUp 0.8s ease-out 0.2s both;
+
+  h2 {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: #0a3d62;
+    font-size: 2.2rem;
+    font-weight: bold;
+    animation: fadeIn 0.8s ease-out 0.4s both;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .row {
+    display: flex;
+    gap: 1rem;
+    
+    @media (max-width: 768px) {
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+  }
+
+  .input-box {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    animation: fadeInUp 0.6s ease-out 0.6s both;
+
+    &.full-width {
+      width: 100%;
+    }
+
+    label {
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+      font-weight: 800;
+      color: #0a3d62;
+      font-size: 1.2rem;
+    }
+
+    input, select, textarea {
+      padding: 0.75rem;
+      border: 1px solid #ddd;
+      border-radius: 50px;
+      border:  solid 2px #0a3d62;
+      font-size: 1rem;
+      transition: border-color 0.3s ease;
+      background: white;
+
+      &:focus {
+        outline: none;
+        border-color: #007bff;
+        box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+      }
+
+      &::placeholder {
+        color: #999;
+      }
+    }
+
+    textarea {
+      border-radius: 20px;
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    select {
+      cursor: pointer;
+    }
+  }
+
+  .button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+    animation: fadeInUp 0.6s ease-out 0.8s both;
+  }
+
+  .btn {
+    padding: 1rem 3rem;
+    background: #7fffd4;
+    color: #0a3d62;
+    border: none;
+    border: solid 2px #0a3d62;
+    border-radius: 50px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 200px;
+
+    &:hover:not(:disabled) {
+      background: #0a3d62;
+      color: #7fffd4;
+      border: solid 2px #7fffd4;
+      transform: scale(1.05);
+    }
+
+    &:disabled {
+      background: #6c757d;
+      color: #ccc;
+      border-color: #6c757d;
+      cursor: not-allowed;
+      transform: none;
+    }
+  }
+}
+
+// Definición de animaciones
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Estilos para validación
+.ng-invalid.ng-touched {
+  border-color: #dc3545 !important;
+}
+
+.ng-valid.ng-touched {
+  border-color: #28a745 !important;
+}
+/* ================== MODAL OVERLAY ================== */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.35);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+  animation: fadeIn 0.3s ease-out;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* ================== MODAL BASE ================== */
+.modal {
+  background: #a8e6cf;
+  border-radius: 30px;
+  padding: 2rem;
+  width: 90%;
+  max-width: 420px;
+  text-align: center;
+  border: solid 2px #0a3d62;
+  box-shadow: 0 4px 15px rgba(10, 61, 98, 0.35);
+  animation: fadeInUp 0.4s ease-out;
+}
+
+.modal h2,
+.modal h3 {
+  color: #0a3d62;
+  font-weight: 800;
+  margin-bottom: 1rem;
+}
+
+/* Texto dentro del modal */
+.modal p {
+  font-size: 1.1rem;
+  color: #0a3d62;
+  margin-bottom: 1.5rem;
+}
+
+/* ================== BOTONES DENTRO DEL MODAL ================== */
+.actions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+/* Botón cancelar */
+.btn-cancel {
+  padding: 0.8rem 1.8rem;
+  background: #d9534f;
+  color: white;
+  border: none;
+  border-radius: 50px;
+  font-weight: bold;
+  cursor: pointer;
+  border: solid 2px #0a3d62;
+  transition: all 0.3s ease;
+}
+
+.btn-cancel:hover {
+  background: #c9302c;
+  transform: scale(1.05);
+}
+
+/* Botón confirmar */
+.btn-confirm {
+  padding: 0.8rem 1.8rem;
+  background: #7fffd4;
+  color: #0a3d62;
+  border: solid 2px #0a3d62;
+  border-radius: 50px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-confirm:hover {
+  background: #0a3d62;
+  color: #7fffd4;
+  border-color: #7fffd4;
+  transform: scale(1.05);
+}
+
+/* ================== MODAL ALERTA ================== */
+.modal-alerta {
+  border-left: 8px solid #ff5050;
+}
+
+/* Botón alerta */
+.btn-alerta {
+  padding: 1rem 2.5rem;
+  font-size: 1.1rem;
+  background: #ff5050;
+  border-radius: 50px;
+  border: solid 2px #0a3d62;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-alerta:hover {
+  background: #cc0000;
+  transform: scale(1.05);
+}
+
+/* ================== MODAL CONFIRMACION ESPECIFICO ================== */
+.conf .modal {
+  background: #7fffd4 !important;
+}
+
+.conf h2 {
+  font-size: 32px;
+  color: #0a3d62;
+  font-weight: bold;
+}

@@ -1,0 +1,158 @@
+<div class="detalle-paciente">
+  <header class="encabezado">
+    <div class="perfil-header">
+      <div class="foto-wrapper">
+        <img 
+          [src]="paciente.foto_perfil || 'assets/img/default-user.png'" 
+          alt="Foto de perfil" 
+          class="foto-perfil"
+        />
+      </div>
+      <h1 class="nombre">{{ paciente.nombre }}</h1>
+    </div>
+
+    <div class="acciones">
+      <button class="btn aceptar" (click)="activarPaciente()">Aceptar</button>
+      <button class="btn rechazar" (click)="mostrarModalRechazo()">Rechazar</button>
+    </div>
+  </header>
+
+  <section class="info-grid">
+    <!-- Datos personales -->
+    <div class="datos">
+      <h2>Datos Personales</h2>
+      <div class="grid-datos">
+        <p><b>ID:</b> {{ paciente.id }}</p>
+        <p><b>Fecha de nacimiento:</b> {{ paciente.fechaNac }}</p>
+        <p><b>Género:</b> {{ paciente.genero }}</p>
+        <p><b>Peso:</b> {{ paciente.peso }}</p>
+        <p><b>Altura:</b> {{ paciente.altura }}</p>
+        <p><b>Teléfono:</b> {{ paciente.telefono }}</p>
+        <p><b>Correo:</b> {{ paciente.ci }}</p>
+      </div>
+      <h2>Contacto de emergencia</h2>
+      <div class="grid-datos">
+        <p><b>Nombre:</b> {{paciente.nombre_emergencia}}</p>
+        <p><b>Número:</b> {{paciente.numero_emergencia}}</p>
+      </div>
+    </div>
+
+    <!-- Actividad física -->
+    <div class="actividad">
+      <h2>Actividad Física</h2>
+      <p><b>Moderado:</b> {{ paciente.actividadFisica }}</p>
+    </div>
+   
+    <!-- Afecciones -->
+    <div class="afecciones">
+      <h2>Afecciones</h2>
+      <div class="chips">
+        <span *ngFor="let a of paciente.afecciones" class="chip">{{ a.afeccion }}</span>
+      </div>
+    </div>
+  </section>
+  
+  <div class="tratamientos" *ngIf="paciente.embarazo">
+    <h2>Embarazo</h2>
+    <div class="contenido">
+      <p><b>Semanas:</b> {{paciente.semanas_embarazo}}</p>
+    </div>
+  </div>
+  
+  <!-- Tratamientos -->
+  <section class="tratamientos">
+    <h2>Tratamientos</h2>
+    <div class="tratamiento" *ngFor="let t of paciente.tratamientos">
+      <div class="cabecera">
+        <h3>{{ t.titulo }}</h3>
+      </div>
+      <div class="contenido">
+        <p><b>Descripción:</b> {{ t.desc }}</p>
+        <p><b>Dosis:</b> {{ t.dosis }}</p>
+      </div>
+    </div>
+  </section>
+  
+  <footer class="admin">
+    <p><b>Médico</b></p>
+    <h1>{{paciente.medico}}</h1>
+  </footer>
+</div>
+
+<div class="modal-overlay" *ngIf="mostrarModalAceptar" (click)="cerrarModalAceptar()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>Confirmar Activación</h3>
+      <button class="btn-cerrar" (click)="cerrarModalAceptar()">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-icon" style="color: #28a745; font-size: 4rem;
+  font-weight: bold;
+  margin-bottom: 1rem;">✓</div>
+      <p>¿Activar al paciente <strong>{{paciente?.nombre}}</strong>?</p>
+      <p>Recibirá acceso al sistema.</p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-cancelar" (click)="cerrarModalAceptar()">Cancelar</button>
+      <button class="btn btn-aceptar" (click)="confirmarActivacion()">Activar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de confirmación para rechazar -->
+<div class="modal-overlay" *ngIf="mostrarModalRechazar" (click)="cerrarModalRechazar()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>Confirmar Rechazo</h3>
+      <button class="btn-cerrar" (click)="cerrarModalRechazar()">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-icon">⚠️</div>
+      <p>¿Rechazar la solicitud de <strong>{{paciente?.nombre}}</strong>?</p>
+      <p>Esta acción no se puede deshacer.</p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-cancelar" (click)="cerrarModalRechazar()">Cancelar</button>
+      <button class="btn btn-rechazar" (click)="rechazarPaciente()">Rechazar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de éxito -->
+<div class="modal-overlay" *ngIf="mostrarModalExito" (click)="cerrarModalExito()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-body">
+      <h3>¡Éxito!</h3>
+      <p *ngIf="operacionActual === 'aceptar'">
+        ✓ Paciente <strong>{{paciente?.nombre}}</strong> activado
+      </p>
+      <p *ngIf="operacionActual === 'rechazar'">
+        ❌ Solicitud de <strong>{{paciente?.nombre}}</strong> rechazada
+      </p>
+      <div class="modal-footer">
+        <button class="btn btn-aceptar" (click)="redirigirDespuesExito()">Continuar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de error -->
+<div class="modal-overlay" *ngIf="mostrarModalError" (click)="cerrarModalError()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>Error</h3>
+      <button class="btn-cerrar" (click)="cerrarModalError()">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-icon">❌</div>
+      <p><strong>Algo salió mal</strong></p>
+      <p>{{mensajeError}}</p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-cancelar" (click)="cerrarModalError()">Cerrar</button>
+      <button class="btn btn-aceptar" (click)="reintentarOperacion()" *ngIf="operacionActual === 'aceptar'">
+        Reintentar
+      </button>
+    </div>
+  </div>
+</div>

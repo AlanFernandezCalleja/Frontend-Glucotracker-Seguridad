@@ -1,0 +1,64 @@
+<div class="perfil-simple" *ngIf="administrador">
+  <!-- Header del Perfil -->
+  <div class="perfil-header">
+    <div class="foto-perfil">
+    </div>
+    <div class="info-basica">
+      <h1 class="nombre">{{ administrador.nombre || 'Administrador' }}</h1>
+      <div class="detalles-header">
+        <span class="dato-header">Administrador</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Grid Principal -->
+  <div class="grid-principal">
+    <!-- Datos Personales -->
+    <div class="seccion datos-personales">
+      <h2 class="titulo-seccion">Datos Personales</h2>
+      <div class="lista-datos">
+        <div class="fila-dato">
+          <span class="etiqueta">ID Administrador:</span>
+          <span class="valor">{{ administrador.id }}</span>
+        </div>
+        <div class="fila-dato">
+          <span class="etiqueta">Fecha de nacimiento:</span>
+          <span class="valor">{{ administrador.fechaNac }}</span>
+        </div>
+        <div class="fila-dato">
+          <span class="etiqueta">Cargo:</span>
+          <span class="valor">{{ administrador.cargo }}</span>
+        </div>
+        <div class="fila-dato">
+          <span class="etiqueta">Correo:</span>
+          <span class="valor">{{ administrador.correo }}</span>
+        </div>
+        <div class="fila-dato">
+          <span class="etiqueta">Teléfono:</span>
+          <span class="valor">{{ administrador.telefono }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Información del Sistema -->
+    <div class="seccion informacion-sistema">
+      <h2 class="titulo-seccion">Información del Sistema</h2>
+      
+      <div class="grid-informacion">
+        <div class="info-item">
+          <div class="info-content">
+            <span class="info-label">Fecha de Ingreso</span>
+            <span class="info-value">{{ administrador.fechain }}</span>
+          </div>
+        </div>
+        
+        <div class="info-item">
+          <div class="info-content">
+            <span class="info-label">Admitido por</span>
+            <span class="info-value">{{ administrador.admitidopor }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

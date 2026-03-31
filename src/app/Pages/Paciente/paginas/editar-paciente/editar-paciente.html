@@ -1,0 +1,352 @@
+<div class="editar-container">
+  <!-- Header -->
+  <div class="editar-header">
+    <h1 class="titulo-editar">Editar Perfil</h1>
+  </div>
+
+  <!-- Mensaje de carga -->
+  <div class="carga-container" *ngIf="loading">
+    <div class="carga-mensaje">
+      <div class="spinner"></div>
+      <p>Cargando datos del paciente...</p>
+    </div>
+  </div>
+
+  <!-- Formulario -->
+  <form [formGroup]="formPaciente" (ngSubmit)="guardarCambios()" *ngIf="!loading">
+    <!-- Información Personal -->
+    <div class="seccion-editar">
+      <h2 class="titulo-seccion">Información Personal</h2>
+      
+      <div class="campos-grid">
+        <div class="campo">
+          <label for="nombre">Nombre completo *</label>
+          <input 
+            type="text" 
+            id="nombre" 
+            formControlName="nombre"
+            placeholder="Ingresa tu nombre completo"
+            [class.error]="f['nombre'].touched && f['nombre'].invalid"
+          />
+          <div class="mensaje-error" *ngIf="f['nombre'].touched && f['nombre'].invalid">
+            <span *ngIf="f['nombre'].hasError('required')">El nombre es requerido</span>
+            <span *ngIf="f['nombre'].hasError('minlength')">Debe tener al menos 3 caracteres</span>
+          </div>
+        </div>
+
+        <div class="campo">
+          <label for="altura">Altura (metros) *</label>
+          <input 
+            type="text" 
+            id="altura" 
+            formControlName="altura"
+            placeholder="Ej: 1,75"
+            [class.error]="f['altura'].touched && f['altura'].invalid"
+          />
+          <div class="mensaje-error" *ngIf="f['altura'].touched && f['altura'].invalid">
+            <span *ngIf="f['altura'].hasError('required')">La altura es requerida</span>
+            <span *ngIf="f['altura'].hasError('pattern')">Formato inválido. Usa coma decimal (ej: 1,75)</span>
+          </div>
+          <p class="ayuda-campo">Usa coma para decimales (ej: 1,75)</p>
+        </div>
+
+        <div class="campo">
+          <label for="peso">Peso (kg) *</label>
+          <input 
+            type="number" 
+            id="peso" 
+            formControlName="peso"
+            placeholder="Ej: 70"
+            min="20"
+            max="200"
+            step="0.1"
+            [class.error]="f['peso'].touched && f['peso'].invalid"
+          />
+          <div class="mensaje-error" *ngIf="f['peso'].touched && f['peso'].invalid">
+            <span *ngIf="f['peso'].hasError('required')">El peso es requerido</span>
+            <span *ngIf="f['peso'].hasError('pattern')">Formato inválido (ej: 70 o 70.5)</span>
+          </div>
+        </div>
+
+        <div class="campo">
+          <label for="telefono">Teléfono *</label>
+          <input 
+            type="tel" 
+            id="telefono" 
+            formControlName="telefono"
+            placeholder="Ej: +1234567890"
+            [class.error]="f['telefono'].touched && f['telefono'].invalid"
+          />
+          <div class="mensaje-error" *ngIf="f['telefono'].touched && f['telefono'].invalid">
+            <span *ngIf="f['telefono'].hasError('required')">El teléfono es requerido</span>
+            <span *ngIf="f['telefono'].hasError('pattern')">Formato de teléfono inválido</span>
+          </div>
+        </div>
+
+        <div class="campo">
+          <label for="correo">Correo electrónico *</label>
+          <input 
+            type="email" 
+            id="correo" 
+            formControlName="correo"
+            placeholder="ejemplo@correo.com"
+            [class.error]="f['correo'].touched && f['correo'].invalid"
+          />
+          <div class="mensaje-error" *ngIf="f['correo'].touched && f['correo'].invalid">
+            <span *ngIf="f['correo'].hasError('required')">El correo es requerido</span>
+            <span *ngIf="f['correo'].hasError('email')">Correo electrónico inválido</span>
+          </div>
+        </div>
+
+        <!-- Campo de embarazo mejorado -->
+        <div class="campo campo-checkbox" *ngIf="pacienteData?.genero === 'Femenino'">
+          <div class="checkbox-container">
+            <label class="checkbox-label">
+              <input 
+                type="checkbox" 
+                formControlName="embarazo"
+                class="checkbox"
+                id="embarazo"
+              />
+              <span class="checkbox-custom"></span>
+              <span class="checkbox-text">¿Está embarazada?</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="campo" *ngIf="pacienteData.embarazo==true">
+          <label for="semanas_embarazo">Semanas de embarazo</label>
+          <input 
+            type="number" 
+            placeholder="{{semanasDeEmbarazo}}" 
+            formControlName="correo"
+            readonly            
+          />
+          <div class="mensaje-error" *ngIf="f['correo'].touched && f['correo'].invalid">
+            <span *ngIf="f['correo'].hasError('required')">El correo es requerido</span>
+            <span *ngIf="f['correo'].hasError('email')">Correo electrónico inválido</span>
+          </div>
+        </div>
+
+        <div class="campo" *ngIf="mostrarFechaTerminacion">
+          <label for="fecha_terminacion">Fecha de Terminación de embarazo</label>
+          <input 
+            type="date" 
+            id="fecha_terminacion"
+            formControlName="fecha_terminacion"
+          />
+        </div>
+
+        <div class="campo" *ngIf="mostrarFechaInicio">
+          <label for="fecha_inico">Ingrese sus semanas de embarazo</label>
+          <input 
+            type="number" 
+            id="semanas_embarazoN"
+            formControlName="semanas_embarazoN"
+          />
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Contacto de Emergencia -->
+    <div class="seccion-editar">
+      <h2 class="titulo-seccion">Contacto de Emergencia</h2>
+      
+      <div class="campos-grid">
+        <div class="campo">
+          <label for="nombre_emergencia">Nombre del contacto *</label>
+          <input 
+            type="text" 
+            id="nombre_emergencia" 
+            formControlName="nombre_emergencia"
+            placeholder="Nombre completo del contacto"
+            [class.error]="f['nombre_emergencia'].touched && f['nombre_emergencia'].invalid"
+          />
+          <div class="mensaje-error" *ngIf="f['nombre_emergencia'].touched && f['nombre_emergencia'].invalid">
+            <span *ngIf="f['nombre_emergencia'].hasError('required')">El nombre del contacto es requerido</span>
+          </div>
+        </div>
+
+        <div class="campo">
+          <label for="numero_emergencia">Teléfono de emergencia *</label>
+          <input 
+            type="tel" 
+            id="numero_emergencia" 
+            formControlName="numero_emergencia"
+            placeholder="Ej: +1234567890"
+            [class.error]="f['numero_emergencia'].touched && f['numero_emergencia'].invalid"
+          />
+          <div class="mensaje-error" *ngIf="f['numero_emergencia'].touched && f['numero_emergencia'].invalid">
+            <span *ngIf="f['numero_emergencia'].hasError('required')">El teléfono es requerido</span>
+            <span *ngIf="f['numero_emergencia'].hasError('pattern')">Formato de teléfono inválido</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Actividad Física -->
+    <!-- <div class="seccion-editar">
+      <h2 class="titulo-seccion">Actividad Física</h2>
+      
+      <div class="campos-grid">
+        <div class="campo">
+          <label for="actividadFisica_nivel">Nivel de actividad *</label>
+          <select 
+            id="actividadFisica_nivel" 
+            formControlName="actividadFisica_nivel"
+            [class.error]="f['actividadFisica_nivel'].touched && f['actividadFisica_nivel'].invalid"
+          >
+            <option value="" disabled>Selecciona un nivel</option>
+            <option value="Baja">Baja</option>
+            <option value="Moderada">Moderada</option>
+            <option value="Alta">Alta</option>
+          </select>
+          <div class="mensaje-error" *ngIf="f['actividadFisica_nivel'].touched && f['actividadFisica_nivel'].invalid">
+            <span *ngIf="f['actividadFisica_nivel'].hasError('required')">Selecciona un nivel de actividad</span>
+          </div>
+        </div>
+
+        <div class="campo campo-full">
+          <label for="actividadFisica_descripcion">Descripción de la actividad *</label>
+          <textarea 
+            id="actividadFisica_descripcion" 
+            formControlName="actividadFisica_descripcion"
+            placeholder="Describe tu rutina de actividad física"
+            rows="3"
+            [class.error]="f['actividadFisica_descripcion'].touched && f['actividadFisica_descripcion'].invalid"
+          ></textarea>
+          <div class="mensaje-error" *ngIf="f['actividadFisica_descripcion'].touched && f['actividadFisica_descripcion'].invalid">
+            <span *ngIf="f['actividadFisica_descripcion'].hasError('required')">La descripción es requerida</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 
+    <div class="seccion-editar">
+      <h2 class="titulo-seccion">Afecciones</h2>
+      
+      <div class="campo">
+        <label>Agregar afecciones</label>
+        <div class="afecciones-input">
+          <input 
+            type="text" 
+            [(ngModel)]="nuevaAfeccion"
+            [ngModelOptions]="{standalone: true}"
+            placeholder="Ej: Diabetes tipo 2"
+            (keyup.enter)="agregarAfeccion()"
+          />
+          <button type="button" class="btn-agregar" (click)="agregarAfeccion()">+</button>
+        </div>
+        <p class="ayuda-campo">Presiona Enter o el botón + para agregar</p>
+      </div>
+
+      <div class="lista-afecciones" *ngIf="afeccionesEditando.length > 0">
+        <div class="afeccion-item" *ngFor="let afeccion of afeccionesEditando; let i = index">
+          <span class="afeccion-texto">{{ afeccion }}</span>
+          <button 
+            type="button" 
+            class="btn-eliminar"
+            (click)="eliminarAfeccion(i)"
+            aria-label="Eliminar afección"
+          >×</button>
+        </div>
+      </div>
+      
+      <div class="sin-afecciones" *ngIf="afeccionesEditando.length === 0">
+        <p>No hay afecciones agregadas</p>
+      </div>
+    </div> -->
+
+    <!-- Información NO editable -->
+    <div class="seccion-editar info-no-editable">
+      <h2 class="titulo-seccion">Información NO editable</h2>
+      
+      <div class="info-grid">
+        <div class="info-item">
+          <span class="info-label">Fecha de nacimiento:</span>
+          <span class="info-valor">{{ pacienteData?.fechaNac }}</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">Género:</span>
+          <span class="info-valor">{{ pacienteData?.genero }}</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">Médico responsable:</span>
+          <span class="info-valor">{{ pacienteData?.nombre_medico}}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Acciones CENTRADAS -->
+    <div class="acciones-editar">
+      <div class="acciones-container">
+        <button 
+          type="button" 
+          class="btn btn-cancelar"
+          (click)="confirmarCancelar()"
+          [disabled]="guardando"
+        >
+          Cancelar
+        </button>
+        
+        <button 
+          type="submit" 
+          class="btn btn-guardar"
+          [disabled]=" guardando"
+        >
+          <span *ngIf="!guardando">Guardar Cambios</span>
+          <span *ngIf="guardando">Guardando...</span>
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+
+<!-- Modal de éxito -->
+<div class="modal-overlay" *ngIf="showSuccessModal()">
+  <div class="modal modal-success">
+    <div class="modal-content">
+      <div class="modal-icon">✓</div>
+      <h3 class="modal-title">¡Cambios guardados!</h3>
+      <p class="modal-message">Redirigiendo al perfil...</p>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de error -->
+<div class="modal-overlay" *ngIf="showErrorModal()">
+  <div class="modal modal-error">
+    <div class="modal-header">
+      <h3 class="modal-title">Error</h3>
+      <button class="modal-close" (click)="closeErrorModal()">×</button>
+    </div>
+    <div class="modal-content">
+      <div class="modal-icon">!</div>
+      <p class="modal-message">{{ errorMessage() }}</p>
+      <div class="modal-actions">
+        <button class="btn-modal" (click)="closeErrorModal()">Aceptar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de confirmación para cancelar -->
+<div class="modal-overlay" *ngIf="showConfirmModal()">
+  <div class="modal modal-confirm">
+    <div class="modal-content">
+      <div class="modal-icon">?</div>
+      <h3 class="modal-title">¿Cancelar cambios?</h3>
+      <p class="modal-message">¿Estás seguro de que quieres cancelar? Los cambios no guardados se perderán.</p>
+      <div class="modal-actions">
+        <button class="btn-modal btn-modal-secondary" (click)="closeConfirmModal()">
+          Continuar editando
+        </button>
+        <button class="btn-modal btn-modal-primary" (click)="cancelar()">
+          Sí, cancelar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

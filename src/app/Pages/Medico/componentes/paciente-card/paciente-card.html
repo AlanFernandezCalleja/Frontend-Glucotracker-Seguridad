@@ -1,0 +1,6 @@
+<article class="card" (click)="ver.emit(paciente)" style="cursor:pointer;">
+  <header class="title">{{ paciente?.nombre }}</header>
+  <p class="meta">CI: {{ paciente?.id }}</p>
+
+  <button class="btn" type="button">Ver Paciente</button>
+</article>

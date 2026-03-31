@@ -1,0 +1,285 @@
+/* Variables simples */
+$color-primario: #0a3d62;
+$color-secundario: #308dad;
+$color-admin: #6f42c1; /* Color púrpura para admin */
+$color-fondo: #f8f9fa;
+$color-borde: #dee2e6;
+$color-texto: #333333;
+$color-texto-secundario: #6c757d;
+
+/* Reset básico */
+.perfil-simple {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px;
+  background: #cee8ef;
+  min-height: 100vh;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  color: $color-texto;
+}
+
+/* Header del Perfil */
+.perfil-header {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  margin-bottom: 40px;
+  padding-bottom: 24px;
+  border-bottom: 2px solid $color-primario;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    text-align: center;
+    gap: 20px;
+  }
+}
+
+.foto-perfil {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 4px solid $color-primario;
+  background: white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .avatar-placeholder {
+    font-size: 4rem;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba($color-primario, 0.1);
+  }
+}
+
+.info-basica {
+  flex: 1;
+
+  .nombre {
+    font-size: 2.2rem;
+    font-weight: 600;
+    color: $color-primario;
+    margin: 0 0 12px 0;
+  }
+
+  .detalles-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+
+    .dato-header {
+      font-size: 1.1rem;
+      color: $color-texto-secundario;
+      font-weight: 500;
+    }
+
+    .separador {
+      color: $color-borde;
+      font-size: 1.5rem;
+    }
+  }
+}
+
+/* Grid Principal */
+.grid-principal {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  margin-bottom: 40px;
+
+  @media (max-width: 1024px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Secciones comunes */
+.seccion {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  border: 1px solid $color-borde;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+
+  .titulo-seccion {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: $color-primario;
+    margin: 0 0 20px 0;
+    padding-bottom: 12px;
+    border-bottom: 2px solid $color-primario;
+  }
+}
+
+/* Datos Personales */
+.datos-personales {
+  .lista-datos {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .fila-dato {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba($color-borde, 0.5);
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    .etiqueta {
+      font-weight: 500;
+      color: $color-texto-secundario;
+      min-width: 180px;
+    }
+
+    .valor {
+      font-weight: 400;
+      color: $color-texto;
+      text-align: right;
+      flex: 1;
+    }
+  }
+}
+
+/* Información del Sistema */
+.informacion-sistema {
+  .grid-informacion {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+  .info-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px;
+    background: rgba($color-primario, 0.05);
+    border-radius: 10px;
+    border-left: 4px solid $color-primario;
+    transition: transform 0.2s ease;
+    
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    
+    .info-icon {
+      font-size: 1.8rem;
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba($color-admin, 0.1);
+      border-radius: 10px;
+    }
+    
+    .info-content {
+      flex: 1;
+      
+      .info-label {
+        display: block;
+        color: $color-texto-secundario;
+        font-size: 0.9rem;
+        margin-bottom: 4px;
+        font-weight: 500;
+      }
+      
+      .info-value {
+        display: block;
+        color: $color-primario;
+        font-size: 1.1rem;
+        font-weight: 600;
+      }
+    }
+  }
+}
+
+/* Animación de entrada */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.perfil-simple {
+  animation: fadeIn 0.6s ease-out;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .perfil-simple {
+    padding: 16px;
+  }
+
+  .foto-perfil {
+    width: 120px;
+    height: 120px;
+    
+    .avatar-placeholder {
+      font-size: 3rem;
+    }
+  }
+
+  .nombre {
+    font-size: 1.8rem;
+  }
+
+  .grid-principal {
+    gap: 16px;
+  }
+
+  .seccion {
+    padding: 20px;
+  }
+
+  .datos-personales {
+    .fila-dato {
+      flex-direction: column;
+      gap: 4px;
+
+      .etiqueta {
+        min-width: auto;
+      }
+
+      .valor {
+        text-align: left;
+      }
+    }
+  }
+  
+  .informacion-sistema {
+    .grid-informacion {
+      grid-template-columns: 1fr;
+    }
+  }
+}
+
+/* Estados de vacío */
+.perfil-simple:empty::before {
+  content: 'Cargando perfil...';
+  display: block;
+  text-align: center;
+  padding: 40px;
+  color: $color-texto-secundario;
+  font-size: 1.1rem;
+}

@@ -1,0 +1,35 @@
+
+  <!-- ad-sidebar.component.html -->
+<div class="sidebar">
+  <div class="top">
+    <div class="avatar">
+      <img src="glucoTracker.png" alt="">
+    </div>
+
+    <button
+        class="btn pill"
+         [routerLink]="['/paciente/perfil']"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }">
+        Mi perfil Paciente
+        </button>
+  </div>
+  <nav class="menu">
+      <a class="item" routerLink="./registrar" routerLinkActive="active">
+        
+        <span>Registrar Glucosa</span>
+      </a>
+
+      <!-- ALERTAS con submenu -->
+      <a class="item" routerLink="./registros" routerLinkActive="active">
+
+        <span>Mis registros</span>
+      </a>
+
+      
+    </nav>
+
+  <button class="logout" type="button" (click)="logout.emit()">
+    Cerrar Sesión
+  </button>
+</div>

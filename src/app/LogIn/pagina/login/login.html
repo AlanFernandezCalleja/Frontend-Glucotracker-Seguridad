@@ -1,0 +1,132 @@
+<section class="login-layout">
+  <!-- Panel izquierdo con botones de registro -->
+  <div class="panel panel--left">
+    <div class="left-content">
+      <h1 class="brand">GlucoTracker</h1>
+      
+      <div class="registration-buttons">
+        <button class="btn-register btn-register--paciente" (click)="irARegistroPaciente()">
+          Registrate como PACIENTE
+        </button>
+        
+        <button class="btn-register btn-register--medico" (click)="irARegistroMedico()">
+          Registrate como MÉDICO
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Panel derecho con formulario de login -->
+  <div class="panel panel--right">
+    <div class="card">
+      <h2 class="login-title">Inicia Sesión</h2>
+
+      <form [formGroup]="form" (ngSubmit)="submit()" aria-label="Formulario de inicio de sesión">
+        <label class="field">
+          <span class="label-text">Usuario</span>
+          <input
+            type="text"
+            formControlName="usuario"
+            placeholder="Ingresa tu usuario"
+            [class.invalid]="f.usuario.touched && f.usuario.invalid"
+            autocomplete="username" />
+          <small *ngIf="f.usuario.touched && f.usuario.hasError('required')">Usuario requerido</small>
+        </label>
+
+        <label class="field">
+          <span class="label-text">Contraseña</span>
+          <input
+            type="password"
+            formControlName="contrasena"
+            placeholder="Ingresa tu contraseña"
+            [class.invalid]="f.contrasena.touched && f.contrasena.invalid"
+            autocomplete="current-password" />
+          <small *ngIf="f.contrasena.touched && f.contrasena.hasError('required')">Contraseña requerida</small>
+        </label>
+
+        <button class="btn-login" type="submit" [disabled]="!canSubmit()">
+          {{ loading() ? 'Ingresando…' : 'Ingresar' }}
+        </button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- Modal para código de verificación -->
+<div class="modal-overlay" *ngIf="showVerificationModal()">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 class="modal-title">Verificación en Dos Pasos</h2>
+      <button class="modal-close" (click)="cancelVerification()">×</button>
+    </div>
+    
+    <div class="modal-body">
+      <p class="modal-description">
+        Se ha enviado un código de verificación a tu correo electrónico. Ingrésalo en AQUÍ.
+        <br>
+      
+      <div class="field">
+        <input
+          type="text"
+          placeholder="- - - - - -"
+          maxlength="6"
+          class="verification-input"
+          #codeInput />
+      </div>
+      
+       <div class="modal-actions"><!--
+        <button 
+          type="button" 
+          class="btn-modal btn-modal--secondary"
+          (click)="cancelVerification()">
+          Cancelar
+        </button> -->
+        
+        <button 
+          type="button" 
+          class="btn-modal btn-modal--primary"
+          (click)="verifyAndLogin(codeInput)"
+          [disabled]="loading()">
+          {{ loading() ? 'Verificando…' : 'Verificar' }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de éxito -->
+<div class="modal-overlay" *ngIf="showSuccessModal()">
+  <div class="modal modal--success">
+    <div class="modal-body">
+      <div class="success-icon">✓</div>
+      <h2 class="modal-title">¡Inicio de Sesión Exitoso!</h2>
+      <p class="modal-description">
+        Serás redirigido a tu panel
+      </p>
+      <div class="modal-actions">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de error -->
+<div class="modal-overlay" *ngIf="showErrorModal()">
+  <div class="modal modal--error">
+    <div class="modal-header">
+      <h2 class="modal-title">Error de Inicio de Sesión</h2>
+      <button class="modal-close" (click)="closeErrorModal()">×</button>
+    </div>
+    
+    <div class="modal-body">
+      <div class="error-icon">!</div>
+      <p class="modal-description">
+        {{ errorMessage() }}
+      </p>
+      <div class="modal-actions">
+        <button class="btn-modal btn-modal--error" (click)="closeErrorModal()">
+          Entendido
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,89 @@
+.detalle-paciente {
+  background: #E7FAFA;
+  min-height: 100dvh;
+  padding: 24px;
+  display: grid;
+  gap: 20px;
+  box-sizing: border-box;
+  animation: fadeIn 0.8s ease-out;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+h1,h3,strong,div{
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header h1 {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.acciones {
+  display: flex;
+  gap: 10px;
+}
+
+.btn {
+  padding: 8px 14px;
+  border-radius: 6px;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.btn.aceptar {
+  background-color: #7CCB63;
+  color: white;
+}
+
+.btn.rechazar {
+  background-color: #E57373;
+  color: white;
+}
+
+.btn:hover {
+  opacity: 0.9;
+}
+
+.seccion {
+  background: white;
+  border: 2px solid #7FD8D8;
+  border-radius: 10px;
+  padding: 16px;
+}
+
+.info {
+  display: grid;
+  gap: 6px;
+  font-size: 15px;
+}
+
+.doble {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.imagen img {
+  width: 100%;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  object-fit: contain;
+}
+
+p {
+  margin: 0;
+}

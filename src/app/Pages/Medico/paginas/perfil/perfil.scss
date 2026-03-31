@@ -1,0 +1,402 @@
+/* Variables simples */
+$color-primario: #0a3d62;
+$color-secundario: #308dad;
+$color-fondo: #f8f9fa;
+$color-borde: #dee2e6;
+$color-texto: #333333;
+$color-texto-secundario: #6c757d;
+$color-medico: #4361ee;
+
+/* Reset básico */
+.perfil-simple {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px;
+  background: #cee8ef;
+  min-height: 100vh;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  color: $color-texto;
+}
+
+/* Header del Perfil */
+.perfil-header {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  margin-bottom: 40px;
+  padding-bottom: 24px;
+  border-bottom: 2px solid $color-borde;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    text-align: center;
+    gap: 20px;
+  }
+}
+
+.foto-perfil {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 4px solid $color-primario;
+  background: white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .avatar-placeholder {
+    font-size: 4rem;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba($color-medico, 0.1);
+  }
+}
+
+.info-basica {
+  flex: 1;
+
+  .nombre {
+    font-size: 2.2rem;
+    font-weight: 600;
+    color: $color-primario;
+    margin: 0 0 12px 0;
+  }
+
+  .detalles-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+
+    .dato-header {
+      font-size: 1.1rem;
+      color: $color-texto-secundario;
+      font-weight: 500;
+    }
+
+    .separador {
+      color: $color-borde;
+      font-size: 1.5rem;
+    }
+  }
+}
+
+/* Grid Principal */
+.grid-principal {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  margin-bottom: 40px;
+
+  @media (max-width: 1024px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Secciones comunes */
+.seccion {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  border: 1px solid $color-borde;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+
+  .titulo-seccion {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: $color-primario;
+    margin: 0 0 20px 0;
+    padding-bottom: 12px;
+    border-bottom: 2px solid $color-secundario;
+  }
+}
+
+/* Datos Personales */
+.datos-personales {
+  .lista-datos {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .fila-dato {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba($color-borde, 0.5);
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    .etiqueta {
+      font-weight: 500;
+      color: $color-texto-secundario;
+      min-width: 180px;
+    }
+
+    .valor {
+      font-weight: 400;
+      color: $color-texto;
+      text-align: right;
+      flex: 1;
+    }
+  }
+}
+
+/* Admitido por */
+.admitido-por {
+  .info-admitido {
+    .admin-item {
+      padding: 12px;
+      background: rgba($color-medico, 0.05);
+      border-radius: 8px;
+      border-left: 4px solid $color-primario;
+
+      strong {
+        color: $color-primario;
+        margin-right: 8px;
+      }
+    }
+  }
+}
+
+/* Matrícula y Carnet Profesional */
+.matricula-profesional,
+.carnet-profesional {
+  .matricula-preview,
+  .carnet-preview {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    
+    .btn-ver {
+      padding: 10px 20px;
+      background: $color-secundario;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+      align-self: flex-start;
+      
+      &:hover {
+        background: darken($color-secundario, 10%);
+      }
+    }
+  }
+  
+  .carnet-img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid $color-borde;
+    max-height: 200px;
+    object-fit: contain;
+  }
+  
+  .sin-documento {
+    text-align: center;
+    padding: 30px 20px;
+    color: $color-texto-secundario;
+    background: rgba($color-borde, 0.3);
+    border-radius: 8px;
+    border: 2px dashed $color-borde;
+    font-style: italic;
+  }
+}
+
+/* Botón de acción */
+.acciones {
+  text-align: center;
+  padding: 20px 0;
+
+  .btn-editar {
+    padding: 14px 32px;
+    background: $color-primario;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+      background: $color-secundario;
+    }
+  }
+}
+
+/* Modales */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+  animation: fadeIn 0.3s ease;
+}
+
+.modal {
+  background: white;
+  border-radius: 16px;
+  max-width: 90%;
+  max-height: 90vh;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+  animation: slideUp 0.3s ease;
+  overflow: hidden;
+  margin-left: 18%;
+  
+  &-imagen {
+    max-width: 800px;
+  }
+  
+  &-documento {
+    max-width: 1000px;
+    width: 100%;
+  }
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  background: linear-gradient(90deg, $color-primario, $color-secundario);
+  color: white;
+  
+  .modal-title {
+    font-size: 1.4rem;
+    margin: 0;
+    font-weight: 600;
+  }
+  
+  .modal-close {
+    background: none;
+    border: none;
+    font-size: 2rem;
+    color: white;
+    cursor: pointer;
+    padding: 0;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background-color 0.2s ease;
+    
+    &:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+  }
+}
+
+.modal-content {
+  padding: 24px;
+  max-height: calc(90vh - 80px);
+  overflow: auto;
+  
+  .imagen-ampliada {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    display: block;
+    margin: 0 auto;
+  }
+  
+  iframe {
+    border-radius: 8px;
+  }
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .perfil-simple {
+    padding: 16px;
+  }
+
+  .foto-perfil {
+    width: 120px;
+    height: 120px;
+    
+    .avatar-placeholder {
+      font-size: 3rem;
+    }
+  }
+
+  .nombre {
+    font-size: 1.8rem;
+  }
+
+  .grid-principal {
+    gap: 16px;
+  }
+
+  .seccion {
+    padding: 20px;
+  }
+
+  .datos-personales {
+    .fila-dato {
+      flex-direction: column;
+      gap: 4px;
+
+      .etiqueta {
+        min-width: auto;
+      }
+
+      .valor {
+        text-align: left;
+      }
+    }
+  }
+  
+  .matricula-profesional,
+  .carnet-profesional {
+    .btn-ver {
+      width: 100%;
+    }
+  }
+}
+
+/* Estados de vacío */
+.perfil-simple:empty::before {
+  content: 'Cargando perfil médico...';
+  display: block;
+  text-align: center;
+  padding: 40px;
+  color: $color-texto-secundario;
+}

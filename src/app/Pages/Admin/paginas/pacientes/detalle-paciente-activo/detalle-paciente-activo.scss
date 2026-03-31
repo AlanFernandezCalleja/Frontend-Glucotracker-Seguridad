@@ -1,0 +1,204 @@
+/* Paleta */
+$bg: #eaf6f7;
+$ink: #172b3a;
+$muted: #5d6b7a;
+$border: #9dd7db;
+$primary: #0a80fb;
+$chip-bg: #e6f7ff;
+
+
+
+.detalle-paciente {
+  background: #e7fafa;
+  min-height: 100vh;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  font-family: 'Segoe UI', sans-serif;
+  color: #222;
+  animation: fadeIn 0.8s ease-out;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+h1 {
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+h2 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  grid-template-areas:
+    "datos actividad"
+    "datos afecciones";
+  gap: 16px;
+
+  .datos {
+    grid-area: datos;
+  }
+
+  .actividad {
+    grid-area: actividad;
+  }
+
+  .afecciones {
+    grid-area: afecciones;
+  }
+}
+
+.datos,
+.actividad,
+.afecciones {
+  background: #fff;
+  border: 1.5px solid #a2d8d8;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.grid-datos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px 12px;
+
+  p {
+    margin: 4px 0;
+    font-size: 0.95rem;
+  }
+}
+
+.afecciones .chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.chip {
+  background: #dff6f0;
+  border: 1px solid #7bbfab;
+  border-radius: 20px;
+  padding: 6px 14px;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.tratamientos {
+  background: #fff;
+  border: 1.5px solid #a2d8d8;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+
+  h2 {
+    margin-bottom: 12px;
+  }
+}
+
+.tratamiento {
+  border: 1.2px solid #a2d8d8;
+  border-radius: 10px;
+  padding: 12px 16px;
+  margin-bottom: 12px;
+
+  .cabecera h3 {
+    color: #1b5e20;
+    margin-bottom: 6px;
+  }
+
+  .contenido p {
+    margin: 2px 0;
+  }
+}
+
+.admin {
+  text-align: center;
+  background: #fff;
+  border: 1.5px solid #a2d8d8;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+
+  h3 {
+    margin-top: 6px;
+    font-weight: 500;
+  }
+}
+
+@media (max-width: 768px) {
+  .info-grid {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "datos"
+      "actividad"
+      "afecciones";
+  }
+
+  .grid-datos {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+
+.perfil-header {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  margin-bottom: 24px;
+  animation: slideIn 0.6s ease-out;
+
+  @media (max-width: 700px) {
+    flex-direction: column;
+    text-align: center;
+    gap: 14px;
+  }
+}
+
+/* FOTO MÁS GRANDE Y RESPONSIVE */
+.foto-wrapper {
+  width: 150px;
+  height: 150px;
+  min-width: 150px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 4px solid $primary;
+  box-shadow: 0 5px 14px rgba(0, 0, 0, 0.15);
+  background: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all .25s ease;
+
+  @media (max-width: 700px) {
+    width: 130px;
+    height: 130px;
+    min-width: 130px;
+  }
+
+  @media (max-width: 450px) {
+    width: 115px;
+    height: 115px;
+    min-width: 115px;
+  }
+}
+
+.foto-perfil {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}

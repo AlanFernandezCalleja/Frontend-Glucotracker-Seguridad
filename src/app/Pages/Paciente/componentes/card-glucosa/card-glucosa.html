@@ -1,0 +1,12 @@
+<div class="card-glucosa" [ngClass]="{ 'alerta': registro.idalerta }">
+  <div class="card-header">   
+    <span class="fecha">Fecha: {{ formatearFecha(registro.fecha) }}</span>
+  </div>
+  <div class="card-content">
+    <div class="glucosa-info">
+      <div class="nivel-glucosa">{{ registro.nivelGlucosa }} mg/dL</div>
+      <div class="momento-dia">{{ getMomentoDiaTexto(registro.momentoDia) }}</div>
+    </div>
+    <button class="btn-detalle" (click)="onVerDetalle()">Detalle</button>
+  </div>
+</div>

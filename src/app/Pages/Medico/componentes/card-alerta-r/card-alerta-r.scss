@@ -1,0 +1,31 @@
+.alerta{
+  width: 260px;
+  background: #fff;
+  border: 3px solid #2d7fb0;
+  border-radius: 16px;
+  padding: 14px;
+  display: grid;
+  gap: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,.05);
+
+  .head{
+    display:flex; justify-content:space-between; align-items:center;
+    h4{ margin:0; font-size:1.3rem; }
+    .icon{ font-size:1.2rem; }
+  }
+
+  .pac{ font-weight:700; margin-top:2px; }
+  .meta{ color:#233; font-size:.95rem; display:grid; gap:2px; }
+
+  .btn{
+    justify-self:start;
+    padding:8px 14px; border-radius:999px; border:0; cursor:pointer; font-weight:800;
+  }
+  .btn-verde{ background:#9CFFD9; border:2px solid #6BEFC2; color:#0f2b2b; }
+}
+
+/* Sutilezas por nivel */
+.alerta.critico{ box-shadow: 0 0 0 3px rgba(255,107,107,.15) inset; }
+.alerta.alta   { box-shadow: 0 0 0 3px rgba(255,183,77,.15) inset; }
+.alerta.media  { box-shadow: 0 0 0 3px rgba(255,213,79,.15) inset; }
+.alerta.baja   { box-shadow: 0 0 0 3px rgba(156,255,217,.15) inset; }
