@@ -1,6 +1,16 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body{
+  margin-top: 0;
+}
+
 .login-layout {
   display: flex;
-  height: 100vh;
+  min-height: 100dvh;
+  width: 100%;
   background: #e1f2f2;
 
   @media (max-width: 768px) {
