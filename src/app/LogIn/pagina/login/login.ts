@@ -23,6 +23,15 @@ export class Login implements OnInit {
   showSuccessModal = signal(false);
   showErrorModal = signal(false);
   errorMessage = signal('');
+  showPassword = signal(false);
+
+  togglePassword() {
+    this.showPassword.set(!this.showPassword());
+  }
+
+  forgotPassword() {
+  console.log('Redirigir a recuperación de contraseña (pendiente)');
+  }
 
   // Variable para guardar las credenciales temporalmente
   private loginCredentials: { id_usuario?:number, correo: string, contrasena: string } | null = null;

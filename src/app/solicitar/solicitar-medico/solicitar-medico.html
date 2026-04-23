@@ -35,9 +35,36 @@
         </div>
          <div class="input-box full-width">
           <label>Contraseña</label>
-            <input type="password" formControlName="contrasena" placeholder="Ingrese contraseña" />
+          <input type="password" formControlName="contrasena" placeholder="Ingrese contraseña" />
+
+          <small *ngIf="medicoForm.get('contrasena')?.touched && medicoForm.get('contrasena')?.errors">
+            
+            <span *ngIf="medicoForm.get('contrasena')?.errors?.['required']">
+              La contraseña es obligatoria
+            </span>
+
+            <span *ngIf="medicoForm.get('contrasena')?.errors?.['pattern']">
+              Debe tener al menos 12 caracteres, incluir mayúsculas, minúsculas, números y símbolos
+            </span>
+
+          </small>
         </div>
-        
+        <div class="input-box full-width">
+          <label>Confirmar Contraseña</label>
+          <input type="password" formControlName="confirmarContrasena" placeholder="Repite la contraseña" />
+
+          <small *ngIf="medicoForm.get('confirmarContrasena')?.touched && medicoForm.get('confirmarContrasena')?.errors">
+
+            <span *ngIf="medicoForm.get('confirmarContrasena')?.errors?.['required']">
+              Debes confirmar la contraseña
+            </span>
+
+            <span *ngIf="medicoForm.get('confirmarContrasena')?.errors?.['mismatch']">
+              Las contraseñas no coinciden
+            </span>
+
+          </small>
+        </div>
       </div>
 
       <!-- Sección: Datos Profesionales -->
