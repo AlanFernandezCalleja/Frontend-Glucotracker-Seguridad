@@ -1,4 +1,4 @@
-<section class="wrap">
+<!-- <section class="wrap">
   <h1>Administradores activos</h1>
 
  <input 
@@ -16,6 +16,74 @@
     </app-card-admin-a>
   </div>
 
+</section> -->
+
+<!-- 
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+
+
+<section class="wrap">
+  <h1>Administradores activos</h1>
+
+  <input 
+    class="search" 
+    type="search" 
+    placeholder="Buscar administrador" 
+    [value]="q()" 
+    (input)="q.set($any($event.target).value)" />
+
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>CI</th>
+          <th>Nombre</th>
+          <th>Cargo</th>
+          <th>Fecha (ingreso)</th>
+          <th>Permisos</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (m of adminsFiltrados(); track m.id) {
+          <tr>
+            <td>{{ m.id }}</td>
+            <td>{{ m.nombre }}</td>
+            <td class="capitalize">{{ m.cargo }}</td>
+            <td>{{ m.fechain | date:'dd/MM/yyyy' }}</td>
+            
+            <td>
+              <div class="checkbox-group" *ngIf="m.permisos">
+                <label>
+                  <input type="checkbox" [(ngModel)]="m.permisos.editar" (change)="actualizarPermisos(m)"> Editar
+                </label>
+                <label>
+                  <input type="checkbox" [(ngModel)]="m.permisos.eliminar" (change)="actualizarPermisos(m)"> Eliminar
+                </label>
+                <label>
+                  <input type="checkbox" [(ngModel)]="m.permisos.ver" (change)="actualizarPermisos(m)"> Ver
+                </label>
+                <label>
+                  <input type="checkbox" [(ngModel)]="m.permisos.agregar" (change)="actualizarPermisos(m)"> Agregar
+                </label>
+              </div>
+            </td>
+            
+            <td>
+              <button class="btn" type="button" (click)="verAdmin(m)">Ver Detalle</button>
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="6" style="text-align: center; padding: 20px;">
+              No se encontraron administradores con ese criterio.
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
 </section>
-
-
