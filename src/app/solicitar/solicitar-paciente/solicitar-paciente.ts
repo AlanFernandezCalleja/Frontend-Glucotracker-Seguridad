@@ -42,7 +42,16 @@ export class SolicitarPaciente implements OnInit{
       tratamiento_id: ['', [Validators.required, Validators.min(1)]],
       dosis_: [''],
       correo: ['', [Validators.required, Validators.email]],
-      contrasena: ['', [Validators.required, Validators.minLength(6)]]
+      contrasena: [
+        '',
+        [
+          Validators.required,
+          Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{12,}$/)
+        ]
+      ],
+      confirmarContrasena: ['', Validators.required]
+      }, {
+      validators: this.passwordsMatchValidator
     });
   }
   descripcionTratamiento: string = '';
@@ -250,6 +259,17 @@ onTratamientoChange(event: any) {
       },
       error: (err) => console.error('Error al obtener tratamientos:', err)
     });
+  }
+
+  passwordsMatchValidator(form: FormGroup) {
+    const password = form.get('contrasena')?.value;
+    const confirm = form.get('confirmarContrasena')?.value;
+
+    if (password !== confirm) {
+      form.get('confirmarContrasena')?.setErrors({ mismatch: true });
+    } else {
+      form.get('confirmarContrasena')?.setErrors(null);
+    }
   }
 
   cerrarModal(){

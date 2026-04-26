@@ -187,9 +187,37 @@
             <label>Correo</label>
             <input type="email" formControlName="correo" placeholder="Ingrese correo electrónico" />
           </div>
-          <div class="input-box">
+          <div class="input-box full-width">
             <label>Contraseña</label>
             <input type="password" formControlName="contrasena" placeholder="Ingrese contraseña" />
+
+            <small *ngIf="pacienteForm.get('contrasena')?.touched && pacienteForm.get('contrasena')?.errors">
+              
+              <span *ngIf="pacienteForm.get('contrasena')?.errors?.['required']">
+                La contraseña es obligatoria
+              </span>
+
+              <span *ngIf="pacienteForm.get('contrasena')?.errors?.['pattern']">
+                Debe tener al menos 12 caracteres, incluir mayúsculas, minúsculas, números y símbolos
+              </span>
+
+            </small>
+          </div>
+          <div class="input-box full-width">
+            <label>Confirmar Contraseña</label>
+            <input type="password" formControlName="confirmarContrasena" placeholder="Repite la contraseña" />
+
+            <small *ngIf="pacienteForm.get('confirmarContrasena')?.touched && pacienteForm.get('confirmarContrasena')?.errors">
+
+              <span *ngIf="pacienteForm.get('confirmarContrasena')?.errors?.['required']">
+                Debes confirmar la contraseña
+              </span>
+
+              <span *ngIf="pacienteForm.get('confirmarContrasena')?.errors?.['mismatch']">
+                Las contraseñas no coinciden
+              </span>
+
+            </small>
           </div>
         </div>
       </div>

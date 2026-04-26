@@ -34,18 +34,50 @@
         </label>
 
         <label class="field">
-          <span class="label-text">Contraseña</span>
+        <span class="label-text">Contraseña</span>
+
+        <div class="password-wrapper">
           <input
-            type="password"
+            [type]="showPassword() ? 'text' : 'password'"
             formControlName="contrasena"
             placeholder="Ingresa tu contraseña"
             [class.invalid]="f.contrasena.touched && f.contrasena.invalid"
             autocomplete="current-password" />
-          <small *ngIf="f.contrasena.touched && f.contrasena.hasError('required')">Contraseña requerida</small>
-        </label>
+
+          <button
+            type="button"
+            class="toggle-password"
+            (click)="togglePassword()"
+            tabindex="-1"
+            aria-label="Mostrar u ocultar contraseña">
+
+            <svg *ngIf="!showPassword()" xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 24 24" fill="none">
+              <path d="M12 5C7 5 3 9 3 12s4 7 9 7 9-4 9-7-4-7-9-7Z" stroke="currentColor" stroke-width="2"/>
+              <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/>
+            </svg>
+
+            <svg *ngIf="showPassword()" xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 24 24" fill="none">
+              <path d="M3 3l18 18" stroke="currentColor" stroke-width="2"/>
+              <path d="M10.5 10.5A3 3 0 0 0 13.5 13.5" stroke="currentColor" stroke-width="2"/>
+            </svg>
+
+          </button>
+        </div>
+
+        <small *ngIf="f.contrasena.touched && f.contrasena.hasError('required')">
+          Contraseña requerida
+        </small>
+      </label>
 
         <button class="btn-login" type="submit" [disabled]="!canSubmit()">
           {{ loading() ? 'Ingresando…' : 'Ingresar' }}
+        </button>
+
+        <button
+          type="button"
+          class="forgot-password"
+          (click)="forgotPassword()">
+          ¿Olvidaste tu contraseña?
         </button>
       </form>
     </div>

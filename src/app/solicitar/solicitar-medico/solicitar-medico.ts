@@ -21,14 +21,26 @@ export class SolicitarMedicoComponent implements OnInit {
     private router: Router
   ) {
     this.medicoForm = this.fb.group({
-      nombre_completo: ['', Validators.required],
-      fecha_nac: ['', Validators.required],
-      telefono: ['', [Validators.required, Validators.pattern(/^[0-9]{8}$/)]],
-      departamento: ['', Validators.required],
-      id_especialidad: ['', Validators.required],
-      contrasena: ['', [Validators.required, Validators.minLength(6)]],
-      correo: ['', [Validators.required, Validators.email]],
-    });
+    nombre_completo: ['', Validators.required],
+    fecha_nac: ['', Validators.required],
+    telefono: ['', [Validators.required, Validators.pattern(/^[0-9]{8}$/)]],
+    departamento: ['', Validators.required],
+    id_especialidad: ['', Validators.required],
+
+    contrasena: [
+      '',
+      [
+        Validators.required,
+        Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{12,}$/)
+      ]
+    ],
+
+    confirmarContrasena: ['', Validators.required],
+
+    correo: ['', [Validators.required, Validators.email]],
+  }, {
+    validators: this.passwordsMatchValidator
+  });
   }
 
   ngOnInit(): void {
@@ -117,6 +129,16 @@ onFileSelected(event: any, tipo: string) {
       },
       error: (err) => console.error('Error al obtener especialidades:', err)
     });
+  }
+  passwordsMatchValidator(form: FormGroup) {
+    const password = form.get('contrasena')?.value;
+    const confirm = form.get('confirmarContrasena')?.value;
+
+    if (password !== confirm) {
+      form.get('confirmarContrasena')?.setErrors({ mismatch: true });
+    } else {
+      form.get('confirmarContrasena')?.setErrors(null);
+    }
   }
 
   // Volver al login
