@@ -117,13 +117,16 @@ export class Login implements OnInit {
   this.http.post<any>(environment.apiUrl + '/verify-otp', {
     id_usuario: this.loginCredentials.id_usuario,
     codigo
-  }).subscribe({
+  }, {withCredentials:true}).subscribe({
     next: (res) => {
   console.log('Login completado con OTP:', res);
 
   localStorage.setItem('id_usuario', res.usuario.id_usuario);
   localStorage.setItem('id_rol', res.usuario.id_rol);
   localStorage.setItem('rol', res.usuario.rol);
+  if(res.usuario.rol=="administrador"){
+    localStorage.setItem('cargo', res.usuario.cargo);
+  }
   localStorage.setItem('permisos', JSON.stringify(res.usuario.permisos)); // 🔥
 
   this.showVerificationModal.set(false);
