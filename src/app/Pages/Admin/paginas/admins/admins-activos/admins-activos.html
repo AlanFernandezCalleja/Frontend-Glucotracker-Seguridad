@@ -34,7 +34,11 @@
     placeholder="Buscar administrador" 
     [value]="q()" 
     (input)="q.set($any($event.target).value)" />
-
+  <div style="margin-bottom: 15px;">
+<button class="btn" [disabled]="!hayCambios" (click)="actualizarPermisos()">
+  Guardar cambios
+</button>
+</div>
   <div class="table-container">
     <table>
       <thead>
@@ -58,16 +62,16 @@
             <td>
               <div class="checkbox-group" *ngIf="m.permisos">
                 <label>
-                  <input type="checkbox" [(ngModel)]="m.permisos.editar" (change)="actualizarPermisos(m)"> Editar
+                  <input type="checkbox" [(ngModel)]="m.permisos.editar"(change)="verificarCambios()" > Editar
                 </label>
                 <label>
-                  <input type="checkbox" [(ngModel)]="m.permisos.eliminar" (change)="actualizarPermisos(m)"> Eliminar
+                  <input type="checkbox" [(ngModel)]="m.permisos.eliminar" (change)="verificarCambios()"> Eliminar
                 </label>
                 <label>
-                  <input type="checkbox" [(ngModel)]="m.permisos.ver" (change)="actualizarPermisos(m)"> Ver
+                  <input type="checkbox" [(ngModel)]="m.permisos.ver" (change)="verificarCambios()"> Ver
                 </label>
                 <label>
-                  <input type="checkbox" [(ngModel)]="m.permisos.agregar" (change)="actualizarPermisos(m)"> Agregar
+                  <input type="checkbox" [(ngModel)]="m.permisos.agregar"(change)="verificarCambios()"> Agregar
                 </label>
               </div>
             </td>

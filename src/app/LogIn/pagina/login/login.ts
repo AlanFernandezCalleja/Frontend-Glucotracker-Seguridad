@@ -63,34 +63,41 @@ export class Login implements OnInit {
   };
 
   // Llamada al endpoint que envía OTP
-  this.http.post<any>(environment.apiUrl + '/login', credentials)
-    .subscribe({
-      next: (res) => {
-        console.log('OTP enviado:', res);
+ this.http.post<any>(
+  environment.apiUrl + '/login',
+  credentials,
+  { withCredentials: true }
+)
+.subscribe({
+  next: (res) => {
+    console.log('Respuesta login:', res);
+  this.loginCredentials = {
+      correo: credentials.correo,
+      contrasena: credentials.contrasena,
+      id_usuario: res.id_usuario // ✅ CORRECTO
+    };
 
-        // Guardamos id_usuario para el siguiente paso
-        this.loginCredentials = { correo: credentials.correo, contrasena: credentials.contrasena };
-        this.loginCredentials.id_usuario = res.id_usuario;
+    // 👉 SOLO mostrar modal OTP
+    this.showVerificationModal.set(true);
+    this.loading.set(false);
 
-        // Abrir modal de verificación
-        this.showVerificationModal.set(true);
+  },
+  error: (err) => {
+    console.error('Error de login:', err);
 
-        this.loading.set(false);
-      },
-      error: (err) => {
-        console.error('Error de login:', err);
-
-        this.showErrorModal.set(true);
-        this.errorMessage.set(err.error?.error || 'Error al iniciar sesión');
-        this.loading.set(false);
-      }
-    });
+    this.showErrorModal.set(true);
+    this.errorMessage.set(err.error?.error || 'Error al iniciar sesión');
+    this.loading.set(false);
+  }
+});
 }
 
 
   // Método para verificar el código y hacer el login real
   verifyAndLogin(codeInput: HTMLInputElement) {
+    
   const codigo = codeInput.value.trim();
+
 
   if (!this.loginCredentials || !this.loginCredentials.id_usuario) {
     console.error('No hay credenciales guardadas');
@@ -112,31 +119,28 @@ export class Login implements OnInit {
     codigo
   }).subscribe({
     next: (res) => {
-      console.log('Login completado con OTP:', res);
+  console.log('Login completado con OTP:', res);
 
-      // Guardar datos en localStorage
-      localStorage.setItem('id_usuario', res.id_usuario);
-      localStorage.setItem('id_rol', res.id_rol);
-      localStorage.setItem('rol', res.rol);
+  localStorage.setItem('id_usuario', res.usuario.id_usuario);
+  localStorage.setItem('id_rol', res.usuario.id_rol);
+  localStorage.setItem('rol', res.usuario.rol);
+  localStorage.setItem('permisos', JSON.stringify(res.usuario.permisos)); // 🔥
 
-      // Mostrar modal de éxito
-      this.showVerificationModal.set(false);
-      this.showSuccessModal.set(true);
+  this.showVerificationModal.set(false);
+  this.showSuccessModal.set(true);
 
-      setTimeout(() => {
-        this.showSuccessModal.set(false);
-        // Redirigir según rol
-        if (res.rol === 'administrador') {
-          this.router.navigate(['/administrador']);
-        } else if (res.rol === 'medico') {
-          this.router.navigate(['/medico']);
-        } else {
-          this.router.navigate(['/paciente']);
-        }
-      }, 2000);
+  setTimeout(() => {
+    if (res.usuario.rol === 'administrador') {
+      this.router.navigate(['/administrador']);
+    } else if (res.usuario.rol === 'medico') {
+      this.router.navigate(['/medico']);
+    } else {
+      this.router.navigate(['/paciente']);
+    }
+  }, 2000);
 
-      this.loading.set(false);
-    },
+  this.loading.set(false);
+},
     error: (err) => {
       console.error('Error de verificación OTP:', err);
       this.showErrorModal.set(true);

@@ -45,7 +45,7 @@
     </div>
 
     <!-- Administradores (ID corregido) -->
-    <button type="button" class="item item-btn"
+    <button type="button" class="item item-btn" *ngIf="cargo!='soporte'"
             (click)="toggleAdmin()"
             [attr.aria-expanded]="openAdmin()"
             aria-controls="submenu-admin">
@@ -53,13 +53,13 @@
       <span class="grow">Administradores</span>
       <span class="chev" [class.open]="openAdmin()">▾</span>
     </button>
-    <div id="submenu-admin" class="submenu" *ngIf="openAdmin()">
+    <div id="submenu-admin" class="submenu" *ngIf="openAdmin() && cargo!='soporte'">
       <a class="subitem" routerLink="./administradores/activos" routerLinkActive="active">Activos</a>
       <a class="subitem" routerLink="./administrador/agregar" routerLinkActive="active">Agregar</a>
     </div>
 
     <!-- Para la AUDITORIA -->
-    <div id="submenu-admin" class="submenu">
+    <div id="submenu-admin" class="submenu" *ngIf="cargo!='soporte'">
       <a class="subitem" routerLink="./administradores/auditoria" routerLinkActive="active">Auditoría</a>
     </div>
   </nav>

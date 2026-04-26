@@ -44,7 +44,9 @@ export class MedicosActivos implements OnInit {
     const medicosUrl = `${environment.apiUrl}/administradores/medicos/activos`;
      // <-- corregido typo
     this.loading = true;
-    this.http.get<PerfilModelo[]>(medicosUrl).subscribe({
+    this.http.get<PerfilModelo[]>(medicosUrl,{
+    withCredentials: true
+  }).subscribe({
       next: (data) => {
         this.medicos.set(Array.isArray(data) ? data : []);
         console.log('Médicos cargados:', this.medicos());

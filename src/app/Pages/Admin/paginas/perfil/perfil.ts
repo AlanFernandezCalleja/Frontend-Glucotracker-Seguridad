@@ -19,7 +19,7 @@ export class Perfil implements OnInit{
       // fallback básico si entraron directo (sin state)
     }
     cargarPerfil(){
-      this.http.get<any>(`${environment.apiUrl}/administradores/perfilAdmin/${this.idUsuario}`)
+      this.http.get<any>(`${environment.apiUrl}/administradores/perfilAdmin/${this.idUsuario}`,{withCredentials:true})
   .subscribe({
     next: (data) => {
       this.administrador = {

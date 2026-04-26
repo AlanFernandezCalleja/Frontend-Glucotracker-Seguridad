@@ -120,23 +120,30 @@ export class AdminsActivos implements OnInit {
   verAdmin(m: PerfilAdmin) {
     this.router.navigate(['administrador/administradores/activos/detalle'], { state: { admin: m } });
   }
+  adminsOriginales:any[]=[];
+  hayCambios=false;
 
   cargarAdmins() {
-    const url = `${environment.apiUrl}/administradores/obtenerAdmins/${localStorage.getItem('id_rol')}`;
-    this.http.get<PerfilAdmin[]>(url).subscribe({
+    const url = `${environment.apiUrl}/administradores/obtenerAdmins/${localStorage.getItem('id_usuario')}`;
+    this.http.get<PerfilAdmin[]>(url,
+      {withCredentials:true}
+    ).subscribe({
       next: (response) => {
         // Mapeamos la respuesta para inicializar los checkboxes
         const adminsConPermisos = response.map(admin => ({
           ...admin,
-          permisos: {
+          permisos: admin.permisos || {
             editar: false,
             eliminar: false,
             ver: false,
             agregar: false
           }
         }));
-        
-        this.administradores.set(adminsConPermisos);
+
+      this.administradores.set(adminsConPermisos);
+      this.adminsOriginales = JSON.parse(JSON.stringify(response));
+
+      this.hayCambios = false;
       },
       error: (err) => {
         console.log('error ', err);
@@ -145,8 +152,24 @@ export class AdminsActivos implements OnInit {
   }
 
   // Método opcional para detectar cambios en los checkboxes
-  actualizarPermisos(admin: PerfilAdmin) {
-    console.log(`Permisos cambiados para ${admin.nombre}:`, admin.permisos);
-    // Aquí podrías enviar los cambios a tu backend
-  }
+  actualizarPermisos() {
+  const data = this.administradores();
+
+  this.http.post(`${environment.apiUrl}/administradores/actualizar-permisos`, data, {
+    withCredentials: true
+  }).subscribe({
+    next: () => console.log('Permisos actualizados'),
+    error: (err) => console.error(err)
+  });
+}
+verificarCambios() {
+  const actuales = this.administradores();
+
+  this.hayCambios = actuales.some((admin, index) => {
+    const original = this.adminsOriginales[index];
+
+    return JSON.stringify(admin.permisos) !== JSON.stringify(original.permisos);
+  });
+}
 } 
+
