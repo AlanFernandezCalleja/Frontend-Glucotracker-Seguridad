@@ -63,14 +63,16 @@ export class Login implements OnInit {
   };
 
   // Llamada al endpoint que envía OTP
-  this.http.post<any>(environment.apiUrl + '/login', credentials)
+  this.http.post<any>(environment.apiUrl + '/login', credentials , {
+  withCredentials: true // <--- ¡AÑADE ESTO!
+})
     .subscribe({
       next: (res) => {
         console.log('OTP enviado:', res);
 
         // Guardamos id_usuario para el siguiente paso
         this.loginCredentials = { correo: credentials.correo, contrasena: credentials.contrasena };
-        this.loginCredentials.id_usuario = res.id_usuario;
+        this.loginCredentials.id_usuario = res.usuario.id_usuario;
 
         // Abrir modal de verificación
         this.showVerificationModal.set(true);
