@@ -12,7 +12,5 @@ export class AdminDetalle {
   ngOnInit(){
     this.administrador = history.state.admin as PerfilAdmin;
       console.log('Paciente completo:', this.administrador);
-  }
-
-  
+  } 
 }
