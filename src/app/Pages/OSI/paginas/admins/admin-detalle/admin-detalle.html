@@ -1,0 +1,52 @@
+<section class="page">
+    <h1 class="page__title">{{ administrador.nombre || 'Admin' }}</h1>
+
+    <!-- Card: Datos personales -->
+    <article class="card card--lg">
+        <h2 class="card__title">Datos Personales</h2>
+
+        <div class="grid grid--2">
+            <div class="field">
+                <span class="label"><strong>ID: </strong></span>
+                <span class="value">{{ administrador.id }}</span>
+            </div>
+
+            <div class="field">
+                <span class="label"><strong>Fecha de nacimiento: </strong></span>
+                <span class="value">{{ administrador.fechaNac }}</span>
+            </div>
+
+            <div class="field">
+                <span class="label"><strong>Género: </strong></span>
+                <span class="value">{{ administrador.cargo }}</span>
+            </div>
+
+            <div class="field">
+                <span class="label"><strong>Correo: </strong></span>
+                <span class="value">{{ administrador.correo }}</span>
+            </div>
+
+            <div class="field">
+                <span class="label"><strong>Teléfono:</strong> </span>
+                <span class="value">{{ administrador.telefono }}</span>
+            </div>
+        </div>
+    </article>
+    <br>
+    <!-- Cards pequeñas -->
+    <div class="grid grid--2 mt-24">
+        <article class="card">
+            <h3 class="card__subtitle">Fecha de Ingreso</h3>
+            <p class="card__big">
+                {{ administrador.fechaIn}}
+            </p>
+        </article>
+
+        <article class="card">
+            <h3 class="card__subtitle">Admitido por</h3>
+            <p class="card__big">
+                {{ administrador.admitidoPor }}
+            </p>
+        </article>
+    </div>
+</section>

@@ -79,7 +79,7 @@ export class EditarMedico implements OnInit {
     this.loading = true;
     const url = `${environment.apiUrl}/medicos/perfil/${this.medicoId}`;
     
-    this.http.get<MedicoData>(url).subscribe({
+    this.http.get<MedicoData>(url,{withCredentials:true}).subscribe({
       next: (data) => {
         console.log(data)
         this.medicoData = data;
@@ -177,7 +177,7 @@ export class EditarMedico implements OnInit {
 }
     const url = `${environment.apiUrl}/medicos/actualizar/${localStorage.getItem("id_rol")}`;
 
-    this.http.put(url, formData).subscribe({
+    this.http.put(url, formData,{withCredentials:true}).subscribe({
       next: (response) => {
         console.log('Médico actualizado:', response);
         this.guardando = false;

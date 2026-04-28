@@ -2,14 +2,11 @@
 <div class="sidebar">
   <div class="top">
     <div class="avatar">
-            <img src="glucoTracker.png" alt="">
+      <img src="glucoTracker.png" alt="">
 
     </div>
 
-    <button
-      class="btn pill"
-      [routerLink]="['/administrador/perfil']"
-      routerLinkActive="active"
+    <button class="btn pill" [routerLink]="['/administrador/perfil']" routerLinkActive="active"
       [routerLinkActiveOptions]="{ exact: true }">
       Mi perfil Administrador
     </button>
@@ -17,55 +14,52 @@
 
   <nav class="menu">
     <!-- Pacientes -->
-    <button type="button" class="item item-btn"
-            (click)="togglePacientes()"
-            [attr.aria-expanded]="openPacientes()"
-            aria-controls="submenu-pacientes">
+    <button type="button" class="item item-btn" (click)="togglePacientes()" [attr.aria-expanded]="openPacientes()"
+      aria-controls="submenu-pacientes">
 
       <span class="grow">Pacientes</span>
       <span class="chev" [class.open]="openPacientes()">▾</span>
     </button>
     <div id="submenu-pacientes" class="submenu" *ngIf="openPacientes()">
       <a class="subitem" routerLink="./pacientes/activos" routerLinkActive="active">Activos</a>
-      <a class="subitem" routerLink="./pacientes/solicitudes" routerLinkActive="active">Solicitudes</a>
+      <!--<a class="subitem" routerLink="./pacientes/solicitudes" routerLinkActive="active">Solicitudes</a>-->
     </div>
 
     <!-- Médicos -->
-    <button type="button" class="item item-btn"
-            (click)="toggleMedicos()"
-            [attr.aria-expanded]="openMedicos()"
-            aria-controls="submenu-medicos">
+    <button type="button" class="item item-btn" (click)="toggleMedicos()" [attr.aria-expanded]="openMedicos()"
+      aria-controls="submenu-medicos">
 
       <span class="grow">Medicos</span>
       <span class="chev" [class.open]="openMedicos()">▾</span>
     </button>
     <div id="submenu-medicos" class="submenu" *ngIf="openMedicos()">
       <a class="subitem" routerLink="./medicos/activos" routerLinkActive="active">Activos</a>
-      <a class="subitem" routerLink="./medicos/solicitudes" routerLinkActive="active">Solicitudes</a>
+      <!--<a class="subitem" routerLink="./medicos/solicitudes" routerLinkActive="active">Solicitudes</a>-->
     </div>
 
     <!-- Administradores (ID corregido) -->
-    <button type="button" class="item item-btn" *ngIf="cargo!='soporte'"
-            (click)="toggleAdmin()"
-            [attr.aria-expanded]="openAdmin()"
-            aria-controls="submenu-admin">
+    <!--<button type="button" class="item item-btn" (click)="toggleAdmin()" [attr.aria-expanded]="openAdmin()"
+      aria-controls="submenu-admin">
 
       <span class="grow">Administradores</span>
       <span class="chev" [class.open]="openAdmin()">▾</span>
     </button>
-    <div id="submenu-admin" class="submenu" *ngIf="openAdmin() && cargo!='soporte'">
+    <div id="submenu-admin" class="submenu" *ngIf="openAdmin() ">
       <a class="subitem" routerLink="./administradores/activos" routerLinkActive="active">Activos</a>
       <a class="subitem" routerLink="./administrador/agregar" routerLinkActive="active">Agregar</a>
+    </div>-->
+    <div id="submenu-admin" class="submenu">
+      <a class="subitem" routerLink="./solicitudes-pendientes" routerLinkActive="active">Solicitudes
+        Pendientes</a>
     </div>
-
     <!-- Para la AUDITORIA -->
-    <div id="submenu-admin" class="submenu" *ngIf="cargo!='soporte'">
+    <div id="submenu-admin" class="submenu">
       <a class="subitem" routerLink="./administradores/auditoria" routerLinkActive="active">Auditoría</a>
     </div>
   </nav>
 
   <button class="logout" type="button" (click)="logout.emit()">
-    
+
     Cerrar Sesión
   </button>
 </div>

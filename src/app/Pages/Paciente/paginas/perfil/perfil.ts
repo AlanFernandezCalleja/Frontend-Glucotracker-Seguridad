@@ -55,7 +55,7 @@ export class Perfil implements OnInit{
   cargarPaciente() {
     const idPaciente=localStorage.getItem('id_rol')
     const url = `${environment.apiUrl}/pacientes/perfil/${idPaciente}`;
-    this.http.get<Patient>(url).subscribe({
+    this.http.get<Patient>(url,{withCredentials:true}).subscribe({
       next: (data) => {
         this.patient = data;
         console.log('Paciente cargado:', this.patient);

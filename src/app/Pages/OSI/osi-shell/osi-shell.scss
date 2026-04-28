@@ -1,0 +1,108 @@
+/* admin-shell.component.css */
+.layout {
+  display: block;
+  min-height: 100dvh;
+  position: relative;
+}
+
+/* Botón hamburguesa */
+.menu-toggle {
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  width: 40px;
+  height: 40px;
+  background: #2E7A8A;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  z-index: 1002; /* Mayor que el sidebar */
+  cursor: pointer;
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+}
+
+.menu-toggle span {
+  display: block;
+  width: 20px;
+  height: 2px;
+  background: white;
+  transition: all 0.3s ease;
+}
+
+/* Scrim para móvil */
+.scrim {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  border: none;
+  cursor: pointer;
+}
+
+/* Sidebar container */
+.sidebar-container {
+  position: fixed;
+  top: 0;
+  left: -270px; /* Oculto por defecto en móvil */
+  width: 240px;
+  height: 100%;
+  transition: left 0.3s ease;
+  z-index: 1001;
+}
+
+.sidebar-container.open {
+  left: 0; /* Visible cuando está abierto */
+}
+
+/* Content */
+.content {
+  margin-left: 0;
+  transition: margin-left 0.3s ease;
+  min-height: 100dvh;
+}
+
+/* Tablet */
+@media (min-width: 769px) and (max-width: 960px) {
+  .sidebar-container {
+    left: 0;
+    width: 200px;
+  }
+  
+  .content {
+    margin-left: 200px;
+  }
+  
+  .menu-toggle {
+    display: none;
+  }
+}
+
+/* Desktop */
+@media (min-width: 961px) {
+  .sidebar-container {
+    left: 0;
+    width: 240px;
+  }
+  
+  .content {
+    margin-left: 240px;
+  }
+  
+  .menu-toggle {
+    display: none;
+  }
+}
+
+/* Móvil */
+@media (max-width: 768px) {
+  .menu-toggle {
+    display: flex;
+  }
+}

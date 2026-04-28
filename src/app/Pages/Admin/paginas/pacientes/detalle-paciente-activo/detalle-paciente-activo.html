@@ -44,6 +44,7 @@
 
         <div class="separador"></div>
 
+
         <h2>Contacto de Emergencia</h2>
         <div class="grid-datos">
           <div class="dato-item">
@@ -137,6 +138,8 @@
         </div>
 
         <p class="subtitulo">Guardar cambios Realizados de los permisos de paciente</p>
+                
+        <p class="subtitulo">Gestiona el acceso del paciente a la plataforma.</p>
         <div class="botones-permisos">
           <button
             class="permisoRegistrarGlucosa"
@@ -144,6 +147,34 @@
             Guardar Cambios
              
           </button>
+          <button 
+            [class.permitido]="permisoRegistrarGlucosa" 
+            [class.denegado]="!permisoRegistrarGlucosa"
+            (click)="toggleRegistrarGlucosa()">
+            <i class="icono">🩸</i>
+            {{ permisoRegistrarGlucosa ? 'Denegar Registrar Glucosa' : 'Permitir Registrar Glucosa' }}
+          </button>
+
+          <button 
+            [class.permitido]="permisoVerHistorial" 
+            [class.denegado]="!permisoVerHistorial"
+            (click)="toggleVerHistorial()">
+            <i class="icono">📊</i>
+            {{ permisoVerHistorial ? 'Denegar Ver Historial' : 'Permitir Ver Historial' }}
+          </button>
+
+          <button 
+            [class.permitido]="permisoEditarPerfil" 
+            [class.denegado]="!permisoEditarPerfil"
+            (click)="toggleEditarPerfil()">
+            <i class="icono">⚙️</i>
+            {{ permisoEditarPerfil ? 'Denegar Editar Perfil' : 'Permitir Editar Perfil' }}
+          </button>
+          <div class="separador" style="margin: 15px 0;"></div>
+
+        <button class="btn-guardar-permisos" (click)="guardarPermisos()" [disabled]="!hayCambios">
+          💾 Guardar Permisos
+        </button>
         </div>
       </section>
     </div>

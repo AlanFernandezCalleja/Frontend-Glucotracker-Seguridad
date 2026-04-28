@@ -80,7 +80,7 @@ export interface PerfilAdmin {
   fechaNac: string;
   telefono: string;
   cargo: string;
-  fechain: string;
+  fechaIn: string;
   admitidopor: string;
   permisos?: { // <-- Propiedad añadida para manejar la vista
     editar: boolean;
@@ -93,7 +93,7 @@ export interface PerfilAdmin {
 @Component({
   selector: 'app-admins-activos',
   // Quitamos CardAdminA y agregamos FormsModule
-  imports: [CommonModule, HttpClientModule, FormsModule], 
+  imports: [CommonModule, HttpClientModule, FormsModule],
   templateUrl: './admins-activos.html',
   styleUrl: './admins-activos.scss',
 })
@@ -118,15 +118,15 @@ export class AdminsActivos implements OnInit {
   });
 
   verAdmin(m: PerfilAdmin) {
-    this.router.navigate(['administrador/administradores/activos/detalle'], { state: { admin: m } });
+    this.router.navigate(['administradores/activos/detalle'], { state: { admin: m } });
   }
-  adminsOriginales:any[]=[];
-  hayCambios=false;
+  adminsOriginales: any[] = [];
+  hayCambios = false;
 
   cargarAdmins() {
     const url = `${environment.apiUrl}/administradores/obtenerAdmins/${localStorage.getItem('id_usuario')}`;
     this.http.get<PerfilAdmin[]>(url,
-      {withCredentials:true}
+      { withCredentials: true }
     ).subscribe({
       next: (response) => {
         // Mapeamos la respuesta para inicializar los checkboxes
@@ -140,10 +140,10 @@ export class AdminsActivos implements OnInit {
           }
         }));
 
-      this.administradores.set(adminsConPermisos);
-      this.adminsOriginales = JSON.parse(JSON.stringify(response));
-
-      this.hayCambios = false;
+        this.administradores.set(adminsConPermisos);
+        this.adminsOriginales = JSON.parse(JSON.stringify(response));
+        console.log(this.administradores())
+        this.hayCambios = false;
       },
       error: (err) => {
         console.log('error ', err);
@@ -153,23 +153,23 @@ export class AdminsActivos implements OnInit {
 
   // Método opcional para detectar cambios en los checkboxes
   actualizarPermisos() {
-  const data = this.administradores();
+    const data = this.administradores();
 
-  this.http.post(`${environment.apiUrl}/administradores/actualizar-permisos`, data, {
-    withCredentials: true
-  }).subscribe({
-    next: () => console.log('Permisos actualizados'),
-    error: (err) => console.error(err)
-  });
+    this.http.post(`${environment.apiUrl}/administradores/actualizar-permisos`, data, {
+      withCredentials: true
+    }).subscribe({
+      next: () => console.log('Permisos actualizados'),
+      error: (err) => console.error(err)
+    });
+  }
+  verificarCambios() {
+    const actuales = this.administradores();
+
+    this.hayCambios = actuales.some((admin, index) => {
+      const original = this.adminsOriginales[index];
+
+      return JSON.stringify(admin.permisos) !== JSON.stringify(original.permisos);
+    });
+  }
 }
-verificarCambios() {
-  const actuales = this.administradores();
-
-  this.hayCambios = actuales.some((admin, index) => {
-    const original = this.adminsOriginales[index];
-
-    return JSON.stringify(admin.permisos) !== JSON.stringify(original.permisos);
-  });
-}
-} 
 

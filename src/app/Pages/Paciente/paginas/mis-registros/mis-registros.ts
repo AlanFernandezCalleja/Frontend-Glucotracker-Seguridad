@@ -59,7 +59,7 @@ export class MisRegistros implements OnInit {
 
   cargarRegistros() {
     const idPaciente = localStorage.getItem('id_rol');
-    this.http.get<any[]>(`${environment.apiUrl}/pacientes/registros/${idPaciente}`).subscribe({
+    this.http.get<any[]>(`${environment.apiUrl}/pacientes/registros/${idPaciente}`,{withCredentials:true}).subscribe({
       next: (data) => {
         this.registros = data;
         console.log('Registros cargados:', this.registros);

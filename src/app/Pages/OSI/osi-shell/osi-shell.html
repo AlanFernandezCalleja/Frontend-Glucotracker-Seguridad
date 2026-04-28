@@ -1,0 +1,29 @@
+<!-- admin-shell.component.html -->
+<div class="layout">
+  <!-- Botón hamburguesa para móvil -->
+  <button class="menu-toggle" 
+          (click)="toggleSidebar()"
+          [attr.aria-expanded]="sidebarOpen()"
+          aria-label="Toggle menu">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+
+  <!-- Scrim para móvil -->
+  @if (sidebarOpen()) {
+    <div class="scrim" 
+         (click)="sidebarOpen.set(false)"
+         aria-label="Cerrar menú">
+    </div>
+  }
+
+  <!-- Contenedor del sidebar -->
+  <div class="sidebar-container" [class.open]="sidebarOpen()">
+    <app-sidebar (logout)="onLogout()"></app-sidebar>
+  </div>
+
+  <section class="content">
+    <router-outlet></router-outlet>
+  </section>
+</div>

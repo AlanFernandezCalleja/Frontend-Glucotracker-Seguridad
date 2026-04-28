@@ -1,0 +1,60 @@
+<div class="gestion-wrap">
+  
+  <div class="header-section">
+    <h1>Gestion de roles</h1>
+    <div class="action-buttons">
+      <button class="btn-guardar" [disabled]="!hayCambios()" (click)="guardarCambios()">
+        Guardar cambios
+      </button>
+      <button class="btn-agregar" (click)="abrirModal()">
+        Agregar rol
+      </button>
+    </div>
+  </div>
+
+  <div class="table-card">
+    <table>
+      <thead>
+        <tr>
+          <th class="col-rol">Rol</th>
+          <th class="col-permisos">Permisos y Accesos</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let rol of roles()">
+          <td class="cell-rol">
+            <strong>{{ rol.nombre_rol | uppercase }}</strong>
+          </td>
+          
+          <td class="cell-permisos">
+            <div class="checkbox-grid">
+              
+              <label class="check-item" *ngFor="let permiso of permisosDisponibles()">
+                <input type="checkbox" 
+                       [checked]="hasPermiso(rol.id_rol, permiso.id_permiso)"
+                       (change)="togglePermiso(rol.id_rol, permiso.id_permiso, $event)">
+                <span class="custom-checkbox"></span>
+                <span class="label-text">{{ permiso.nombre }}</span>
+              </label>
+
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="table-footer-accent"></div>
+  </div>
+
+  <div class="modal-backdrop" *ngIf="mostrarModal()" (click)="cerrarModal()"></div>
+  <div class="alert-modal" *ngIf="mostrarModal()">
+    <button class="close" (click)="cerrarModal()">✕</button>
+    <h2 class="ttl">Nuevo Rol <span>administrativo</span></h2>
+    <div class="form-group">
+      <label class="lbl">Nombre del perfil:</label>
+      <input type="text" class="input-estilizado" [(ngModel)]="nuevoRolNombre" placeholder="Ej: AUDITOR">
+    </div>
+    <button class="btn-confirmar" (click)="confirmarAgregarRol()" [disabled]="!nuevoRolNombre.trim()">
+      Crear Rol
+    </button>
+  </div>
+</div>

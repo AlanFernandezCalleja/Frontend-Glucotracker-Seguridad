@@ -133,9 +133,12 @@ export class Login implements OnInit {
   this.showSuccessModal.set(true);
 
   setTimeout(() => {
-    if (res.usuario.rol === 'administrador') {
+    if (res.usuario.cargo === 'soporte') {
       this.router.navigate(['/administrador']);
-    } else if (res.usuario.rol === 'medico') {
+    }else if(res.usuario.cargo==='admin'){
+      this.router.navigate(['/osi'])
+    } 
+    else if (res.usuario.rol === 'medico') {
       this.router.navigate(['/medico']);
     } else {
       this.router.navigate(['/paciente']);
@@ -172,7 +175,8 @@ export class Login implements OnInit {
 
   // Métodos para redirección a registros
   irARegistroPaciente() {
-    this.router.navigate(['/solicitar-paciente']);
+    this.router.navigate(['/solicitar-acceso']);
+    //this.router.navigate(['/solicitar-paciente']);
   }
 
   irARegistroMedico() {

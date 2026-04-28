@@ -162,3 +162,131 @@ textarea {
     transform: translateY(-1px);
   }
 }
+
+
+/* ===== Panel de Permisos (OSI) ===== */
+.panel-permisos {
+  background: #ffffff;
+  border: 1px solid #7aa4a9;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 24px;
+  width: min(700px, 100%);
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+
+  .panel-header {
+    margin-bottom: 16px;
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 12px;
+
+    h2 {
+      margin: 0 0 4px 0;
+      font-size: 1.25rem;
+      color: #1a2a3a;
+    }
+    p {
+      margin: 0;
+      font-size: 0.9rem;
+      color: #666;
+    }
+  }
+
+  .tabla-permisos {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 20px;
+
+    .permiso-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 14px;
+      background: #f7fffe;
+      border-radius: 8px;
+      border: 1px solid #d0ecef;
+
+      .permiso-info {
+        display: flex;
+        flex-direction: column;
+
+        .lbl {
+          font-weight: 600;
+          color: #202a34;
+          font-size: 0.95rem;
+        }
+        .desc {
+          font-size: 0.8rem;
+          color: #7aa4a9;
+        }
+      }
+    }
+  }
+
+  .btn-guardar-rol {
+    width: 100%;
+    background: #5ab0c9;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 12px;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    &:hover:not(:disabled) {
+      background: #3a90b5;
+      transform: translateY(-2px);
+    }
+
+    &:disabled {
+      background: #cccccc;
+      cursor: not-allowed;
+      color: #888888;
+    }
+  }
+}
+
+/* ===== Toggle Switch (Interruptor) ===== */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 26px;
+
+  input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 26px;
+
+    &:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      transition: .4s;
+      border-radius: 50%;
+    }
+  }
+
+  input:checked + .slider {
+    background-color: #5ab0c9; /* Color de tu tema */
+  }
+
+  input:checked + .slider:before {
+    transform: translateX(24px);
+  }
+}

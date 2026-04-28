@@ -1,14 +1,88 @@
-
-
 <div class="wrap">
   <h1>Pacientes activos</h1>
-  <input 
-        class="search" 
-        type="search" 
-        placeholder="Buscar paciente por nombre, email o teléfono..." 
-        [value]="q()" 
-        (input)="q.set($any($event.target).value)" />
 
+  <div class="panel-permisos">
+    <div class="panel-header">
+      <h2>Control de Accesos (Rol: Soporte)</h2>
+      <p>Modifica los permisos globales para todos los pacientes del sistema.</p>
+    </div>
+    
+    <div class="tabla-permisos">
+
+      <!-- Permiso 1 -->
+      <div class="permiso-item">
+        <div class="permiso-info">
+          <span class="lbl">Aceptar Solicitud de Pacientes</span>
+          <span class="desc">Permite aceptar solicitudes a pacientes solicitantes.</span>
+        </div>
+        <label class="switch">
+          <input type="checkbox" 
+                 [checked]="permisosRol().includes('aceptar_pacientes')" 
+                 (change)="togglePermiso('aceptar_pacientes')">
+          <span class="slider round"></span>
+        </label>
+      </div>
+
+      <!-- Permiso 2 -->
+      <div class="permiso-item">
+        <div class="permiso-info">
+          <span class="lbl">Aceptar Solicitud de Médicos</span>
+          <span class="desc">Permite aceptar solicitudes a médicos solicitantes.</span>
+        </div>
+        <label class="switch">
+          <input type="checkbox" 
+                 [checked]="permisosRol().includes('aceptar_medicos')" 
+                 (change)="togglePermiso('aceptar_medicos')">
+          <span class="slider round"></span>
+        </label>
+      </div>
+
+      <!-- Permiso 3 -->
+      <div class="permiso-item">
+        <div class="permiso-info">
+          <span class="lbl">Ver lista de pacientes</span>
+          <span class="desc">Permite consultar los datos generales de los pacientes.</span>
+        </div>
+        <label class="switch">
+          <input type="checkbox" 
+                 [checked]="permisosRol().includes('ver_pacientes')" 
+                 (change)="togglePermiso('ver_pacientes')">
+          <span class="slider round"></span>
+        </label>
+      </div>
+
+      <!-- Permiso 4 (AQUÍ estaba tu error) -->
+      <div class="permiso-item">
+        <div class="permiso-info">
+          <span class="lbl">Ver lista de médicos</span>
+          <span class="desc">Permite consultar los datos generales de los médicos.</span>
+        </div>
+        <label class="switch">
+          <input type="checkbox" 
+                 [checked]="permisosRol().includes('ver_medicos')" 
+                 (change)="togglePermiso('ver_medicos')">
+          <span class="slider round"></span>
+        </label>
+      </div>
+
+    </div>
+
+    <button class="btn-guardar-rol" 
+            [disabled]="!hayCambiosPermisos()" 
+            (click)="guardarPermisosRol()">
+      Guardar Permisos del Rol
+    </button>
+  </div>
+
+  <!-- Buscador -->
+  <input 
+    class="search" 
+    type="search" 
+    placeholder="Buscar paciente por nombre, email o teléfono..." 
+    [value]="q()" 
+    (input)="q.set($any($event.target).value)" />
+
+  <!-- Grid de pacientes -->
   <div class="grid">
     <app-card-paciente-a
       *ngFor="let p of pacientesFiltrados()"
@@ -17,5 +91,3 @@
     </app-card-paciente-a>
   </div>
 </div>
-
-

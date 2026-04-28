@@ -94,7 +94,7 @@ export class RegistrarGlucosa implements OnInit {
   }
 
   obtenerDatosPaciente(){
-    this.http.get<any>(`${environment.apiUrl}/registro/datosGlucosa/`+this.paciente.id).subscribe({
+    this.http.get<any>(`${environment.apiUrl}/registro/datosGlucosa/`+this.paciente.id,{withCredentials:true}).subscribe({
       next:(data)=>{
         this.datosPaciente=data;
         console.log("Datos para registro",this.datosPaciente);
@@ -181,7 +181,7 @@ export class RegistrarGlucosa implements OnInit {
   enviarAlBackend(datos: any) {
   const url = `${environment.apiUrl}/medicos/registrar/glucosa`;
 
-  this.http.post<{ message: string; registro_glucosa: { id_registro: number } }>(url, datos).subscribe({
+  this.http.post<{ message: string; registro_glucosa: { id_registro: number } }>(url, datos,{withCredentials:true}).subscribe({
     next: (response) => {
       // Ahora TypeScript sabe que response tiene id_registro
       this.idRegistroGlucosa = response.registro_glucosa.id_registro;

@@ -1,0 +1,292 @@
+/* Contenedor principal y fondo general */
+.gestion-wrap {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #ebf8f8; /* Fondo celeste agua muy claro */
+  min-height: 100vh;
+  padding: 40px 50px;
+  box-sizing: border-box;
+}
+
+/* Encabezado y botones */
+.header-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+
+  h1 {
+    font-size: 2.2rem;
+    color: #111;
+    margin: 0;
+    font-weight: 500;
+  }
+
+  .action-buttons {
+    display: flex;
+    gap: 16px;
+
+    button {
+      padding: 12px 24px;
+      border-radius: 8px;
+      border: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      
+      &.btn-guardar {
+        background-color: #a2fad6; /* Verde menta claro */
+        color: #0b3b24;
+
+        &:hover:not(:disabled) {
+          background-color: #8ce1bd;
+          transform: translateY(-1px);
+        }
+
+        &:disabled {
+          background-color: #d1e8e0;
+          color: #88a39a;
+          cursor: not-allowed;
+        }
+      }
+
+      &.btn-agregar {
+        background-color: #a2fad6;
+        color: #0b3b24;
+
+        &:hover {
+          background-color: #8ce1bd;
+          transform: translateY(-1px);
+        }
+      }
+    }
+  }
+}
+
+/* Contenedor de la Tabla */
+.table-card {
+  background: #ffffff;
+  border-radius: 12px;
+  overflow: hidden; /* Para que los bordes redondeados apliquen al header/footer */
+  box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+
+    thead {
+      background-color: #5ab0c9; /* Azul verdoso del header */
+      color: #ffffff;
+      
+      th {
+        padding: 16px 20px;
+        text-align: left;
+        font-weight: 600;
+        font-size: 1rem;
+        
+        &.col-rol {
+          width: 20%;
+        }
+      }
+    }
+
+    tbody {
+      tr {
+        border-bottom: 1px solid #e0e6e8;
+        
+        &:last-child {
+          border-bottom: none;
+        }
+      }
+
+      td {
+        padding: 20px;
+        vertical-align: top;
+        
+        &.cell-rol {
+          color: #333;
+          font-weight: 500;
+          padding-top: 24px;
+        }
+      }
+    }
+  }
+
+  /* Borde grueso en la parte inferior como en tu diseño */
+  .table-footer-accent {
+    height: 80px;
+    background-color: #5ab0c9;
+    width: 100%;
+  }
+}
+
+/* Grilla para los Checkboxes */
+.checkbox-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px 10px;
+}
+
+/* Estilos de los Checkboxes personalizados */
+.check-item {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: #444;
+  user-select: none;
+
+  input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+  }
+
+  .custom-checkbox {
+    height: 18px;
+    width: 18px;
+    background-color: #fff;
+    border: 1px solid #888;
+    border-radius: 4px;
+    margin-right: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.2s;
+  }
+
+  input:checked ~ .custom-checkbox {
+    background-color: #fff;
+    border: 2px solid #5ab0c9;
+    
+    /* Pequeño punto interior o marca de check simulada */
+    &:after {
+      content: "";
+      display: block;
+      width: 8px;
+      height: 8px;
+      background-color: #5ab0c9;
+      border-radius: 2px;
+    }
+  }
+
+  &:hover .custom-checkbox {
+    border-color: #5ab0c9;
+  }
+}
+
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(4px);
+  z-index: 100;
+  animation: fadeIn 0.25s ease;
+}
+
+.alert-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(1);
+  background: #e8f8f8;
+  border: 2px solid #5ab0c9;
+  border-radius: 10px;
+  padding: 1.5rem 1.5rem 2rem;
+  width: 380px;
+  max-width: 95%;
+  z-index: 101;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  animation: zoomIn 0.25s ease;
+  font-family: 'Segoe UI', sans-serif;
+  color: #202a34;
+
+  .close {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    border: none;
+    background: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    color: #333;
+    &:hover { transform: scale(1.1); }
+  }
+
+  .ttl {
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin: 0 0 0.5rem 0;
+    color: #111;
+    span { color: #5ab0c9; font-weight: 400; }
+  }
+
+  .pac {
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+    color: #555;
+  }
+
+  .lbl {
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    display: block;
+    color: #1a2a3a;
+  }
+
+  .input-estilizado {
+    width: 100%;
+    border: 1.8px solid #3a90b5;
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 0.95rem;
+    outline: none;
+    background: #fff;
+    margin-bottom: 1.5rem;
+    box-sizing: border-box;
+
+    &:focus {
+      border-color: #0a80fb;
+      box-shadow: 0 0 0 3px rgba(10, 128, 251, 0.1);
+    }
+  }
+
+  .btn-confirmar {
+    width: 100%;
+    background: #a2fad6; /* Verde menta claro */
+    border: none;
+    border-radius: 30px;
+    padding: 0.8rem;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    color: #1a2a3a;
+
+    &:hover:not(:disabled) {
+      background: #5fffbd;
+      transform: translateY(-1px);
+    }
+
+    &:disabled {
+      background: #d1e8e0;
+      color: #88a39a;
+      cursor: not-allowed;
+    }
+  }
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes zoomIn {
+  from { transform: translate(-50%, -50%) scale(0.9); opacity: 0; }
+  to { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+}

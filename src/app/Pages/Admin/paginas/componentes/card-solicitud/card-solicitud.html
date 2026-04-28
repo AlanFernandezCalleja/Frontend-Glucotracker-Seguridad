@@ -1,0 +1,9 @@
+<article class="card" (click)="ver.emit(solicitud)" style="cursor:pointer;">
+    <header class="title">{{ solicitud.nombre_completo }}</header>
+
+    <p class="meta"><strong>Correo:</strong> {{ solicitud.correo }}</p>
+    <p class="meta"><strong>Teléfono:</strong> {{ solicitud.telefono }}</p>
+    <p class="meta"><strong>Fecha:</strong> {{ solicitud.fecha_registro | date:'dd/MM/yyyy' }}</p>
+
+    <button class="btn" type="button">Revisar Solicitud</button>
+</article>

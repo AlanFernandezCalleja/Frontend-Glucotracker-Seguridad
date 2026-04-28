@@ -1,0 +1,196 @@
+<div class="general">
+    <div class="form-container">
+        <h2>Revisión y Activación de Cuenta</h2>
+
+        <div class="user-summary">
+            <div class="summary-item">
+                <label>Nombre del Solicitante:</label>
+                <p>{{ solicitudPendiente?.nombre_completo }}</p>
+            </div>
+            <div class="summary-item">
+                <label>Correo Electrónico:</label>
+                <p>{{ solicitudPendiente?.correo }}</p>
+            </div>
+            <div class="summary-item">
+                <label>Teléfono:</label>
+                <p>{{ solicitudPendiente?.telefono }}</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3 class="section-title">Asignar Rol</h3>
+            <p style="text-align: center; color: #0a3d62; margin-bottom: 1rem;">Seleccione el rol a activar basándose en
+                el documento PDF recibido.</p>
+
+            <div class="role-selector">
+                <label *ngFor="let rol of roles" class="role-card"
+                    [class.active]="rolSeleccionado?.id_rol === rol.id_rol">
+                    <input type="radio" name="rolSeleccion" [value]="rol" (change)="seleccionarRol(rol)"
+                        class="hidden-radio">
+                    <span class="role-name">{{ rol.nombre_rol | uppercase }}</span>
+                </label>
+            </div>
+        </div>
+
+        <form [formGroup]="pacienteForm" *ngIf="rolSeleccionado?.nombre_rol === 'paciente'">
+
+            <div class="section">
+                <h3 class="section-title">Datos Clínicos y Antropométricos</h3>
+                <div class="row">
+                    <div class="input-box">
+                        <label>Género</label>
+                        <select formControlName="genero" (change)="onGeneroChange()">
+                            <option value="">Seleccione género</option>
+                            <option value="Masculino">Masculino</option>
+                            <option value="Femenino">Femenino</option>
+                        </select>
+                    </div>
+                    <div class="input-box">
+                        <label>Peso (kg)</label>
+                        <input type="number" formControlName="peso" placeholder="Ej: 70.5" />
+                    </div>
+                    <div class="input-box">
+                        <label>Altura (m)</label>
+                        <input type="number" formControlName="altura" placeholder="Ej: 1.75" />
+                    </div>
+                </div>
+
+                <div class="row" *ngIf="pacienteForm.get('genero')?.value === 'Femenino'">
+                    <div class="input-box">
+                        <label>¿Está embarazada?</label>
+                        <select formControlName="embarazada">
+                            <option [ngValue]="null">Seleccione</option>
+                            <option [ngValue]="true">Sí</option>
+                            <option [ngValue]="false">No</option>
+                        </select>
+                    </div>
+                    <div class="input-box" *ngIf="pacienteForm.get('embarazada')?.value === true">
+                        <label>Semanas de embarazo</label>
+                        <input type="number" formControlName="semanas" min="1" max="42">
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h3 class="section-title">Afecciones y Tratamientos</h3>
+                <div class="row">
+                    <div class="input-box">
+                        <label>Enfermedad Base</label>
+                        <select formControlName="enfermedad_id">
+                            <option value="">Seleccione</option>
+                            <option *ngFor="let a of enfermedades" [value]="a.id_enfermedad">{{ a.nombre_enfermedad }}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="input-box">
+                        <label>Tratamiento</label>
+                        <select formControlName="tratamiento_id" (change)="onTratamientoChange($event)">
+                            <option value="">Seleccione</option>
+                            <option *ngFor="let a of tratamientos" [value]="a.id_tratamiento">{{ a.nombre_tratamiento }}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="input-box">
+                        <label>Dosis</label>
+                        <input type="text" formControlName="dosis_" placeholder="Ej: 1 pastilla c/8h" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h3 class="section-title">Vínculos Médicos</h3>
+                <div class="row">
+                    <div class="input-box">
+                        <label>Asignar Médico Tratante</label>
+                        <select formControlName="id_medico">
+                            <option value="">Seleccione</option>
+                            <option *ngFor="let m of medicos" [value]="m.id_medico">{{ m.usuario?.nombre_completo ||
+                                m.nombre_completo }}</option>
+                        </select>
+                    </div>
+                    <div class="input-box">
+                        <label>Nivel Actividad Física</label>
+                        <select formControlName="id_actividad">
+                            <option value="">Seleccione</option>
+                            <option *ngFor="let a of actividades" [value]="a.id_nivel_actividad || a.id_actividad">{{
+                                a.descripcion || a.nivel }}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h3 class="section-title">Emergencia y Perfil</h3>
+                <div class="row">
+                    <div class="input-box">
+                        <label>Contacto Emergencia (Nombre)</label>
+                        <input type="text" formControlName="nombre_emergencia" />
+                    </div>
+                    <div class="input-box">
+                        <label>Teléfono Emergencia</label>
+                        <input type="tel" formControlName="numero_emergencia" />
+                    </div>
+                </div>
+                <div class="input-box full-width" style="margin-top: 1rem;">
+                    <label>Subir foto de perfil extraída del documento</label>
+                    <input type="file" accept="image/*" (change)="onFotoSeleccionada($event)">
+                    <div *ngIf="imagenVistaPrevia" class="preview">
+                        <img [src]="imagenVistaPrevia" alt="Vista previa">
+                    </div>
+                </div>
+            </div>
+
+            <div class="button-container">
+                <button type="button" class="btn" [disabled]="!pacienteForm.valid" (click)="activarCuenta()">Activar
+                    como Paciente</button>
+            </div>
+        </form>
+
+        <form [formGroup]="medicoForm" *ngIf="rolSeleccionado?.nombre_rol === 'medico'">
+
+            <div class="section">
+                <h3 class="section-title">Datos Profesionales</h3>
+                <div class="row">
+                    <div class="input-box">
+                        <label>Departamento</label>
+                        <select formControlName="departamento">
+                            <option value="">Seleccione un departamento</option>
+                            <option value="La Paz">La Paz</option>
+                            <option value="Cochabamba">Cochabamba</option>
+                            <option value="Santa Cruz">Santa Cruz</option>
+                        </select>
+                    </div>
+                    <div class="input-box">
+                        <label>Especialidad</label>
+                        <select formControlName="id_especialidad">
+                            <option value="">Seleccione su especialidad</option>
+                            <option *ngFor="let a of especialidades" [value]="a.id_especialidad">{{ a.nombre }}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-box">
+                        <label>Matrícula Profesional (PDF)</label>
+                        <input type="file" (change)="onFileSelected($event, 'matricula')" accept=".pdf" />
+                        <small>{{ getFileName(matriculaFile) }}</small>
+                    </div>
+                    <div class="input-box">
+                        <label>Carnet Profesional (Imagen)</label>
+                        <input type="file" (change)="onFileSelected($event, 'carnet')" accept=".jpg,.jpeg,.png" />
+                        <small>{{ getFileName(carnetFile) }}</small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="button-container">
+                <button type="button" class="btn" [disabled]="!medicoForm.valid" (click)="activarCuenta()">Activar como
+                    Médico</button>
+            </div>
+        </form>
+
+        <div class="button-container" style="margin-top: 1.5rem;" *ngIf="!rolSeleccionado">
+            <button type="button" class="btn btn-secondary" (click)="volver()">Volver a Solicitudes</button>
+        </div>
+
+    </div>
+</div>

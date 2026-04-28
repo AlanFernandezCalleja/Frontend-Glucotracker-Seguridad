@@ -21,6 +21,7 @@ export interface PacienteResumen {
   foto_perfil:string;
   embarazo:boolean;
   semanas_embarazo:number;
+  permisos:string[]
 }
 export interface Afecciones{
   afeccion:string;
