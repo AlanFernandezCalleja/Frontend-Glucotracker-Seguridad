@@ -12,6 +12,10 @@
       gap:10px;
       box-shadow: 0 6px 18px rgba(0,0,0,.04);
     }
+    .grid-contenido{
+      display: grid;
+      grid-template-columns: 1fr;
+    }
     .title{ font-size:1.35rem; font-weight:700; color:#17222b; }
     .meta{ color:#3a525f; margin:0 0 8px 0; }
     .btn{

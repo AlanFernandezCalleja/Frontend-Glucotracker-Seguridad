@@ -1,24 +1,134 @@
-.detalle-paciente {
-  background: #E7FAFA;
-  min-height: 100dvh;
-  padding: 24px;
-  display: grid;
-  gap: 20px;
-  box-sizing: border-box;
-}
-h1,h3,strong,div{
-  font-family: Arial, Helvetica, sans-serif;
-}
-.header {
+/* Paleta Original */
+$bg: #eaf6f7;
+$ink: #172b3a;
+$muted: #5d6b7a;
+$border: #9dd7db;
+$primary: #0a80fb;
+$chip-bg: #e6f7ff;
+/* Nuevas variables de apoyo */
+$white: #ffffff;
+$shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+$radius: 16px;
+
+/* CONTENEDOR PRINCIPAL */
+.detalle-medico {
+  background: $bg;
+  min-height: 100vh;
+  padding: 32px;
+  padding-left: 60px;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  gap: 24px;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  color: $ink;
+  animation: fadeIn 0.6s ease-out;
+  box-sizing: border-box;
+
+  @media (max-width: 768px) {
+    padding: 16px;
+  }
 }
 
-.header h1 {
-  font-size: 2rem;
-  font-weight: bold;
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
+
+/* CLASE BASE PARA TODAS LAS CAJAS */
+.tarjeta {
+  background: $white;
+  border-radius: $radius;
+  padding: 24px;
+  box-shadow: $shadow;
+  border: 1px solid rgba($border, 0.4);
+}
+
+/* TIPOGRAFÍA BÁSICA */
+h1 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin: 0;
+  color: $ink;
+}
+
+h2 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 0 0 16px 0;
+  color: $ink;
+}
+
+h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0;
+  color: $ink;
+}
+
+.subtitulo {
+  font-size: 0.9rem;
+  color: $muted;
+  margin: -8px 0 16px 0;
+}
+
+.label {
+  color: $muted;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.valor {
+  color: $ink;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+/* HEADER PERFIL */
+.perfil-header {
+  display: grid;
+  grid-template-columns: 150px 3fr 1fr ;
+  gap: 24px;
+
+  .perfil-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  @media (max-width: 700px) {
+    flex-direction: column;
+    text-align: center;
+
+    .perfil-info {
+      align-items: center;
+    }
+  }
+}
+
+.foto-wrapper {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 4px solid $white;
+  box-shadow: 0 4px 12px rgba(10, 128, 251, 0.2);
+  background: $bg;
+
+  .foto-perfil {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+
+
 
 .acciones {
   display: flex;
@@ -26,6 +136,7 @@ h1,h3,strong,div{
 }
 
 .btn {
+  height: 35px;
   padding: 8px 14px;
   border-radius: 6px;
   border: none;
@@ -48,44 +159,7 @@ h1,h3,strong,div{
   opacity: 0.9;
 }
 
-.seccion {
-  background: white;
-  border: 2px solid #7FD8D8;
-  border-radius: 10px;
-  padding: 16px;
-}
 
-.info {
-  display: grid;
-  gap: 6px;
-  font-size: 15px;
-}
-
-.doble {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-}
-
-.imagen iframe {
-  width: 100%;
-  height: 600px;
-  border: none;
-}
-
-
-p {
-  margin: 0;
-}
-.doble .seccion img {
-  max-width: 100%;
-  height: auto;
-  display: block;
-  object-fit: contain;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  margin: 0 auto;
-}
 @media (max-width: 768px) {
   .doble {
     grid-template-columns: 1fr;
@@ -105,7 +179,10 @@ p {
   box-sizing: border-box;
 }
 
-h1,h3,strong,div{
+h1,
+h3,
+strong,
+div {
   font-family: Arial, Helvetica, sans-serif;
 }
 
@@ -135,7 +212,7 @@ h1,h3,strong,div{
 }
 
 .btn.aceptar {
-  background-color: #7CCB63;
+  background-color: #2E7A8A;
   color: white;
 }
 
@@ -224,8 +301,13 @@ p {
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes slideUp {
@@ -233,6 +315,7 @@ p {
     opacity: 0;
     transform: translateY(20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -244,14 +327,14 @@ p {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1rem;
-  
+
   h3 {
     color: #333;
     font-size: 1.3rem;
     font-weight: bold;
     margin: 0;
   }
-  
+
   .btn-cerrar {
     background: none;
     border: none;
@@ -260,7 +343,7 @@ p {
     cursor: pointer;
     padding: 0;
     line-height: 1;
-    
+
     &:hover {
       color: #333;
     }
@@ -269,7 +352,7 @@ p {
 
 .modal-body {
   padding: 1rem 0;
-  
+
   p {
     margin: 0.8rem 0;
     line-height: 1.5;
@@ -281,7 +364,7 @@ p {
   font-size: 3rem;
   margin-bottom: 1rem;
   line-height: 1;
-  
+
   &.grande {
     font-size: 4rem;
   }
@@ -294,7 +377,7 @@ p {
   margin-top: 1.5rem;
   padding-top: 1.5rem;
   border-top: 1px solid #e0e0e0;
-  
+
   .btn {
     padding: 0.6rem 1.5rem;
     border-radius: 6px;
@@ -304,43 +387,88 @@ p {
     border: none;
     font-size: 0.95rem;
     min-width: 100px;
-    
+
     &:hover {
       transform: translateY(-1px);
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     }
-    
+
     &:active {
       transform: translateY(0);
     }
-    
+
     &.btn-aceptar {
       background: #7CCB63;
       color: white;
-      
+
       &:hover {
         background: darken(#7CCB63, 10%);
       }
     }
-    
+
     &.btn-rechazar {
       background: #E57373;
       color: white;
-      
+
       &:hover {
         background: darken(#E57373, 10%);
       }
     }
-    
+
     &.btn-cancelar {
       background: #6c757d;
       color: white;
-      
+
       &:hover {
         background: darken(#6c757d, 10%);
       }
     }
   }
+}
+
+
+.seccion {
+  background: white;
+  border: 2px solid #7FD8D8;
+  border-radius: 10px;
+  padding: 16px;
+}
+
+.grid-documentos {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 25px;
+
+  @media (max-width: 1300px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.info {
+  display: grid;
+  gap: 6px;
+  font-size: 15px;
+}
+
+.carnet-profesional {
+  transition: transform 0.3s ease-in-out;
+  display: inline-block;
+}
+
+.carnet-profesional img {
+  width: 380px;
+  border-radius: 8px;
+  border: 5px solid #09a3eb;
+  object-fit: fill;
+
+}
+
+.carnet-profesional:hover {
+  transform: translateY(-3px);
+}
+
+p {
+  margin: 0;
 }
 
 /* ===== RESPONSIVE PARA MODALES ===== */
@@ -349,10 +477,10 @@ p {
     width: 95%;
     padding: 1.5rem;
   }
-  
+
   .modal-footer {
     flex-direction: column;
-    
+
     .btn {
       width: 100%;
     }

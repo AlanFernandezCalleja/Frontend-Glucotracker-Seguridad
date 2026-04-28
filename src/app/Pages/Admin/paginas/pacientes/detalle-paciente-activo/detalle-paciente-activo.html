@@ -1,9 +1,12 @@
 <div class="detalle-paciente">
   <header class="tarjeta perfil-header">
     <div class="foto-wrapper">
-      <img 
-        [src]="paciente.foto_perfil || 'https://api.dicebear.com/9.x/initials/svg?seed='+paciente.nombre" 
-        alt="Foto de perfil" 
+      <img
+        [src]="
+          paciente.foto_perfil ||
+          'https://api.dicebear.com/9.x/initials/svg?seed=' + paciente.nombre
+        "
+        alt="Foto de perfil"
         class="foto-perfil"
       />
     </div>
@@ -14,17 +17,29 @@
   </header>
 
   <div class="dashboard-grid">
-    
     <div class="columna">
       <section class="tarjeta">
         <h2>Datos Personales</h2>
         <div class="grid-datos">
-          <div class="dato-item"><span class="label">ID:</span> <span class="valor">{{ paciente.id }}</span></div>
-          <div class="dato-item"><span class="label">Nacimiento:</span> <span class="valor">{{ paciente.fechaNac }}</span></div>
-          <div class="dato-item"><span class="label">Peso:</span> <span class="valor">{{ paciente.peso }}</span></div>
-          <div class="dato-item"><span class="label">Altura:</span> <span class="valor">{{ paciente.altura }}</span></div>
-          <div class="dato-item"><span class="label">Teléfono:</span> <span class="valor">{{ paciente.telefono }}</span></div>
-          <div class="dato-item"><span class="label">Correo / CI:</span> <span class="valor">{{ paciente.ci }}</span></div>
+          <div class="dato-item">
+            <span class="label">ID:</span> <span class="valor">{{ paciente.id }}</span>
+          </div>
+          <div class="dato-item">
+            <span class="label">Nacimiento:</span>
+            <span class="valor">{{ paciente.fechaNac }}</span>
+          </div>
+          <div class="dato-item">
+            <span class="label">Peso:</span> <span class="valor">{{ paciente.peso }}</span>
+          </div>
+          <div class="dato-item">
+            <span class="label">Altura:</span> <span class="valor">{{ paciente.altura }}</span>
+          </div>
+          <div class="dato-item">
+            <span class="label">Teléfono:</span> <span class="valor">{{ paciente.telefono }}</span>
+          </div>
+          <div class="dato-item">
+            <span class="label">Correo / CI:</span> <span class="valor">{{ paciente.ci }}</span>
+          </div>
         </div>
 
         <div class="separador"></div>
@@ -32,8 +47,14 @@
 
         <h2>Contacto de Emergencia</h2>
         <div class="grid-datos">
-          <div class="dato-item"><span class="label">Nombre:</span> <span class="valor">{{paciente.nombre_emergencia}}</span></div>
-          <div class="dato-item"><span class="label">Número:</span> <span class="valor">{{paciente.numero_emergencia}}</span></div>
+          <div class="dato-item">
+            <span class="label">Nombre:</span>
+            <span class="valor">{{ paciente.nombre_emergencia }}</span>
+          </div>
+          <div class="dato-item">
+            <span class="label">Número:</span>
+            <span class="valor">{{ paciente.numero_emergencia }}</span>
+          </div>
         </div>
       </section>
 
@@ -70,9 +91,62 @@
 
       <section class="tarjeta permisos">
         <h2>Control de Permisos</h2>
+        <div class="lista-permisos">
+          <!-- Permiso: Registrar Glucosa -->
+          <div class="permiso-item">
+            <div class="permiso-texto">
+              <strong>Registrar Glucosa</strong>
+              <p>Permitir al paciente registrar la glucosa en su cuenta</p>
+            </div>
+            <label class="switch">
+              <input
+                type="checkbox"
+                (change)="toggleRegistrarGlucosa()"
+              />
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <!-- Permiso: Historial de Glucosa -->
+          <div class="permiso-item">
+            <div class="permiso-texto">
+              <strong>Ver Historial Glucosa</strong>
+              <p>Permitir al paciente revisar su historial de glucosa</p>
+            </div>
+            <label class="switch">
+              <input
+                type="checkbox"
+                (change)="toggleVerHistorial()"
+              />
+              <span class="slider"></span>
+            </label>
+          </div>
+          <!-- Permiso: Editar Perfil -->
+          <div class="permiso-item">
+            <div class="permiso-texto">
+              <strong>Editar Perfil</strong>
+              <p>Permitir al paciente cambiar los datos de su cuenta</p>
+            </div>
+            <label class="switch">
+              <input
+                type="checkbox"
+                (change)="toggleEditarPerfil()"
+              />
+              <span class="slider"></span>
+            </label>
+          </div>
+        </div>
+
+        <p class="subtitulo">Guardar cambios Realizados de los permisos de paciente</p>
                 
         <p class="subtitulo">Gestiona el acceso del paciente a la plataforma.</p>
         <div class="botones-permisos">
+          <button
+            class="permisoRegistrarGlucosa"
+          >
+            Guardar Cambios
+             
+          </button>
           <button 
             [class.permitido]="permisoRegistrarGlucosa" 
             [class.denegado]="!permisoRegistrarGlucosa"
@@ -104,7 +178,6 @@
         </div>
       </section>
     </div>
-
   </div>
 
   <footer class="tarjeta footer-admin">

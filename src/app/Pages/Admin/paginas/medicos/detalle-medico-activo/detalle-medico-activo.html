@@ -1,47 +1,66 @@
-<div class="detalle-paciente">
-  <header class="header">
-    <h1>{{ medico.nombre }}</h1>
-
-    
+<div class="detalle-medico">
+  <header class="tarjeta perfil-header">
+    <div class="foto-wrapper">
+      <img
+        [src]="'https://api.dicebear.com/9.x/initials/svg?seed=' + medico.nombre"
+        alt="Foto Perfil Médico"
+        class="foto-perfil"
+      />
+    </div>
+    <div class="perfil-info">
+      <h1 class="nombre">{{ medico.nombre }}</h1>
+    </div>
   </header>
 
-  <div class="seccion">
-    <h3>Datos Personales</h3>
+  <div class="tarjeta">
+    <h2>Datos Personales</h2>
     <div class="info">
       <div><strong>ID:</strong> {{ medico.id }}</div>
       <div><strong>Fecha de nacimiento:</strong> {{ medico.fechaNac }}</div>
       <div><strong>Teléfono:</strong> {{ medico.telefono }}</div>
       <div><strong>Correo:</strong> {{ medico.correo }}</div>
+      <div><strong>Departamento:</strong> {{ medico.departamento }}</div>
     </div>
   </div>
 
-  <div class="seccion">
-    <h3>Matrícula</h3>
-    <div class="imagen" targe>
-      <iframe
-        [src]="this.pdf"
-        width="100%"
-        height="600px"
-        style="border:none;"
-      ></iframe>
+  <div class="tarjeta seccion-permisos">
+    <h2>Control de Permisos</h2>
+    <div class="lista-permisos">
+      <div class="permiso-item" *ngFor="let permiso of listaPermisos">
+        <div class="permiso-texto">
+          <strong>{{ permiso.label }}</strong>
+          <p>{{ permiso.descripcion }}</p>
+        </div>
+        <label class="switch">
+          <input
+            type="checkbox"
+            [(ngModel)]="permisosEstado[permiso.key]"
+            (change)="togglePermiso(permiso.key)"
+          />
+          <span class="slider"></span>
+        </label>
+      </div>
+    </div>
+    <div>
+      <button>Guardar cambios</button>
     </div>
   </div>
-<div style="display: grid;grid-template-columns: 1fr 1fr;gap: 1.5rem;">
-    <div class="seccion">
-        <div>
-        <h3>Departamento</h3>
-        <p>{{ medico.departamento }}</p>
-        </div>
-        </div>
-        <div class="seccion">
-        <div>
+
+  <div class="tarjeta seccion-documentos">
+    <h2>Carnet y Matricula</h2>
+    <div class="grid-documentos">
+      <div class="matricula-medico" targe>
+        <h2>Matricula</h2>
+        <iframe [src]="this.pdf" width="100%" height="600px" style="border: none"></iframe>
+      </div>
+      <div class="carnet-profesional">
         <h3>Carnet Profesional</h3>
-        <img [src]="medico.carnet" alt="Carnet profesional" />
-        </div>
+        <img [src]="medico.carnet" alt="Carnet profesional" class="imagen" />
+      </div>
     </div>
-</div>
+  </div>
 
-  <div class="seccion">
+  <div class="tarjeta">
     <h3>Admitido por</h3>
     <p>{{ medico.admitidoPor }}</p>
   </div>

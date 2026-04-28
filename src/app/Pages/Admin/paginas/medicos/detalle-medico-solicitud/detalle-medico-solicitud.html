@@ -1,49 +1,48 @@
-<div class="detalle-paciente">
-  <header class="header">
-    <h1>{{ medico.nombre }}</h1>
-    <div class="acciones">
-      <button class="btn aceptar" (click)="activarMedico()">Aceptar</button>
-      <button class="btn rechazar" (click)="mostrarModalRechazo()">Rechazar</button>
+<div class="detalle-medico">
+  <header class="tarjeta perfil-header">
+    <div class="foto-wrapper">
+      <img
+        [src]="'https://api.dicebear.com/9.x/initials/svg?seed=' + medico.nombre"
+        alt="Foto Perfil Médico"
+        class="foto-perfil"
+      />
+    </div>
+    <div class="perfil-info">
+      <h1 class="nombre">{{ medico.nombre }}</h1>
+      <span>solicitud</span>
+      <div class="acciones">
+        <button class="btn aceptar" (click)="activarMedico()">Aceptar</button>
+        <button class="btn rechazar" (click)="mostrarModalRechazo()">Rechazar</button>
+      </div>
     </div>
   </header>
 
-  <div class="seccion">
-    <h3>Datos Personales</h3>
+  <div class="tarjeta">
+    <h2>Datos Personales</h2>
     <div class="info">
       <div><strong>ID:</strong> {{ medico.id }}</div>
       <div><strong>Fecha de nacimiento:</strong> {{ medico.fechaNac }}</div>
       <div><strong>Teléfono:</strong> {{ medico.telefono }}</div>
       <div><strong>Correo:</strong> {{ medico.correo }}</div>
+      <div><strong>Departamento:</strong> {{ medico.departamento }}</div>
     </div>
   </div>
 
-  <div class="seccion">
-    <h3>Matrícula</h3>
-    <div class="imagen">
-      <iframe
-        [src]="pdf"
-        width="100%"
-        height="600px"
-        style="border:none;"
-      ></iframe>
+  <div class="tarjeta seccion-documentos">
+    <h2>Carnet y Matricula</h2>
+    <div class="grid-documentos">
+      <div class="matricula-medico" targe>
+        <h2>Matricula</h2>
+        <iframe [src]="pdf" width="100%" height="600px" style="border: none"></iframe>
+      </div>
+      <div class="carnet-profesional">
+        <h3>Carnet Profesional</h3>
+        <img [src]="medico.carnet" alt="Carnet profesional" class="imagen" />
+      </div>
     </div>
   </div>
 
-  <div class="doble">
-    <div class="seccion">
-      <h3>Departamento</h3>
-      <p>{{ medico.departamento }}</p>
-    </div>
-    <div class="seccion">
-      <h3>Carnet Profesional</h3>
-      <img [src]="medico.carnet" alt="Carnet profesional" />
-    </div>
-  </div>
-
-  <div class="seccion">
-    <h3>Admitido por</h3>
-    <p>{{ medico.admitidoPor }}</p>
-  </div>
+  
 </div>
 
 <!-- Modal de confirmación para aceptar -->
@@ -54,10 +53,16 @@
       <button class="btn-cerrar" (click)="cerrarModalAceptar()">×</button>
     </div>
     <div class="modal-body">
-      <div class="modal-icon" style="color: #28a745; font-size: 4rem;
-  font-weight: bold;
-  margin-bottom: 1rem;">✓</div>
-      <p>¿Activar al médico <strong>{{medico?.nombre}}</strong>?</p>
+      <div
+        class="modal-icon"
+        style="color: #28a745; font-size: 4rem; font-weight: bold; margin-bottom: 1rem"
+      >
+        ✓
+      </div>
+      <p>
+        ¿Activar al médico <strong>{{ medico?.nombre }}</strong
+        >?
+      </p>
       <p>Recibirá acceso al sistema.</p>
     </div>
     <div class="modal-footer">
@@ -76,7 +81,10 @@
     </div>
     <div class="modal-body">
       <div class="modal-icon">⚠️</div>
-      <p>¿Rechazar la solicitud de <strong>{{medico?.nombre}}</strong>?</p>
+      <p>
+        ¿Rechazar la solicitud de <strong>{{ medico?.nombre }}</strong
+        >?
+      </p>
       <p>Esta acción no se puede deshacer.</p>
     </div>
     <div class="modal-footer">
@@ -92,10 +100,10 @@
     <div class="modal-body">
       <h3>¡Éxito!</h3>
       <p *ngIf="operacionActual === 'aceptar'">
-        ✓ Médico <strong>{{medico?.nombre}}</strong> activado
+        ✓ Médico <strong>{{ medico?.nombre }}</strong> activado
       </p>
       <p *ngIf="operacionActual === 'rechazar'">
-        ❌ Solicitud de <strong>{{medico?.nombre}}</strong> rechazada
+        ❌ Solicitud de <strong>{{ medico?.nombre }}</strong> rechazada
       </p>
       <div class="modal-footer">
         <button class="btn btn-aceptar" (click)="redirigirDespuesExito()">Continuar</button>
@@ -114,11 +122,15 @@
     <div class="modal-body">
       <div class="modal-icon">❌</div>
       <p><strong>Algo salió mal</strong></p>
-      <p>{{mensajeError}}</p>
+      <p>{{ mensajeError }}</p>
     </div>
     <div class="modal-footer">
       <button class="btn btn-cancelar" (click)="cerrarModalError()">Cerrar</button>
-      <button class="btn btn-aceptar" (click)="reintentarOperacion()" *ngIf="operacionActual === 'aceptar'">
+      <button
+        class="btn btn-aceptar"
+        (click)="reintentarOperacion()"
+        *ngIf="operacionActual === 'aceptar'"
+      >
         Reintentar
       </button>
     </div>

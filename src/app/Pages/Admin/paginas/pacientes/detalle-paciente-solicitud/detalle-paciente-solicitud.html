@@ -3,7 +3,7 @@
     <div class="perfil-header">
       <div class="foto-wrapper">
         <img 
-          [src]="paciente.foto_perfil || 'assets/img/default-user.png'" 
+          [src]="paciente.foto_perfil || 'https://api.dicebear.com/9.x/initials/svg?seed='+paciente.nombre" 
           alt="Foto de perfil" 
           class="foto-perfil"
         />

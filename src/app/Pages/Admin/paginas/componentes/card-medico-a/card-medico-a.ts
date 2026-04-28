@@ -3,7 +3,7 @@ import { RouterLink } from '@angular/router';
 export interface PerfilModelo{
   id:string;
   nombre:string;
-  fechaNac:string;
+  fechaNac:string;  
   telefono:string;
   correo:string;
   matricula:string;

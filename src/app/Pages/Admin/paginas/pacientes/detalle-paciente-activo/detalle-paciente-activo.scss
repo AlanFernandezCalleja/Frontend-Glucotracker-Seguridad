@@ -3,7 +3,7 @@ $bg: #eaf6f7;
 $ink: #172b3a;
 $muted: #5d6b7a;
 $border: #9dd7db;
-$primary: #0a80fb;
+$primary: #2E7A8A;
 $chip-bg: #e6f7ff;
 /* Nuevas variables de apoyo */
 $white: #ffffff;
@@ -49,6 +49,7 @@ h3 { font-size: 1.1rem; font-weight: 600; margin: 0; color: $ink; }
 .subtitulo { font-size: 0.9rem; color: $muted; margin: -8px 0 16px 0; }
 .label { color: $muted; font-size: 0.9rem; font-weight: 500; }
 .valor { color: $ink; font-size: 0.95rem; font-weight: 600; }
+
 .separador { height: 1px; background: rgba($border, 0.3); margin: 20px 0; }
 
 /* HEADER PERFIL */
@@ -294,4 +295,74 @@ h3 { font-size: 1.1rem; font-weight: 600; margin: 0; color: $ink; }
   height: 1px;
   background-color: #eee;
   width: 100%;
+}
+
+
+
+/* ... (Tus estilos originales se mantienen) ... */
+
+.grid-principal {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* SECCIÓN PERMISOS */
+.lista-permisos {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.permiso-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  border-bottom: 1px solid rgba($border, 0.2);
+
+  &:last-child { border-bottom: none; }
+
+  .permiso-texto {
+    strong { font-size: 0.95rem; color: $ink; }
+    p { font-size: 0.8rem; color: $muted; margin-top: 2px; }
+  }
+}
+
+/* ESTILO DEL SWITCH (INTERRUPTOR) */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 44px;
+  height: 24px;
+
+  input { opacity: 0; width: 0; height: 0; }
+
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 24px;
+
+    &:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: .4s;
+      border-radius: 50%;
+    }
+  }
+
+  input:checked + .slider { background-color: $primary; }
+  input:checked + .slider:before { transform: translateX(20px); }
 }

@@ -1,6 +1,9 @@
-<article class="card" (click)="ver.emit(paciente)" style="cursor:pointer;">
+<article class="card" (click)="ver.emit(paciente)" style="cursor: pointer">
   <header class="title">{{ paciente?.nombre }}</header>
-  <p class="meta">CI: {{ paciente?.id }}</p>
-
+  <div class="grid-contenido">
+    <p class="meta"><strong>ID:</strong> {{ paciente?.id }}</p>
+    <p class="meta"><strong>Email:</strong>  {{ paciente?.ci }}</p>
+    
+  </div>
   <button class="btn" type="button">Ver Paciente</button>
 </article>

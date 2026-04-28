@@ -1,62 +1,132 @@
-.detalle-paciente {
-  background: #E7FAFA;
-  min-height: 100dvh;
-  padding: 24px;
-  display: grid;
-  gap: 20px;
+/* Paleta Original */
+$bg: #eaf6f7;
+$ink: #172b3a;
+$muted: #5d6b7a;
+$border: #9dd7db;
+$primary: #2E7A8A;
+$chip-bg: #e6f7ff;
+/* Nuevas variables de apoyo */
+$white: #ffffff;
+$shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+$radius: 16px;
+
+/* CONTENEDOR PRINCIPAL */
+.detalle-medico {
+  background: $bg;
+  min-height: 100vh;
+  padding: 32px;
+  padding-left: 60px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  color: $ink;
+  animation: fadeIn 0.6s ease-out;
   box-sizing: border-box;
-  animation: fadeIn 0.8s ease-out;
+
+  @media (max-width: 768px) {
+    padding: 16px;
+  }
 }
+
 @keyframes fadeIn {
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
 }
-h1,h3,strong,div{
-  font-family: Arial, Helvetica, sans-serif;
+
+/* CLASE BASE PARA TODAS LAS CAJAS */
+.tarjeta {
+  background: $white;
+  border-radius: $radius;
+  padding: 24px;
+  box-shadow: $shadow;
+  border: 1px solid rgba($border, 0.4);
 }
 
-.header {
+/* TIPOGRAFÍA BÁSICA */
+h1 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin: 0;
+  color: $ink;
+}
+
+h2 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 0 0 16px 0;
+  color: $ink;
+}
+
+h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0;
+  color: $ink;
+}
+
+.subtitulo {
+  font-size: 0.9rem;
+  color: $muted;
+  margin: -8px 0 16px 0;
+}
+
+.label {
+  color: $muted;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.valor {
+  color: $ink;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+/* HEADER PERFIL */
+.perfil-header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  gap: 24px;
+
+  .perfil-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  @media (max-width: 700px) {
+    flex-direction: column;
+    text-align: center;
+
+    .perfil-info {
+      align-items: center;
+    }
+  }
 }
 
-.header h1 {
-  font-size: 2rem;
-  font-weight: bold;
+.foto-wrapper {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 4px solid $white;
+  box-shadow: 0 4px 12px rgba(10, 128, 251, 0.2);
+  background: $bg;
+
+  .foto-perfil {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 }
 
-.acciones {
-  display: flex;
-  gap: 10px;
-}
-
-.btn {
-  padding: 8px 14px;
-  border-radius: 6px;
-  border: none;
-  font-weight: bold;
-  cursor: pointer;
-  transition: 0.2s ease;
-}
-
-.btn.aceptar {
-  background-color: #7CCB63;
-  color: white;
-}
-
-.btn.rechazar {
-  background-color: #E57373;
-  color: white;
-}
-
-.btn:hover {
-  opacity: 0.9;
-}
 
 .seccion {
   background: white;
@@ -65,25 +135,106 @@ h1,h3,strong,div{
   padding: 16px;
 }
 
+.grid-documentos {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 25px;
+
+  @media (max-width: 1300px) {
+    grid-template-columns: 1fr;
+  }
+}
+
 .info {
   display: grid;
   gap: 6px;
   font-size: 15px;
 }
 
-.doble {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
+.carnet-profesional {
+  transition: transform 0.3s ease-in-out;
+  display: inline-block;
 }
 
-.imagen img {
-  width: 100%;
+.carnet-profesional img {
+  width: 380px;
   border-radius: 8px;
-  border: 1px solid #ccc;
-  object-fit: contain;
+  border: 5px solid #09a3eb;
+  object-fit: fill;
+
+}
+
+.carnet-profesional:hover {
+  transform: translateY(-3px);
 }
 
 p {
   margin: 0;
+}
+/* ... (Tus estilos originales se mantienen) ... */
+
+.grid-principal {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* SECCIÓN PERMISOS */
+.lista-permisos {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.permiso-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  border-bottom: 1px solid rgba($border, 0.2);
+
+  &:last-child { border-bottom: none; }
+
+  .permiso-texto {
+    strong { font-size: 0.95rem; color: $ink; }
+    p { font-size: 0.8rem; color: $muted; margin-top: 2px; }
+  }
+}
+
+/* ESTILO DEL SWITCH (INTERRUPTOR) */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 44px;
+  height: 24px;
+
+  input { opacity: 0; width: 0; height: 0; }
+
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 24px;
+
+    &:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: .4s;
+      border-radius: 50%;
+    }
+  }
+
+  input:checked + .slider { background-color: $primary; }
+  input:checked + .slider:before { transform: translateX(20px); }
 }
