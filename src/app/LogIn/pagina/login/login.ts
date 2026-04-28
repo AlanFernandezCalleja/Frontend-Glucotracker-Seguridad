@@ -175,7 +175,8 @@ export class Login implements OnInit {
 
   // Métodos para redirección a registros
   irARegistroPaciente() {
-    this.router.navigate(['/solicitar-paciente']);
+    this.router.navigate(['/solicitar-acceso']);
+    //this.router.navigate(['/solicitar-paciente']);
   }
 
   irARegistroMedico() {

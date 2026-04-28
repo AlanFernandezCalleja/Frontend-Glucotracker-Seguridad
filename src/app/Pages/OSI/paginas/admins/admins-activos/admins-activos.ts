@@ -118,7 +118,7 @@ export class AdminsActivos implements OnInit {
   });
 
   verAdmin(m: PerfilAdmin) {
-    this.router.navigate(['administradores/activos/detalle'], { state: { admin: m } });
+    this.router.navigate(['/osi/administradores/activos/detalle'], { state: { admin: m } });
   }
   adminsOriginales: any[] = [];
   hayCambios = false;

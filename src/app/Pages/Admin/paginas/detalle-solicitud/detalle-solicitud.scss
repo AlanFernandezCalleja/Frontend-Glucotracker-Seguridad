@@ -1,0 +1,97 @@
+/* Inserta todo el CSS de solicitar-medico.scss que ya tienes para la estructura base */
+@import '../../../../solicitar/solicitar-medico/solicitar-medico.scss';
+/* O copia el contenido directamente aquí */
+
+/* --- NUEVOS ESTILOS PARA ESTA VISTA --- */
+
+.user-summary {
+    display: flex;
+    justify-content: space-between;
+    background: #ffffff;
+    border: 2px solid #5ab0c9;
+    border-radius: 20px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+
+    .summary-item {
+        flex: 1;
+        text-align: center;
+        border-right: 1px solid #ddd;
+
+        &:last-child {
+            border-right: none;
+        }
+
+        label {
+            display: block;
+            color: #777;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+        }
+
+        p {
+            color: #0a3d62;
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin: 0;
+        }
+    }
+}
+
+.role-selector {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-top: 1rem;
+
+    .role-card {
+        background: #fff;
+        border: 3px solid #ccc;
+        border-radius: 12px;
+        padding: 1rem 3rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+
+        .hidden-radio {
+            display: none;
+            /* Ocultamos el circulito del radio real */
+        }
+
+        .role-name {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #555;
+        }
+
+        &:hover {
+            border-color: #5ab0c9;
+            transform: translateY(-2px);
+        }
+
+        &.active {
+            border-color: #0a3d62;
+            background: #7fffd4;
+            box-shadow: 0 4px 10px rgba(10, 61, 98, 0.2);
+
+            .role-name {
+                color: #0a3d62;
+            }
+        }
+    }
+}
+
+.preview {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+
+    img {
+        width: 200px;
+        height: 200px;
+        object-fit: cover;
+        border-radius: 15px;
+        border: 2px solid #0a3d62;
+    }
+}

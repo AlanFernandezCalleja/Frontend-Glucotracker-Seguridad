@@ -16,13 +16,13 @@ export class DetallePacienteSolicitud implements OnInit {
   private router = inject(Router);
 
   paciente!: PacienteResumen;
-  
+
   // Variables para control de modales
   mostrarModalAceptar = false;
   mostrarModalRechazar = false;
   mostrarModalExito = false;
   mostrarModalError = false;
-  
+
   operacionActual: 'aceptar' | 'rechazar' | null = null;
   mensajeError = '';
 
@@ -85,15 +85,15 @@ export class DetallePacienteSolicitud implements OnInit {
     }
 
     const payload = { idAdmin };
-    
-    this.http.put(activarUrl, payload).subscribe({
+
+    /*this.http.put(activarUrl, payload).subscribe({
       next: (res) => {
         this.mostrarModalExito = true;
       },
       error: (err) => {
         this.mostrarError(this.obtenerMensajeError(err));
       }
-    });
+    });*/
   }
 
   // Métodos auxiliares

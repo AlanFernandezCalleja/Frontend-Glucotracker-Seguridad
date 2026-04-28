@@ -1,39 +1,49 @@
-import { Component, HostListener,signal,inject,OnInit } from '@angular/core';
+import { Component, HostListener, signal, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CardAlertaA, AlertaResumen } from '../../componentes/card-alerta-a/card-alerta-a';
-import { HttpClient,HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { environment } from '../../../../../environments/environment';
+
+// 🔹 Interfaz para manejar el nuevo formato estándar de tu API
+export interface ApiResponse<T> {
+  status: string;
+  code: number;
+  message: string;
+  data: T;
+}
+
 @Component({
   selector: 'app-alertas-activas',
   standalone: true,
-  imports: [CommonModule, FormsModule, CardAlertaA,HttpClientModule],
+  imports: [CommonModule, FormsModule, CardAlertaA, HttpClientModule],
   templateUrl: './alertas-activas.html',
   styleUrls: ['./alertas-activas.scss'],
 })
 export class AlertasActivas implements OnInit {
   // ===== buscador =====
   q = '';
-    private http = inject(HttpClient);
+  private http = inject(HttpClient);
+
   // ===== demo data =====
   alertas = signal<AlertaResumen[]>([]);
   loading = signal(false);
   error = signal('');
 
   isSuccessOpen = false;
-  // Lista visible según búsqueda
- get visibles(): AlertaResumen[] {
-  const t = this.q.trim().toLowerCase();
-  if (!t) return this.alertas();
-  
-  return this.alertas().filter(a =>
-    a.paciente.toLowerCase().includes(t) ||
-    a.nivel.toLowerCase().includes(t) ||
-    a.fecha.includes(t) ||
-    a.hora.includes(t)
-  );
-}
 
+  // Lista visible según búsqueda
+  get visibles(): AlertaResumen[] {
+    const t = this.q.trim().toLowerCase();
+    if (!t) return this.alertas();
+
+    return this.alertas().filter(a =>
+      a.paciente.toLowerCase().includes(t) ||
+      a.nivel.toLowerCase().includes(t) ||
+      a.fecha.includes(t) ||
+      a.hora.includes(t)
+    );
+  }
 
   trackById = (_: number, a: AlertaResumen) => a.id;
 
@@ -44,6 +54,7 @@ export class AlertasActivas implements OnInit {
 
   isErrorOpen = false;
   errorMessage: string | null = null;
+
   openDetalle(a: AlertaResumen) {
     this.selected = a;
     this.respuesta = '';
@@ -60,29 +71,29 @@ export class AlertasActivas implements OnInit {
 
   resolver() {
     const fechaActual = new Date();
-    // Aquí iría tu llamada a la API para resolver la alerta
-    
-    const datos={
-      id_medico:localStorage.getItem('id_rol'),
-      fecha_registro:fechaActual.toISOString().split('T')[0],
-      mensaje: this.respuesta,
-      alertas_id_alerta:this.selected?.id
-    }
-    console.log('Resolver alerta',{datos});
 
-    const url=`${environment.apiUrl}/medicos/responder/alerta`;
-    this.http.post(url,datos,{withCredentials:true}).subscribe({
-      next:(res)=>{
-        this.isSuccessOpen=true
+    const datos = {
+      id_medico: localStorage.getItem('id_rol'),
+      fecha_registro: fechaActual.toISOString().split('T')[0],
+      mensaje: this.respuesta,
+      alertas_id_alerta: this.selected?.id
+    };
+
+    console.log('Resolver alerta', { datos });
+
+    const url = `${environment.apiUrl}/medicos/responder/alerta`;
+    this.http.post(url, datos, { withCredentials: true }).subscribe({
+      next: (res) => {
+        this.isSuccessOpen = true;
         this.alertas.set([]);
         this.cargarAlertas(localStorage.getItem('id_rol'));
       },
-      error:(err)=>{
+      error: (err) => {
         this.errorMessage = err;
         this.isErrorOpen = true;
       }
-    })
-    
+    });
+
     this.closeModal();
   }
 
@@ -92,14 +103,19 @@ export class AlertasActivas implements OnInit {
     if (this.isModalOpen) this.closeModal();
   }
 
-  cargarAlertas(idMedico: string|null) {
+  cargarAlertas(idMedico: string | null) {
     this.loading.set(true);
+
+    // 🔹 Indicamos que esperamos un ApiResponse que contiene un arreglo de cualquier tipo de datos crudos
     this.http
-      .get<AlertaResumen[]>(`${environment.apiUrl}/medicos/alertasActivas/${idMedico}`,{withCredentials:true})
+      .get<ApiResponse<any[]>>(`${environment.apiUrl}/medicos/alertasActivas/${idMedico}`, { withCredentials: true })
       .subscribe({
-        next: (data) => {
-          // mapear los tipos si es necesario
-          const alertasMapeadas: AlertaResumen[] = data.map((a) => ({
+        next: (res) => {
+          // 🔹 Extraemos el arreglo real de res.data (o un arreglo vacío si no hay datos)
+          const data = res.data || [];
+
+          // mapear los tipos
+          const alertasMapeadas: AlertaResumen[] = data.map((a: any) => ({
             id: a.id,
             nivel: a.nivel,
             idpaciente: a.idpaciente.toString(),
@@ -108,7 +124,7 @@ export class AlertasActivas implements OnInit {
             hora: a.hora.slice(0, 5), // HH:mm
             glucosa: Number(a.glucosa),
             momento: a.momento || '',
-            observaciones:a.observaciones
+            observaciones: a.observaciones
           }));
 
           this.alertas.set(alertasMapeadas);
@@ -122,8 +138,9 @@ export class AlertasActivas implements OnInit {
         },
       });
   }
-  ngOnInit(){
-    const idMedico=localStorage.getItem('id_rol');
+
+  ngOnInit() {
+    const idMedico = localStorage.getItem('id_rol');
     this.cargarAlertas(idMedico);
   }
 }

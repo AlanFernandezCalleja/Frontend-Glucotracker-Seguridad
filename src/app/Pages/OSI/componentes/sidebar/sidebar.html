@@ -1,5 +1,4 @@
-
-  <!-- ad-sidebar.component.html -->
+<!-- ad-sidebar.component.html -->
 <div class="sidebar">
   <div class="top">
     <div class="avatar">
@@ -8,19 +7,28 @@
 
   </div>
   <nav class="menu">
-      <a class="item" routerLink="./permisos" routerLinkActive="active">
+    <a class="item" routerLink="./permisos" routerLinkActive="active">
 
-        <span>Permisos</span>
-      </a>
-      <a class="item" routerLink="./roles" routerLinkActive="active">
+      <span>Permisos</span>
+    </a>
+    <a class="item" routerLink="./roles" routerLinkActive="active">
 
-        <span>Roles</span>
-      </a>
+      <span>Roles</span>
+    </a>
 
-      
+    <button type="button" class="item item-btn" (click)="toggleAdmin()" [attr.aria-expanded]="openAdmin()"
+      aria-controls="submenu-admin">
 
-      
-    </nav>
+      <span class="grow">Administradores</span>
+      <span class="chev" [class.open]="openAdmin()">▾</span>
+    </button>
+    <div id="submenu-admin" class="submenu" *ngIf="openAdmin() ">
+      <a class="subitem" routerLink="./administradores/activos" routerLinkActive="active">Activos</a>
+      <a class="subitem" routerLink="./administrador/agregar" routerLinkActive="active">Agregar</a>
+    </div>
+
+
+  </nav>
 
   <button class="logout" type="button" (click)="logout.emit()">
     Cerrar Sesión

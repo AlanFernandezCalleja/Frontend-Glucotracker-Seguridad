@@ -1,0 +1,108 @@
+<div class="general">
+  <div class="form-container">
+    <h2>Solicitar Cuenta en GlucoTracker</h2>
+    <p class="info-text">
+      Crea tus credenciales de acceso. Una vez completado este paso, deberás enviar tu formulario de validación (PDF) a Soporte para activar tu cuenta.
+    </p>
+
+    <form [formGroup]="solicitudForm" (ngSubmit)="enviarSolicitud()">
+      
+      <div class="input-box full-width">
+        <label>Nombre Completo</label>
+        <input type="text" formControlName="nombre" placeholder="Ej: Juan Pérez" />
+      </div>
+
+      <div class="row">
+        <div class="input-box">
+          <label>Fecha de nacimiento</label>
+          <input type="date" formControlName="fechaNacimiento" />
+        </div>
+        <div class="input-box">
+          <label>Teléfono Celular</label>
+          <input type="tel" formControlName="telefono" placeholder="Ej: 71234567" />
+        </div>
+      </div>
+
+      <div class="input-box full-width">
+        <label>Correo Electrónico</label>
+        <input type="email" formControlName="correo" placeholder="correo@ejemplo.com" />
+      </div>
+      
+      <div class="row">
+        <div class="input-box">
+          <label>Contraseña</label>
+          <input type="password" formControlName="contrasena" placeholder="Crea una contraseña segura" />
+          <small *ngIf="solicitudForm.get('contrasena')?.touched && solicitudForm.get('contrasena')?.errors">
+            <span *ngIf="solicitudForm.get('contrasena')?.errors?.['required']">Obligatoria</span>
+            <span *ngIf="solicitudForm.get('contrasena')?.errors?.['pattern']">Requiere 12 caracteres, mayúsculas, números y símbolos</span>
+          </small>
+        </div>
+
+        <div class="input-box">
+          <label>Confirmar Contraseña</label>
+          <input type="password" formControlName="confirmarContrasena" placeholder="Repite la contraseña" />
+          <small *ngIf="solicitudForm.get('confirmarContrasena')?.touched && solicitudForm.get('confirmarContrasena')?.errors">
+            <span *ngIf="solicitudForm.get('confirmarContrasena')?.errors?.['mismatch']">Las contraseñas no coinciden</span>
+          </small>
+        </div>
+      </div>
+
+      <div class="button-container">
+        <button type="submit" class="btn" [disabled]="!solicitudForm.valid">Enviar Solicitud</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="modal-overlay" *ngIf="mostrarModalExito" (click)="cerrarModalExito()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-body">
+      <div class="modal-icon grande" style="color: #28a745; font-size: 3.5rem; font-weight: bold; margin-bottom: 0.5rem;">📩</div>
+      <h3>¡Paso 1 Completado!</h3>
+      <div class="instrucciones-pdf">
+        <p>Tus credenciales han sido registradas. Para activar tu cuenta debes completar el <strong>Paso 2</strong>:</p>
+        <ol>
+          <li>Descarga el formulario PDF correspondiente a tu perfil (Paciente o Médico).</li>
+          <li>Llénalo con tus datos clínicos/profesionales.</li>
+          <li>Envíalo por correo a <strong>soporte&#64;glucotracker.com</strong>.</li>
+        </ol>
+        <p class="nota">Nuestro equipo validará tu información y activará tu cuenta en un plazo de 24 horas.</p>
+      </div>
+      <div class="modal-footer" style="margin-top: 1.5rem;">
+        <button class="btn btn-modal-aceptar" (click)="cerrarModalExito()">Entendido, volver al Login</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" *ngIf="mostrarModalError" (click)="cerrarModalError()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>Aviso</h3>
+      <button class="btn-cerrar" (click)="cerrarModalError()">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-icon">❌</div>
+      <p><strong>{{mensajeError}}</strong></p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-modal-cancelar" (click)="cerrarModalError()">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" *ngIf="mostrarModalValidacion" (click)="cerrarModalValidacion()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>Datos Incompletos</h3>
+      <button class="btn-cerrar" (click)="cerrarModalValidacion()">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-icon">⚠️</div>
+      <p>Por favor, revisa los campos marcados en rojo antes de enviar.</p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-modal-aceptar" (click)="cerrarModalValidacion()">Entendido</button>
+    </div>
+  </div>
+</div>
