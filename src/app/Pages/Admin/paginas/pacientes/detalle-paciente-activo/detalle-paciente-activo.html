@@ -1,14 +1,10 @@
 <div class="detalle-paciente">
   <header class="tarjeta perfil-header">
     <div class="foto-wrapper">
-      <img
-        [src]="
+      <img [src]="
           paciente.foto_perfil ||
           'https://api.dicebear.com/9.x/initials/svg?seed=' + paciente.nombre
-        "
-        alt="Foto de perfil"
-        class="foto-perfil"
-      />
+        " alt="Foto de perfil" class="foto-perfil" />
     </div>
     <div class="perfil-info">
       <h1 class="nombre">{{ paciente.nombre }}</h1>
@@ -89,94 +85,6 @@
         </div>
       </section>
 
-      <section class="tarjeta permisos">
-        <h2>Control de Permisos</h2>
-        <div class="lista-permisos">
-          <!-- Permiso: Registrar Glucosa -->
-          <div class="permiso-item">
-            <div class="permiso-texto">
-              <strong>Registrar Glucosa</strong>
-              <p>Permitir al paciente registrar la glucosa en su cuenta</p>
-            </div>
-            <label class="switch">
-              <input
-                type="checkbox"
-                (change)="toggleRegistrarGlucosa()"
-              />
-              <span class="slider"></span>
-            </label>
-          </div>
-
-          <!-- Permiso: Historial de Glucosa -->
-          <div class="permiso-item">
-            <div class="permiso-texto">
-              <strong>Ver Historial Glucosa</strong>
-              <p>Permitir al paciente revisar su historial de glucosa</p>
-            </div>
-            <label class="switch">
-              <input
-                type="checkbox"
-                (change)="toggleVerHistorial()"
-              />
-              <span class="slider"></span>
-            </label>
-          </div>
-          <!-- Permiso: Editar Perfil -->
-          <div class="permiso-item">
-            <div class="permiso-texto">
-              <strong>Editar Perfil</strong>
-              <p>Permitir al paciente cambiar los datos de su cuenta</p>
-            </div>
-            <label class="switch">
-              <input
-                type="checkbox"
-                (change)="toggleEditarPerfil()"
-              />
-              <span class="slider"></span>
-            </label>
-          </div>
-        </div>
-
-        <p class="subtitulo">Guardar cambios Realizados de los permisos de paciente</p>
-                
-        <p class="subtitulo">Gestiona el acceso del paciente a la plataforma.</p>
-        <div class="botones-permisos">
-          <button
-            class="permisoRegistrarGlucosa"
-          >
-            Guardar Cambios
-             
-          </button>
-          <button 
-            [class.permitido]="permisoRegistrarGlucosa" 
-            [class.denegado]="!permisoRegistrarGlucosa"
-            (click)="toggleRegistrarGlucosa()">
-            <i class="icono">🩸</i>
-            {{ permisoRegistrarGlucosa ? 'Denegar Registrar Glucosa' : 'Permitir Registrar Glucosa' }}
-          </button>
-
-          <button 
-            [class.permitido]="permisoVerHistorial" 
-            [class.denegado]="!permisoVerHistorial"
-            (click)="toggleVerHistorial()">
-            <i class="icono">📊</i>
-            {{ permisoVerHistorial ? 'Denegar Ver Historial' : 'Permitir Ver Historial' }}
-          </button>
-
-          <button 
-            [class.permitido]="permisoEditarPerfil" 
-            [class.denegado]="!permisoEditarPerfil"
-            (click)="toggleEditarPerfil()">
-            <i class="icono">⚙️</i>
-            {{ permisoEditarPerfil ? 'Denegar Editar Perfil' : 'Permitir Editar Perfil' }}
-          </button>
-          <div class="separador" style="margin: 15px 0;"></div>
-
-        <button class="btn-guardar-permisos" (click)="guardarPermisos()" [disabled]="!hayCambios">
-          💾 Guardar Permisos
-        </button>
-        </div>
-      </section>
     </div>
   </div>
 

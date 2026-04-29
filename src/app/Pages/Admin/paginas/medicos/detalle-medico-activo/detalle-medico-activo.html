@@ -1,11 +1,8 @@
 <div class="detalle-medico">
   <header class="tarjeta perfil-header">
     <div class="foto-wrapper">
-      <img
-        [src]="'https://api.dicebear.com/9.x/initials/svg?seed=' + medico.nombre"
-        alt="Foto Perfil Médico"
-        class="foto-perfil"
-      />
+      <img [src]="'https://api.dicebear.com/9.x/initials/svg?seed=' + medico.nombre" alt="Foto Perfil Médico"
+        class="foto-perfil" />
     </div>
     <div class="perfil-info">
       <h1 class="nombre">{{ medico.nombre }}</h1>
@@ -22,7 +19,7 @@
       <div><strong>Departamento:</strong> {{ medico.departamento }}</div>
     </div>
   </div>
-
+  <!--
   <div class="tarjeta seccion-permisos">
     <h2>Control de Permisos</h2>
     <div class="lista-permisos">
@@ -44,7 +41,7 @@
     <div>
       <button>Guardar cambios</button>
     </div>
-  </div>
+  </div>-->
 
   <div class="tarjeta seccion-documentos">
     <h2>Carnet y Matricula</h2>

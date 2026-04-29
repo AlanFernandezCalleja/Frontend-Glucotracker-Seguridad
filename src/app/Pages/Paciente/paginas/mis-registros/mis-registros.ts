@@ -1,4 +1,4 @@
-import { Component, OnInit,inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CardPromedio } from '../../componentes/card-promedio/card-promedio';
@@ -6,9 +6,18 @@ import { CardGlucosa } from '../../componentes/card-glucosa/card-glucosa';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { environment } from '../../../../../environments/environment';
 
+// 🔹 1. Interfaz de respuesta estandarizada
+export interface ApiResponse<T> {
+  status: string;
+  code: number;
+  message: string;
+  data: T;
+}
+
 @Component({
   selector: 'app-mis-registros',
-  imports: [CommonModule, FormsModule, CardPromedio, CardGlucosa,HttpClientModule],
+  standalone: true, // Asumo que es standalone por tus imports
+  imports: [CommonModule, FormsModule, CardPromedio, CardGlucosa, HttpClientModule],
   templateUrl: './mis-registros.html',
   styleUrl: './mis-registros.scss',
 })
@@ -19,12 +28,12 @@ export class MisRegistros implements OnInit {
   fechaSeleccionada: string = '';
   mesSeleccionado: string = '';
   fechaHoy: string = '';
-  
+
   promedioGlucosa: number = 0;
   mostrarRegistros: boolean = false;
   mostrarModal: boolean = false;
   registroSeleccionado: any = {};
-  
+
   meses = [
     { value: '01', nombre: 'Enero' },
     { value: '02', nombre: 'Febrero' },
@@ -44,7 +53,6 @@ export class MisRegistros implements OnInit {
   registrosFiltrados: any[] = [];
 
   ngOnInit() {
-    
     this.fechaHoy = this.getFechaHoy();
     this.cargarRegistros();
   }
@@ -59,14 +67,20 @@ export class MisRegistros implements OnInit {
 
   cargarRegistros() {
     const idPaciente = localStorage.getItem('id_rol');
-    this.http.get<any[]>(`${environment.apiUrl}/pacientes/registros/${idPaciente}`,{withCredentials:true}).subscribe({
-      next: (data) => {
-        this.registros = data;
+
+    // 🔹 2. Tipamos la petición indicando que esperamos el ApiResponse con un arreglo
+    this.http.get<ApiResponse<any[]>>(`${environment.apiUrl}/pacientes/registros/${idPaciente}`, { withCredentials: true }).subscribe({
+      next: (res) => {
+        // 🔹 3. Extraemos el arreglo de la propiedad res.data
+        this.registros = res.data || [];
         console.log('Registros cargados:', this.registros);
+
         // Una vez cargados los registros, aplicar el filtro del día automáticamente
         this.aplicarFiltroDelDia();
       },
-      error: (err) => console.error('Error al obtener registros:', err)
+      error: (err) => {
+        console.error('Error al obtener registros:', err);
+      }
     });
   }
 
@@ -74,10 +88,10 @@ export class MisRegistros implements OnInit {
     // Filtrar registros del día actual
     this.registrosFiltrados = this.registros.filter(reg => reg.fecha === this.fechaHoy);
     this.mostrarRegistros = true;
-    
+
     // Calcular promedio
     this.calcularPromedio();
-    
+
     // Si no hay registros del día, mostrar mensaje
     if (this.registrosFiltrados.length === 0) {
       console.log('No hay registros para el día de hoy');
@@ -90,7 +104,7 @@ export class MisRegistros implements OnInit {
     this.mostrarRegistros = false;
     this.registrosFiltrados = [];
     this.promedioGlucosa = 0;
-    
+
     // Si es "del día", filtrar automáticamente
     if (this.filtroSeleccionado === 'dia') {
       this.aplicarFiltroDelDia();
@@ -106,7 +120,7 @@ export class MisRegistros implements OnInit {
         this.registrosFiltrados = this.registros.filter(reg => reg.fecha === this.fechaHoy);
         this.mostrarRegistros = true;
         break;
-      
+
       case 'fecha':
         // Solo mostrar si se seleccionó una fecha válida (no futura)
         if (this.fechaSeleccionada && this.fechaSeleccionada <= this.fechaHoy) {
@@ -114,7 +128,7 @@ export class MisRegistros implements OnInit {
           this.mostrarRegistros = true;
         }
         break;
-      
+
       case 'mes':
         // Solo mostrar si se seleccionó un mes
         if (this.mesSeleccionado) {

@@ -6,7 +6,7 @@ import { FormsModule } from '@angular/forms'; // 1. Importar FormsModule
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 @Component({
   selector: 'app-detalle-medico-activo',
-  imports: [CommonModule, SafeUrlPipe,FormsModule],
+  imports: [CommonModule, SafeUrlPipe, FormsModule],
   templateUrl: './detalle-medico-activo.html',
   styleUrl: './detalle-medico-activo.scss',
 })
@@ -17,6 +17,7 @@ export class DetalleMedicoActivo {
   constructor(private sanitizer: DomSanitizer) { }
 
   // Definición de la estructura de permisos
+  /*
   listaPermisos = [
     { key: 'registrarGlucosa', label: 'Registrar Glucosa', descripcion: 'Permite anotar niveles de glucosa de pacientes.' },
     { key: 'editarPerfil', label: 'Editar Perfil', descripcion: 'Permite modificar datos del perfil médico.' },
@@ -32,7 +33,7 @@ export class DetalleMedicoActivo {
     verHistorial: false,
     responderAlertas: false,
     verAlertas: false
-  };
+  };*/
 
   ngOnInit() {
     // Recibir el objeto médico desde la navegación
@@ -47,9 +48,10 @@ export class DetalleMedicoActivo {
       console.warn('No se encontró la matrícula o el médico');
     }
   }
+  /*
   togglePermiso(key: string) {
     console.log(`Permiso ${key} cambiado a:`, this.permisosEstado[key]);
     // Aquí podrías llamar a un servicio para guardar el cambio en el servidor
-  }
+  }*/
 
 } 

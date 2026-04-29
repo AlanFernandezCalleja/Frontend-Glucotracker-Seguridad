@@ -4,6 +4,14 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } 
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { environment } from '../../../../../environments/environment';
 import { GlucosaService } from './glucosa.service';
+
+export interface ApiResponse<T> {
+  status: string;
+  code: number;
+  message: string;
+  data: T;
+}
+
 @Component({
   selector: 'app-registrar-glucosa',
   standalone: true, // 👈 importante si usas componentes standalone
@@ -73,31 +81,47 @@ export class RegistrarGlucosa implements OnInit {
   }
 
   obtenerDatosPaciente() {
-    this.http.get<any>(`${environment.apiUrl}/registro/datosGlucosa/` + localStorage.getItem('id_rol')).subscribe({
-      next: (data) => {
-        this.datosPaciente = data;
+    const idRol = localStorage.getItem('id_rol');
+
+    this.http.get<any>( // Si tienes la interfaz, cámbialo a <ApiResponse<any>>
+      `${environment.apiUrl}/registro/datosGlucosa/${idRol}`,
+      { withCredentials: true } // Añadido para mantener la sesión si usas cookies
+    ).subscribe({
+      next: (res) => {
+        // 🔹 1. Extraemos los datos desde res.data
+        this.datosPaciente = res.data;
         console.log("datos paciente ", this.datosPaciente);
+
         if (this.datosPaciente) {
           this.datosEnviar.id_medico = this.datosPaciente.id_medico;
           this.datosEnviar.edad = this.datosPaciente.edad;
-          if (this.datosPaciente.embarazo != false) {
-            if (this.datosPaciente.enfermedades.includes('Diabetes Gestacional')) {
-              this.datosEnviar.tipo = 'Diabetes Gestacional';
 
+          if (this.datosPaciente.embarazo !== false) {
+            if (this.datosPaciente.enfermedades && this.datosPaciente.enfermedades.includes('Diabetes Gestacional')) {
+              this.datosEnviar.tipo = 'Diabetes Gestacional';
             } else {
               this.datosEnviar.tipo = 'Embarazada';
             }
           } else {
-            this.datosEnviar.tipo = this.datosPaciente.enfermedades[0];
+            // 🔹 2. Validación extra: Si no está embarazada y no tiene enfermedades base, asignamos 'General' o 'Ninguna' 
+            // para evitar que this.datosPaciente.enfermedades[0] guarde un 'undefined'.
+            if (this.datosPaciente.enfermedades && this.datosPaciente.enfermedades.length > 0) {
+              this.datosEnviar.tipo = this.datosPaciente.enfermedades[0];
+            } else {
+              this.datosEnviar.tipo = 'General'; // o el valor por defecto que maneje tu lógica
+            }
           }
         }
-      }, error: (err) => {
-        alert('Error al obtener pacientes' + err)
+      },
+      error: (err) => {
+        console.error('Error crudo:', err);
+        // 🔹 3. Mostramos el mensaje estandarizado que enviamos desde el backend
+        const mensajeError = err.error?.message || 'Ocurrió un problema de conexión';
+        alert('Error al obtener datos del paciente: ' + mensajeError);
       }
     });
-
-
   }
+
   confirmar() {
     this.modalConfirmacion1 = true;
   }
@@ -190,50 +214,68 @@ export class RegistrarGlucosa implements OnInit {
 
   generarAlerta() {
     const fechaActual = new Date();
+
     if (this.respuesta != 'NORMAL') {
       this.datosAlert.id_tipo_alerta = this.respuesta == 'HIPOGLUCEMIA' ? 1 : 2;
       this.datosAlert.id_registro = this.idRegistroGlucosa!;
       this.datosAlert.id_medico = this.datosEnviar.id_medico;
       this.datosAlert.fecha_alerta = fechaActual.toISOString().split('T')[0];
+
       if (this.datosAlert.id_tipo_alerta == 1) {
         this.tituloAlerta = "Hipoglucemia";
-        this.mensajeAlerta = "Tu glucosa está baja. Toma una fuente de azúcar de acción rápida" +
-          "y vuelve a medir en unos minutos. Se envió un "
-          + "correo a tu médico asignado para su seguimiento."
+        this.mensajeAlerta = "Tu glucosa está baja. Toma una fuente de azúcar de acción rápida y vuelve a medir en unos minutos. Se envió un correo a tu médico asignado para su seguimiento.";
       } else {
         this.tituloAlerta = "Hiperglucemia";
-        this.mensajeAlerta = "Tu glucosa está elevada. Hidrátate y vuelve a medir más adelante. Se envió un correo a tu médico asignado para que pueda hacer el seguimiento" +
-          " correspondiente."
-
+        this.mensajeAlerta = "Tu glucosa está elevada. Hidrátate y vuelve a medir más adelante. Se envió un correo a tu médico asignado para que pueda hacer el seguimiento correspondiente.";
       }
-      console.log('datos de la alerta', this.datosAlert);
-      this.http.post(`${environment.apiUrl}/registro/registrarAlerta`, this.datosAlert).subscribe({
+
+      console.log('Datos de la alerta a enviar:', this.datosAlert);
+
+      this.http.post<any>( // 🔹 Tipado recomendado: <ApiResponse<any>>
+        `${environment.apiUrl}/registro/registrarAlerta`,
+        this.datosAlert,
+        { withCredentials: true } // 🔹 Añadido para asegurar la conexión de sesión
+      ).subscribe({
         next: (res) => {
-          console.log('Alerta registrada', res)
+          // 🔹 Leemos el mensaje de éxito estandarizado y los datos insertados
+          console.log('Estado:', res.message);
+          console.log('Alerta registrada en BD:', res.data);
+
           this.modalAlerta = true;
 
           setTimeout(() => {
             this.modalAlerta = false;
           }, 7000);
         },
-        error: (err) => console.error('Error al registrar alerta', err)
+        error: (err) => {
+          // 🔹 Manejo del error con el mensaje de tu backend (ej. "Usuario del médico no encontrado")
+          const mensajeError = err.error?.message || 'Ocurrió un error al procesar la alerta';
+          console.error('Error al registrar alerta:', err);
+          alert('No se pudo completar el registro de la alerta: ' + mensajeError);
+        }
       });
     }
   }
   semanasEmbarazo: any;
   mostrarEmbarazo = false;
+
   obtenerSemanas() {
+    const idRol = localStorage.getItem("id_rol");
+
     this.http
-      .get<any>(
-        `${environment.apiUrl}/pacientes/obtenerDatosEmbarazo/${localStorage.getItem("id_rol")}`, { withCredentials: true }
+      .get<ApiResponse<{ semanas_actuales: number | null }>>( // 🔹 1. Tipamos la respuesta
+        `${environment.apiUrl}/pacientes/obtenerDatosEmbarazo/${idRol}`, { withCredentials: true }
       )
       .subscribe({
         next: (response) => {
           console.log('Semanas recibidas:', response);
 
-          this.semanasEmbarazo = response.semanas_actuales;
+          // 🔹 2. Extraemos el valor desde response.data.
+          // Si el backend devuelve null (no embarazada), le asignamos 0 por defecto.
+          const semanas = response.data.semanas_actuales;
+          this.semanasEmbarazo = semanas !== null ? semanas : 0;
 
-          // Guardar SIEMPRE
+          // Guardar SIEMPRE (ahora es seguro usar .toString() porque garantizamos que es un número)
           localStorage.setItem(
             "semanasActual",
             this.semanasEmbarazo.toString()
@@ -245,7 +287,7 @@ export class RegistrarGlucosa implements OnInit {
           }
         },
         error: (err) => {
-          console.error("Error obteniendo semanas", err);
+          console.error("Error obteniendo semanas:", err);
         }
       });
   }
