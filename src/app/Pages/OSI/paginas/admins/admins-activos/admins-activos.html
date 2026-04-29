@@ -41,6 +41,7 @@
         <tr>
           <th>CI</th>
           <th>Nombre</th>
+          <th>Estado</th>
           <th>Cargo</th>
           <th>Fecha (ingreso)</th>
           <!--<th>Permisos</th>-->
@@ -48,10 +49,11 @@
         </tr>
       </thead>
       <tbody>
-        @for (m of adminsFiltrados(); track m.id) {
+        @for (m of adminsFiltrados(); track m.id_admin) {
         <tr>
-          <td>{{ m.id }}</td>
+          <td>{{ m.id_admin }}</td>
           <td>{{ m.nombre }}</td>
+          <td class="capitalize">{{ m.estado?'Activo':'Inactivo' }}</td>
           <td class="capitalize">{{ m.cargo }}</td>
           <td>{{ m.fechaIn | date:'dd/MM/yyyy' }}</td>
           <!--

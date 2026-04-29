@@ -1,105 +1,42 @@
-// import { Component, computed, signal, inject, OnInit } from '@angular/core';
-// import { Router } from '@angular/router';
-// import { CommonModule } from '@angular/common';
-// import { CardAdminA, PerfilAdmin } from '../../componentes/card-admin-a/card-admin-a';
-// import { HttpClient, HttpClientModule } from '@angular/common/http';
-// import { environment } from '../../../../../../environments/environment';
-// @Component({
-//   selector: 'app-admins-activos',
-//   imports: [CardAdminA, CommonModule, HttpClientModule],
-//   templateUrl: './admins-activos.html',
-//   styleUrl: './admins-activos.scss',
-// })
-// export class AdminsActivos {
-//   private router = inject(Router);
-//   constructor(
-//     private http: HttpClient
-//   ) { }
-//   administradores = signal<PerfilAdmin[]>([]);
-//   ngOnInit() {
-//     this.cargarAdmins();
-
-//   }
-//   q = signal<string>('');
-
-//   // lista filtrada (por nombre o CI)
-//   // Computed para la lista filtrada
-//   adminsFiltrados = computed(() => {
-//     const query = this.q().toLowerCase();
-//     return this.administradores()
-//       .filter(p =>
-//         p.nombre.toLowerCase().includes(query) ||
-//         p.id.toString().includes(query)
-//       );
-//   });
-
-//   verAdmin(m: PerfilAdmin) {
-//     this.router.navigate(['administrador/administradores/activos/detalle'], { state: { admin: m } });
-
-//   }
-
-//   cargarAdmins() {
-//     const url = `${environment.apiUrl}/administradores/obtenerAdmins/${localStorage.getItem('id_rol')}`;
-//     this.http.get<PerfilAdmin[]>(url).subscribe({
-//       next: (response) => {
-//         console.log(response)
-//         this.administradores.set(response);
-
-//         console.log(this.administradores)
-//       },
-//       error: (err) => {
-//         console.log('error ', err)
-//       }
-//     })
-//   }
-// }
-
-
-
-
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-
 import { Component, computed, signal, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { FormsModule } from '@angular/forms'; // <-- IMPORTANTE para los checkboxes
+import { FormsModule } from '@angular/forms';
 import { environment } from '../../../../../../environments/environment';
 
-// Actualizamos tu interfaz para incluir los permisos
+// 🔹 1. Interfaz de respuesta estandarizada
+export interface ApiResponse<T> {
+  status: string;
+  code: number;
+  message: string;
+  data: T;
+}
+
+// 🔹 2. Actualizamos la interfaz para que coincida exactamente con el backend
 export interface PerfilAdmin {
-  id: string;
+  id_admin: string;
+  id_usuario: string;
   nombre: string;
   correo: string;
   fechaNac: string;
   telefono: string;
   cargo: string;
   fechaIn: string;
-  admitidopor: string;
-  permisos?: { // <-- Propiedad añadida para manejar la vista
-    editar: boolean;
-    eliminar: boolean;
-    ver: boolean;
-    agregar: boolean;
-  };
+  admitidoPor: string; // <-- Ajustado a camelCase (P mayúscula) para hacer match con el backend
+  estado: boolean;
+  permisos?: any; // Lo dejamos opcional por si decides volver a usarlo en verificarCambios()
 }
 
 @Component({
   selector: 'app-admins-activos',
-  // Quitamos CardAdminA y agregamos FormsModule
   imports: [CommonModule, HttpClientModule, FormsModule],
   templateUrl: './admins-activos.html',
   styleUrl: './admins-activos.scss',
 })
 export class AdminsActivos implements OnInit {
   private router = inject(Router);
-  private http = inject(HttpClient); // Inyección con el estilo moderno de Angular
+  private http = inject(HttpClient);
 
   administradores = signal<PerfilAdmin[]>([]);
   q = signal<string>('');
@@ -113,40 +50,39 @@ export class AdminsActivos implements OnInit {
     const query = this.q().toLowerCase();
     return this.administradores().filter(p =>
       p.nombre.toLowerCase().includes(query) ||
-      p.id.toString().includes(query)
+      p.id_admin.toString().includes(query)
     );
   });
 
   verAdmin(m: PerfilAdmin) {
     this.router.navigate(['/osi/administradores/activos/detalle'], { state: { admin: m } });
   }
+
   adminsOriginales: any[] = [];
   hayCambios = false;
 
   cargarAdmins() {
     const url = `${environment.apiUrl}/administradores/obtenerAdmins/${localStorage.getItem('id_usuario')}`;
-    this.http.get<PerfilAdmin[]>(url,
-      { withCredentials: true }
-    ).subscribe({
-      next: (response) => {
-        // Mapeamos la respuesta para inicializar los checkboxes
-        const adminsConPermisos = response.map(admin => ({
-          ...admin,
-          permisos: admin.permisos || {
-            editar: false,
-            eliminar: false,
-            ver: false,
-            agregar: false
-          }
-        }));
 
-        this.administradores.set(adminsConPermisos);
-        this.adminsOriginales = JSON.parse(JSON.stringify(response));
-        console.log(this.administradores())
+    // 🔹 3. Tipamos la petición con ApiResponse
+    this.http.get<ApiResponse<PerfilAdmin[]>>(url, { withCredentials: true }).subscribe({
+      next: (res) => {
+        // 🔹 4. Extraemos la data (el arreglo de administradores)
+        const data = res.data;
+
+        // Asignamos directamente la data al signal
+        this.administradores.set(data);
+
+        // Guardamos una copia para detectar cambios
+        this.adminsOriginales = JSON.parse(JSON.stringify(data));
+
+        console.log('Administradores cargados:', this.administradores());
         this.hayCambios = false;
       },
       error: (err) => {
-        console.log('error ', err);
+        // 🔹 5. Manejo de errores con el mensaje del backend
+        const mensajeError = err.error?.message || 'Error al conectar con el servidor';
+        console.error('Error obteniendo administradores:', mensajeError);
       }
     });
   }
@@ -162,14 +98,15 @@ export class AdminsActivos implements OnInit {
       error: (err) => console.error(err)
     });
   }
+
   verificarCambios() {
     const actuales = this.administradores();
 
     this.hayCambios = actuales.some((admin, index) => {
       const original = this.adminsOriginales[index];
-
+      // Nota: Si quitaste el objeto 'permisos' del mapeo inicial, JSON.stringify dará undefined. 
+      // Esta lógica se mantiene segura gracias al 'permisos?: any' en la interfaz.
       return JSON.stringify(admin.permisos) !== JSON.stringify(original.permisos);
     });
   }
 }
-

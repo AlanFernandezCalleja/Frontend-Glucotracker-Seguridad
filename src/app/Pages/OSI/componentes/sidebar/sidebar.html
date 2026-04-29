@@ -7,10 +7,7 @@
 
   </div>
   <nav class="menu">
-    <a class="item" routerLink="./permisos" routerLinkActive="active">
 
-      <span>Permisos</span>
-    </a>
     <a class="item" routerLink="./roles" routerLinkActive="active">
 
       <span>Roles</span>
@@ -19,14 +16,37 @@
     <button type="button" class="item item-btn" (click)="toggleAdmin()" [attr.aria-expanded]="openAdmin()"
       aria-controls="submenu-admin">
 
-      <span class="grow">Administradores</span>
+      <span class="grow">Administradores de soporte</span>
       <span class="chev" [class.open]="openAdmin()">▾</span>
     </button>
     <div id="submenu-admin" class="submenu" *ngIf="openAdmin() ">
-      <a class="subitem" routerLink="./administradores/activos" routerLinkActive="active">Activos</a>
+      <a class="subitem" routerLink="./administradores/activos" routerLinkActive="active">Lista</a>
       <a class="subitem" routerLink="./administrador/agregar" routerLinkActive="active">Agregar</a>
     </div>
 
+
+
+
+    <button type="button" class="item item-btn" (click)="togglePaciente()" [attr.aria-expanded]="openPaciente()"
+      aria-controls="submenu-admin">
+
+      <span class="grow">Pacientes</span>
+      <span class="chev" [class.open]="openPaciente()">▾</span>
+    </button>
+    <div id="submenu-admin" class="submenu" *ngIf="openPaciente() ">
+      <a class="subitem" routerLink="./pacientes/activos" routerLinkActive="active">Lista</a>
+    </div>
+
+
+    <button type="button" class="item item-btn" (click)="toggleMedico()" [attr.aria-expanded]="openMedico()"
+      aria-controls="submenu-admin">
+
+      <span class="grow">Medicos</span>
+      <span class="chev" [class.open]="openMedico()">▾</span>
+    </button>
+    <div id="submenu-admin" class="submenu" *ngIf="openMedico() ">
+      <a class="subitem" routerLink="./medicos/activos" routerLinkActive="active">Lista</a>
+    </div>
 
   </nav>
 

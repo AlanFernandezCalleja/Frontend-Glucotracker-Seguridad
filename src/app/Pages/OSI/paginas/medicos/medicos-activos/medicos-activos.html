@@ -1,0 +1,39 @@
+<div class="wrap">
+  <h1>Médicos activos</h1>
+
+  <input class="search" type="search" placeholder="Buscar médico por nombre, id..." [value]="q()"
+    (input)="q.set($any($event.target).value)" />
+
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Estado</th>
+          <th>Departamento</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (m of medicosFiltrados(); track m.id) {
+        <tr>
+          <td>{{ m.id }}</td>
+          <td>{{ m.nombre }}</td>
+          <td>{{m.estado?'Activo':'Inactivo'}}</td>
+          <td class="capitalize">{{ m.departamento }}</td>
+          <td>
+            <button class="btn" type="button" (click)="verMedico(m)">Ver Detalle</button>
+          </td>
+        </tr>
+        } @empty {
+        <tr>
+          <td colspan="5" style="text-align: center; padding: 20px;">
+            No se encontraron médicos con ese criterio.
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>

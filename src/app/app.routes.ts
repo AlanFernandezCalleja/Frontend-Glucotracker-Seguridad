@@ -146,6 +146,18 @@ export const routes: Routes = [
             {
                 path: 'administrador/agregar', loadComponent: () => import('./Pages/OSI/paginas/admins/agregar/agregar').then(m => m.Agregar),
             },
+            {
+                path: 'pacientes/activos', loadComponent: () => import('./Pages/OSI/paginas/pacientes/pacientes-activos/pacientes-activos').then(m => m.PacientesActivos)
+            },
+            {
+                path: 'pacientes/activos/detalle', loadComponent: () => import('./Pages/OSI/paginas/pacientes/detalle-paciente-activo/detalle-paciente-activo').then(m => m.DetallePacienteActivo)
+            },
+            {
+                path: 'medicos/activos', loadComponent: () => import('./Pages/OSI/paginas/medicos/medicos-activos/medicos-activos').then(m => m.MedicosActivos)
+            },
+            {
+                path: 'medicos/activos/detalle', loadComponent: () => import('./Pages/OSI/paginas/medicos/detalle-medico-activo/detalle-medico-activo').then(m => m.DetalleMedicoActivo)
+            }
         ]
     }
 

@@ -5,6 +5,14 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { environment } from '../../../environments/environment'; // Ajusta la ruta
 
+// 🔹 1. Interfaz de respuesta estandarizada
+export interface ApiResponse<T> {
+  status: string;
+  code: number;
+  message: string;
+  data: T;
+}
+
 @Component({
   selector: 'app-solicitud-acceso',
   standalone: true,
@@ -59,11 +67,13 @@ export class SolicitudAcceso {
         fechaNac: fechaNacimiento,
         telefono
       };
-      console.log(payload)
-      // Al ser un endpoint público (desde el login), normalmente no lleva withCredentials
 
-      this.http.post(url, payload).subscribe({
-        next: () => {
+      console.log('Enviando payload:', payload);
+
+      // 🔹 2. Tipamos la petición con la interfaz ApiResponse
+      this.http.post<ApiResponse<any>>(url, payload).subscribe({
+        next: (res) => {
+          console.log('Éxito:', res.message); // Verificamos el mensaje estandarizado de éxito
           this.mostrarModalExito = true;
           this.solicitudForm.reset();
         },
@@ -112,10 +122,16 @@ export class SolicitudAcceso {
     this.mostrarModalError = true;
   }
 
+  // 🔹 3. Simplificamos este método para usar los mensajes dinámicos del backend
   obtenerMensajeError(err: any): string {
-    if (err.status === 409) return 'Este correo ya tiene una solicitud o cuenta en el sistema.';
-    if (err.status === 400) return 'Los datos enviados son incorrectos. Revise la información.';
-    if (err.status === 0) return 'Error de conexión. Verifique su internet.';
+    // Si el backend nos mandó el error formateado con nuestro helper `response`
+    if (err.error && err.error.message) {
+      return err.error.message;
+    }
+
+    // Fallback si se cae el servidor o hay problema de red
+    if (err.status === 0) return 'Error de conexión con el servidor. Verifique su internet.';
+
     return 'Ocurrió un problema interno. Por favor intente más tarde.';
   }
 }

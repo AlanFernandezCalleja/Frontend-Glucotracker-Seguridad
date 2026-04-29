@@ -1,0 +1,114 @@
+<div class="detalle-paciente">
+  <header class="tarjeta perfil-header">
+    <div class="foto-wrapper">
+      <img [src]="
+          paciente.foto_perfil ||
+          'https://api.dicebear.com/9.x/initials/svg?seed=' + paciente.nombre
+        " alt="Foto de perfil" class="foto-perfil" />
+    </div>
+    <div class="perfil-info">
+      <h1 class="nombre">{{ paciente.nombre }}</h1>
+      <span class="chip-status" [class.suspendido]="!paciente.estado">
+        {{ paciente.estado ? 'Paciente Activo' : 'Paciente Suspendido' }}
+      </span>
+    </div>
+  </header>
+
+  <div class="dashboard-grid">
+    <div class="columna">
+      <section class="tarjeta">
+        <h2>Datos Personales</h2>
+        <div class="grid-datos">
+          <div class="dato-item">
+            <span class="label">ID:</span> <span class="valor">{{ paciente.id }}</span>
+          </div>
+          <div class="dato-item">
+            <span class="label">Nacimiento:</span>
+            <span class="valor">{{ paciente.fechaNac }}</span>
+          </div>
+          <div class="dato-item">
+            <span class="label">Peso:</span> <span class="valor">{{ paciente.peso }}</span>
+          </div>
+          <div class="dato-item">
+            <span class="label">Altura:</span> <span class="valor">{{ paciente.altura }}</span>
+          </div>
+          <div class="dato-item">
+            <span class="label">Teléfono:</span> <span class="valor">{{ paciente.telefono }}</span>
+          </div>
+          <div class="dato-item">
+            <span class="label">Correo / CI:</span> <span class="valor">{{ paciente.ci }}</span>
+          </div>
+        </div>
+
+        <div class="separador"></div>
+
+
+        <h2>Contacto de Emergencia</h2>
+        <div class="grid-datos">
+          <div class="dato-item">
+            <span class="label">Nombre:</span>
+            <span class="valor">{{ paciente.nombre_emergencia }}</span>
+          </div>
+          <div class="dato-item">
+            <span class="label">Número:</span>
+            <span class="valor">{{ paciente.numero_emergencia }}</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="tarjeta">
+        <div class="header-doble">
+          <div>
+            <h2>Actividad Física</h2>
+            <p class="valor-destacado">{{ paciente.actividadFisica }}</p>
+          </div>
+          <div>
+            <h2>Afecciones</h2>
+            <div class="chips">
+              <span *ngFor="let a of paciente.afecciones" class="chip">{{ a.afeccion }}</span>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div class="columna">
+      <section class="tarjeta">
+        <h2>Tratamientos Activos</h2>
+        <div class="lista-tratamientos">
+          <div class="tratamiento" *ngFor="let t of paciente.tratamientos">
+            <div class="tratamiento-icono">💊</div>
+            <div class="tratamiento-info">
+              <h3>{{ t.titulo }}</h3>
+              <p class="desc">{{ t.desc }}</p>
+              <p class="dosis"><strong>Dosis:</strong> {{ t.dosis }}</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <footer class="tarjeta footer-admin">
+    <div class="admin-block">
+      <span class="label">Médico Asignado</span>
+      <h3>{{ paciente.medico }}</h3>
+    </div>
+    <div class="admin-block">
+      <span class="label">Admitido por</span>
+      <h3>{{ paciente.admitidoPor }}</h3>
+    </div>
+  </footer>
+  <div class="actions-container">
+    <button class="btn" [class.btn-danger]="paciente.estado" [class.btn-success]="!paciente.estado" [disabled]="loading"
+      type="button" (click)="toggleEstado()">
+
+      <span *ngIf="loading">Procesando...</span>
+      <span *ngIf="!loading">
+        {{ paciente.estado ? 'Suspender Paciente' : 'Activar Paciente' }}
+      </span>
+
+    </button>
+  </div>
+</div>

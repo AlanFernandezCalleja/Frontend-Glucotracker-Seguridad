@@ -20,4 +20,10 @@ export class Sidebar {
   }
   openAdmin = signal(false);
   toggleAdmin() { this.openAdmin.update(v => !v); }
+
+  openPaciente = signal(false);
+  togglePaciente() { this.openPaciente.update(v => !v); }
+
+  openMedico = signal(false);
+  toggleMedico() { this.openMedico.update(v => !v); }
 }

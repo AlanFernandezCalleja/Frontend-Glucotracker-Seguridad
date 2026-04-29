@@ -8,7 +8,7 @@
         <div class="grid grid--2">
             <div class="field">
                 <span class="label"><strong>ID: </strong></span>
-                <span class="value">{{ administrador.id }}</span>
+                <span class="value">{{ administrador.id_admin }}</span>
             </div>
 
             <div class="field">
@@ -48,5 +48,18 @@
                 {{ administrador.admitidoPor }}
             </p>
         </article>
+    </div>
+
+
+    <div class="actions-container">
+        <button class="btn" [class.btn-danger]="administrador.estado" [class.btn-success]="!administrador.estado"
+            [disabled]="loading" type="button" (click)="toggleEstado()">
+
+            <span *ngIf="loading">Procesando...</span>
+            <span *ngIf="!loading">
+                {{ administrador.estado ? 'Suspender Administrador' : 'Activar Administrador' }}
+            </span>
+
+        </button>
     </div>
 </section>

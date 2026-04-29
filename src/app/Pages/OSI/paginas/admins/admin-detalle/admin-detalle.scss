@@ -1,6 +1,9 @@
-h1,h2,span{
+h1,
+h2,
+span {
   font-family: Arial, Helvetica, sans-serif;
 }
+
 .perfil {
   background: #eefafa;
   min-height: 100dvh;
@@ -15,7 +18,7 @@ h1,h2,span{
 }
 
 .grid {
-    font-family: Arial, Helvetica, sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
 
   display: grid;
   gap: 14px;
@@ -43,6 +46,7 @@ h1,h2,span{
     color: #1b2f40;
   }
 }
+
 .page {
   padding: 24px;
   padding-left: 50px;
@@ -51,10 +55,12 @@ h1,h2,span{
   background: #eefafa;
   animation: fadeIn 0.8s ease-out;
 }
+
 @keyframes fadeIn {
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -117,11 +123,13 @@ h1,h2,span{
   }
 
   .datos {
-    grid-column: 1 / -1; /* ocupar todo el ancho */
+    grid-column: 1 / -1;
+    /* ocupar todo el ancho */
   }
 
   .matricula {
-    grid-column: 1 / -1; /* ocupar todo el ancho */
+    grid-column: 1 / -1;
+    /* ocupar todo el ancho */
   }
 
   .depto {
@@ -133,11 +141,95 @@ h1,h2,span{
   }
 
   .admitido {
-    grid-column: 1 / -1; /* ocupar todo el ancho */
+    grid-column: 1 / -1;
+    /* ocupar todo el ancho */
   }
 }
 
 /* Pequeños retoques tipográficos */
 b {
   color: #0a80fb;
+}
+
+/* ... (tu código anterior) ... */
+
+/* ====== ACCIONES (Botones) ====== */
+.actions-container {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: flex-end;
+  /* Alinea el botón a la derecha */
+}
+
+.btn {
+  padding: 12px 24px;
+  background-color: #5ab0c9;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  font-family: Arial, Helvetica, sans-serif;
+
+  &:hover {
+    background-color: #3a90b5;
+    transform: scale(1.02);
+  }
+}
+
+.btn-danger {
+  background-color: #ff6b6b;
+  color: white;
+
+  &:hover {
+    background-color: #ff4c4c;
+    box-shadow: 0 4px 10px rgba(255, 107, 107, 0.3);
+  }
+}
+
+
+/* ... (tus estilos anteriores) ... */
+
+.btn {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  color: white;
+
+  &:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+}
+
+/* Rojo para suspender cuenta activa */
+.btn-danger {
+  background-color: #ff6b6b;
+
+  &:hover:not(:disabled) {
+    background-color: #ff4c4c;
+    transform: scale(1.02);
+  }
+}
+
+/* Verde para activar cuenta suspendida */
+.btn-success {
+  background-color: #28a745;
+
+  &:hover:not(:disabled) {
+    background-color: #218838;
+    transform: scale(1.02);
+  }
+}
+
+.actions-container {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: flex-end;
 }
