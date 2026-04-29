@@ -2,11 +2,7 @@
   <!-- Header del Perfil -->
   <div class="perfil-header">
     <div class="foto-perfil">
-      <img 
-        [src]="data.foto_perfil || 'assets/img/default-user.png'" 
-        alt="Foto de perfil" 
-        class="foto-img"
-      />
+      <img [src]="data.foto_perfil || 'assets/img/default-user.png'" alt="Foto de perfil" class="foto-img" />
     </div>
     <div class="info-basica">
       <h1 class="nombre">{{ data.nombre }}</h1>
@@ -50,11 +46,11 @@
           <span class="etiqueta">Semanas de embarazo:</span>
           <span class="valor">{{ semanasEmbarazoN}}</span>
         </div>
-        <div class="fila-dato" >
+        <div class="fila-dato">
           <span class="etiqueta">Médico responsable:</span>
           <span class="valor">{{ data.nombre_medico }}</span>
         </div>
-        <div class="fila-dato" >
+        <div class="fila-dato">
           <span class="etiqueta">Registrado en:</span>
           <span class="valor">{{ data.fecha_registro }}</span>
         </div>
@@ -79,7 +75,6 @@
       <h2 class="titulo-seccion">Actividad Física</h2>
       <div class="info-actividad">
         <div class="nivel-actividad">{{ data.actividadFisica.nivel }}</div>
-        <p class="descripcion-actividad">{{ data.actividadFisica.descripcion }}</p>
       </div>
     </div>
 

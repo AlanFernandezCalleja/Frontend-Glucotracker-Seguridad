@@ -29,8 +29,7 @@ export interface Patient {
   telefono: string;
   correo: string;
   actividadFisica: {
-    nivel: 'Baja' | 'Moderada' | 'Alta' | null;
-    descripcion: string | null;
+    nivel: string;
   };
   afecciones: string[];
   tratamientos: Treatment[];
