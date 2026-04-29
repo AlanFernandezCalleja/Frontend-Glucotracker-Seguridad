@@ -162,3 +162,75 @@
     </div>
   </div>
 </div>
+
+<!-- Modal 1: Solicitar Correo para Recuperación -->
+<div class="modal-overlay" *ngIf="showRecoverEmailModal()">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 class="modal-title">Recuperar Contraseña</h2>
+      <button class="modal-close" (click)="cancelarRecuperacion()">×</button>
+    </div>
+    
+    <div class="modal-body">
+      <p class="modal-description">Ingresa tu correo electrónico para recibir un código de recuperación.</p>
+      <div class="field">
+        <input type="email" placeholder="tucorreo@ejemplo.com" class="verification-input" style="letter-spacing: normal; width: 100%; text-align: left;" #recoverEmailInput />
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn-modal btn-modal--primary" (click)="solicitarRecuperacion(recoverEmailInput)" [disabled]="loading()">
+          {{ loading() ? 'Enviando…' : 'Enviar Código' }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal 2: Verificar Código de Recuperación -->
+<div class="modal-overlay" *ngIf="showRecoverCodeModal()">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 class="modal-title">Verificar Código</h2>
+      <button class="modal-close" (click)="cancelarRecuperacion()">×</button>
+    </div>
+    
+    <div class="modal-body">
+      <p class="modal-description">Se ha enviado un código a {{ recoverEmail }}. Ingrésalo a continuación.</p>
+      <div class="field">
+        <input type="text" placeholder="- - - - - -" maxlength="6" class="verification-input" #recoverCodeInput />
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn-modal btn-modal--primary" (click)="verificarCodigoRecuperacion(recoverCodeInput)" [disabled]="loading()">
+          {{ loading() ? 'Verificando…' : 'Verificar' }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal 3: Restablecer Contraseña -->
+<div class="modal-overlay" *ngIf="showRecoverPasswordModal()">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 class="modal-title">Nueva Contraseña</h2>
+      <button class="modal-close" (click)="cancelarRecuperacion()">×</button>
+    </div>
+    
+    <div class="modal-body">
+      <p class="modal-description">Ingresa tu nueva contraseña. Debe ser segura y tener al menos 12 caracteres.</p>
+      <form [formGroup]="recoverForm" (ngSubmit)="restablecerContrasena()">
+        <div class="field">
+          <input type="password" formControlName="nueva_contrasena" placeholder="Nueva contraseña" class="verification-input" style="letter-spacing: normal; width: 100%; text-align: left; margin-bottom: 1rem;" />
+          <small *ngIf="rf.nueva_contrasena.touched && rf.nueva_contrasena.invalid" style="color: red;">Mínimo 12 caracteres requeridos</small>
+        </div>
+        <div class="field">
+          <input type="password" formControlName="confirmar_contrasena" placeholder="Confirmar contraseña" class="verification-input" style="letter-spacing: normal; width: 100%; text-align: left; margin-bottom: 1rem;" />
+        </div>
+        <div class="modal-actions">
+          <button type="submit" class="btn-modal btn-modal--primary" [disabled]="loading() || recoverForm.invalid">
+            {{ loading() ? 'Guardando…' : 'Cambiar Contraseña' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
